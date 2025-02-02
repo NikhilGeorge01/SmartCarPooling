@@ -9,3 +9,15 @@ router.post("/register", register);
 router.post("/login", login);
 
 module.exports = router; // Make sure you are exporting the router properly
+/*
+Invoke-WebRequest -Uri http://localhost:3000/api/auth/login `
+>>                   -Method POST `
+>>                   -Headers @{ "Content-Type" = "application/json" } `
+>>                   -Body '{"email": "john@example.com", "password": "123456"}'
+*/
+/*Invoke-WebRequest -Uri http://localhost:3000/api/auth/register `
+>>                   -Method POST `
+>>                   -Headers @{ "Content-Type" = "application/json" } `
+>>                   -Body '{"name": "John Doe", "email": "john@example.com", "password": "123456", "gender": "male"}'
+>> 
+*/
