@@ -11,17 +11,14 @@ const MONGO_URI = process.env.MONGO_URI; // Mongo URI from .env
 app.use(express.json()); // For parsing application/json
 app.use(cors()); // Enable CORS
 
-// Basic route for testing
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
+// Basic route for testing (This should be at the top)
 app.get("/", (req, res) => {
   console.log("Basic route accessed");
   res.send("Carpool Backend Running 🚀");
 });
-
-// Routes
-const authRoutes = require("./routes/authRoutes");
-const userRoutes = require("./routes/userRoutes");
-app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
 
 // MongoDB Connection
 mongoose
@@ -31,3 +28,6 @@ mongoose
 
 // Start server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/user", userRoutes);
