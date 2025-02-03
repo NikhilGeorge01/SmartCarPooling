@@ -1,69 +1,93 @@
 import React, { useState } from "react";
-import { registerUser } from "../api/auth";
+import axios from "axios";
 
-const Register = ({ setToken }) => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [gender, setGender] = useState("");
-    const [error, setError] = useState("");
+const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await registerUser({ name, email, password, gender });
-            setToken(response.token); // Store JWT token
-            setError(""); // Clear error
-        } catch (err) {
-            setError(err.message || "Registration failed");
-        }
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    return (
+    if (!name || !email || !password || !gender) {
+      setError("All fields are required");
+      setLoading(false);
+      return;
+    }
+
+    axios
+      .post("http://localhost:5000/api/auth/register", {
+        name,
+        email,
+        password,
+        gender,
+      })
+      .then((response) => {
+        console.log("Registered:", response);
+        alert("Registered successfully!");
+        setName("");
+        setEmail("");
+        setPassword("");
+        setGender("");
+      })
+      .catch((error) => {
+        console.error("Registration error:", error);
+        setError("Registration failed. Please try again.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return (
+    <div>
+      <h2>Register</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <form onSubmit={handleSubmit}>
         <div>
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label>Name:</label>
-                    <input 
-                        type="text" 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input 
-                        type="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Gender:</label>
-                    <input 
-                        type="text" 
-                        value={gender} 
-                        onChange={(e) => setGender(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-            {error && <p>{error}</p>}
+          <label>Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
-    );
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Gender:</label>
+          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default Register;

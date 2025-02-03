@@ -1,10 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client"; // use 'react-dom/client' for React 18
 import App from "./App";
 
-ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+// Create a root container
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+// Render the App component inside the root
+root.render(<App />);
