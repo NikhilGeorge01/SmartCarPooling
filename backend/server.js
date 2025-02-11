@@ -6,6 +6,8 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000; // Set the port from .env or default to 5000
 const MONGO_URI = process.env.MONGO_URI; // Mongo URI from .env
+const rideRoutes = require("./routes/rideRoutes");
+app.use("/api/ride", rideRoutes);
 
 // Middlewares
 app.use(express.json()); // For parsing application/json
