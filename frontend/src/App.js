@@ -5,6 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Logout from "./components/Logout";
@@ -29,16 +30,16 @@ function App() {
             {!isLoggedIn ? (
               <>
                 <li>
-                  <a href="/login">Login</a>
+                  <Link to="/login">Login</Link>
                 </li>
                 <li>
-                  <a href="/register">Register</a>
+                  <Link to="/register">Register</Link>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <a href="/profile">Profile</a>
+                  <Link to="/profile">Profile</Link>
                 </li>
                 <li>
                   <Logout setIsLoggedIn={setIsLoggedIn} />
@@ -95,3 +96,4 @@ function App() {
 }
 
 export default App;
+
