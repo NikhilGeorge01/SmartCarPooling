@@ -8,6 +8,7 @@ import {
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Logout from "./components/Logout";
+import Profile from "./components/Profile"; // Import Profile component
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,9 +23,10 @@ function App() {
   return (
     <Router>
       <div>
+        {/* Navigation Bar */}
         <nav>
           <ul>
-            {!isLoggedIn && (
+            {!isLoggedIn ? (
               <>
                 <li>
                   <a href="/login">Login</a>
@@ -33,14 +35,20 @@ function App() {
                   <a href="/register">Register</a>
                 </li>
               </>
-            )}
-            {isLoggedIn && (
-              <li>
-                <Logout setIsLoggedIn={setIsLoggedIn} />
-              </li>
+            ) : (
+              <>
+                <li>
+                  <a href="/profile">Profile</a>
+                </li>
+                <li>
+                  <Logout setIsLoggedIn={setIsLoggedIn} />
+                </li>
+              </>
             )}
           </ul>
         </nav>
+
+        {/* Routes */}
         <Routes>
           <Route
             path="/login"
@@ -65,6 +73,10 @@ function App() {
                 <Navigate to="/login" />
               )
             }
+          />
+          <Route
+            path="/profile"
+            element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
           />
           <Route
             path="/"
