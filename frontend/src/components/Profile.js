@@ -4,7 +4,9 @@ import axios from "axios";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [password, setPassword] = useState("");
   const [profilePic, setProfilePic] = useState(null);
   const [message, setMessage] = useState("");
 
@@ -16,12 +18,17 @@ const Profile = () => {
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem("token"); // Get token from local storage
-      const response = await axios.get("http://localhost:5000/api/user/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "http://localhost:5000/api/user/profile",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setUser(response.data);
       setName(response.data.name);
-      setPhone(response.data.phone || "");
+      setEmail(response.data.email);
+      setGender(response.data.gender || "");
+      setProfilePic(response.data.profilePic);
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
@@ -34,11 +41,16 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("phone", phone);
+      formData.append("email", email);
+      formData.append("gender", gender);
+      formData.append("password", password);
       if (profilePic) formData.append("profilePic", profilePic);
 
-      await axios.put("http://localhost:5000/api/user/profile/update", formData, {
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+      await axios.put("http://localhost:5000/api/user/profile", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       setMessage("Profile updated successfully!");
@@ -55,13 +67,51 @@ const Profile = () => {
       {user ? (
         <form onSubmit={handleUpdate}>
           <label>Name:</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
-          <label>Phone:</label>
-          <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <label>Gender:</label>
+          <input
+            type="text"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          />
+
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <label>Profile Picture:</label>
-          <input type="file" accept="image/*" onChange={(e) => setProfilePic(e.target.files[0])} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfilePic(e.target.files[0])}
+          />
+
+          {user.profilePic && (
+            <div>
+              <img
+                src={`http://localhost:5000/${user.profilePic}`}
+                alt="Profile"
+                width="100"
+              />
+            </div>
+          )}
 
           <button type="submit">Update Profile</button>
         </form>
