@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   rating: { type: Number, default: 5 },
   preferences: { type: Object, default: {} },
+  profilePic: { type: String }, // Added profilePic field
 });
 
 module.exports = mongoose.model("User", UserSchema);

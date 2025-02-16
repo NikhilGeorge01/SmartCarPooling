@@ -13,7 +13,7 @@ app.use(express.json()); // For parsing application/json
 app.use(cors()); // Enable CORS
 
 // Serve static files from the "uploads" directory
-app.use("/uploads", express.static(path.join(__dirname, "../../uploads"))); // Adjusted path
+// Adjusted path
 
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);

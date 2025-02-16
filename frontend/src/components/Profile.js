@@ -7,7 +7,7 @@ const Profile = () => {
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
+  const [profilePic, setProfilePic] = useState(null); // Will store Base64 string
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -28,9 +28,21 @@ const Profile = () => {
       setName(response.data.name);
       setEmail(response.data.email);
       setGender(response.data.gender || "");
-      setProfilePic(response.data.profilePic);
+      setProfilePic(response.data.profilePic); // Set Base64 string
     } catch (error) {
       console.error("Error fetching profile:", error);
+    }
+  };
+
+  // Convert image to Base64
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result); // Set Base64 string
+      };
+      reader.readAsDataURL(file); // Convert image to Base64
     }
   };
 
@@ -39,17 +51,21 @@ const Profile = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("gender", gender);
-      formData.append("password", password);
-      if (profilePic) formData.append("profilePic", profilePic);
 
-      await axios.put("http://localhost:5000/api/user/profile", formData, {
+      // Prepare the data to send
+      const data = {
+        name,
+        email,
+        gender,
+        password,
+        profilePic, // Send Base64 string
+      };
+
+      // Send the data to the backend
+      await axios.put("http://localhost:5000/api/user/profile", data, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json", // Use JSON instead of multipart/form-data
         },
       });
 
@@ -100,13 +116,14 @@ const Profile = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setProfilePic(e.target.files[0])}
+            onChange={handleImageChange} // Use the Base64 conversion handler
           />
 
-          {user.profilePic && (
+          {/* Display the profile picture */}
+          {profilePic && (
             <div>
               <img
-                src={`http://localhost:5000/${user.profilePic}`}
+                src={profilePic} // Use Base64 string directly
                 alt="Profile"
                 width="100"
               />
