@@ -13,9 +13,18 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.register = async (req, res) => {
-  const { name, email, password, gender } = req.body;
+  const { name, email, password, gender, dob, aadhar, phone, photo } = req.body;
 
-  console.log("Register request received:", { name, email, password, gender });
+  console.log("Register request received:", {
+    name,
+    email,
+    password,
+    gender,
+    dob,
+    aadhar,
+    phone,
+    photo,
+  });
 
   // Check if the user already exists
   const existingUser = await User.findOne({ email });
@@ -35,6 +44,10 @@ exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       gender,
+      dob,
+      aadhar,
+      phone,
+      photo,
       verificationToken,
     });
 
