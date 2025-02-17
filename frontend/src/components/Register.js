@@ -8,6 +8,7 @@ const Register = () => {
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +30,9 @@ const Register = () => {
       })
       .then((response) => {
         console.log("Registered:", response);
-        alert("Registered successfully!");
+        setConfirmationMessage(
+          "Registered successfully! Please check your email to verify your account."
+        );
         setName("");
         setEmail("");
         setPassword("");
@@ -48,6 +51,9 @@ const Register = () => {
     <div>
       <h2>Register</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {confirmationMessage && (
+        <p style={{ color: "green" }}>{confirmationMessage}</p>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>

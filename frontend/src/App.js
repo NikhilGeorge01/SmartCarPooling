@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Logout from "./components/Logout";
 import Profile from "./components/Profile"; // Import Profile component
+import VerifyEmail from "./components/VerifyEmail"; // Import VerifyEmail component
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,6 +80,7 @@ function App() {
             path="/profile"
             element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
           />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route
             path="/"
             element={
@@ -96,4 +98,3 @@ function App() {
 }
 
 export default App;
-
