@@ -1,3 +1,4 @@
+import "./Register.css";
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import Webcam from "react-webcam";
@@ -76,7 +77,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Register</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {confirmationMessage && (

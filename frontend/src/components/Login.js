@@ -1,3 +1,4 @@
+import "./Login.css";
 import React, { useState } from "react";
 import { loginUser } from "../api/auth";
 
@@ -32,9 +33,9 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p>{error}</p>}
       <form onSubmit={handleLogin}>
         <div>
           <label>Email:</label>
