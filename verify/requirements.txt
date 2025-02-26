@@ -1,0 +1,6 @@
+flask
+faiss-cpu
+google-generativeai
+langchain
+langchain-google-genai
+numpy

@@ -1,9 +1,0 @@
-flask
-faiss-cpu
-google-generativeai
-langchain
-langchain-google-genai
-scikit-learn
-numpy
-pandas
-
