@@ -13,7 +13,8 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.register = async (req, res) => {
-  const { name, email, password, gender, dob, aadhar, phone, photo } = req.body;
+  const { name, email, password, gender, dob, twitterUsername, phone, photo } =
+    req.body;
 
   console.log("Register request received:", {
     name,
@@ -21,7 +22,7 @@ exports.register = async (req, res) => {
     password,
     gender,
     dob,
-    aadhar,
+    twitterUsername,
     phone,
     photo,
   });
@@ -45,10 +46,12 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       gender,
       dob,
-      aadhar,
+      twitterUsername, // Ensure this field is handled
       phone,
       photo,
       verificationToken,
+      rides: 0, // Initialize to 0
+      avg_rating: 0, // Initialize to 0
     });
 
     console.log("User created:", user);

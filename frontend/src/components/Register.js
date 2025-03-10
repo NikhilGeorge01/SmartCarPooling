@@ -9,7 +9,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
-  const [aadhar, setAadhar] = useState("");
+  const [twitterUsername, setTwitterUsername] = useState(""); // Ensure this state is defined
   const [phone, setPhone] = useState("");
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const Register = () => {
       !password ||
       !gender ||
       !dob ||
-      !aadhar ||
+      !twitterUsername || // Ensure this field is checked
       !phone ||
       !photo
     ) {
@@ -49,7 +49,7 @@ const Register = () => {
         password,
         gender,
         dob,
-        aadhar,
+        twitterUsername, // Ensure this field is sent
         phone,
         photo,
       })
@@ -63,7 +63,7 @@ const Register = () => {
         setPassword("");
         setGender("");
         setDob("");
-        setAadhar("");
+        setTwitterUsername(""); // Reset this field
         setPhone("");
         setPhoto(null);
       })
@@ -126,11 +126,11 @@ const Register = () => {
           />
         </div>
         <div>
-          <label>Aadhar/Identity:</label>
+          <label>Twitter Username:</label>
           <input
             type="text"
-            value={aadhar}
-            onChange={(e) => setAadhar(e.target.value)}
+            value={twitterUsername}
+            onChange={(e) => setTwitterUsername(e.target.value)}
           />
         </div>
         <div>

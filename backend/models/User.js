@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   gender: { type: String, required: true },
   dob: { type: Date, required: true }, // Added DOB field
-  aadhar: { type: String, required: true }, // Added Aadhar/Identity field
+  twitterUsername: { type: String, required: true }, // Added Twitter Username field
   phone: { type: String, required: true }, // Added Phone Number field
   photo: { type: String }, // Added Photo field
   rating: { type: Number, default: 5 },
@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema({
   profilePic: { type: String }, // Added profilePic field
   isVerified: { type: Boolean, default: false }, // Added isVerified field
   verificationToken: { type: String }, // Added verificationToken field
+  rides: { type: Number, default: 0 }, // New field
+  avg_rating: { type: Number, default: 0 }, // New field
+  trust_score: { type: Number, default: 0 }, // Added trust_score field
 });
 
 module.exports = mongoose.model("User", UserSchema);
