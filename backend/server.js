@@ -21,6 +21,9 @@ app.use("/api/auth", authRoutes);
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
 
+const rideRoutes = require("./routes/rideRoutes");
+app.use("/api/rides", rideRoutes);
+
 // Basic route for testing (This should be at the top)
 app.get("/", (req, res) => {
   console.log("Basic route accessed");
