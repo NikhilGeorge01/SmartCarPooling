@@ -1,35 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1c1c1c 0%, #333 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    color: #333;
+    color: #fff;
 }
 
 .register-container {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 450px;
+    background-color: #2c2c2c; /* Darker background for the form */
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 400px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     max-height: 80vh;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #667eea #f0f0f0;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .register-container:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.register-container .top-links {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.register-container .top-links a {
+    color: #ff69b4;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.register-container .top-links a:hover {
+    text-decoration: underline;
+    color: #e75480;
 }
 
 .register-container h2 {
     margin-bottom: 25px;
-    color: #2c3e50;
+    color: #fff; /* White text color */
     text-align: center;
     font-size: 26px;
     font-weight: 700;
@@ -43,7 +75,7 @@ body {
 }
 
 .register-container label {
-    color: #34495e;
+    color: #bbb; /* Light gray color for labels */
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 5px;
@@ -52,26 +84,27 @@ body {
 .register-container input,
 .register-container select {
     padding: 12px;
-    border: 2px solid #e0e7ff;
+    border: 2px solid #444; /* Dark border */
     border-radius: 6px;
     width: 100%;
     box-sizing: border-box;
     font-size: 16px;
     transition: all 0.3s ease;
-    background: #f9f9f9;
+    background: #333; /* Dark background for input */
+    color: #fff; /* White text color */
     outline: none;
 }
 
 .register-container input:focus,
 .register-container select:focus {
     border-color: #667eea;
-    background: #ffffff;
+    background: #444; /* Slightly lighter background on focus */
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
 }
 
 .register-container button {
     padding: 14px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #28a745 0%, #218838 100%); /* Green gradient background for button */
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -82,9 +115,9 @@ body {
 }
 
 .register-container button:hover {
-    background: linear-gradient(90deg, #5a6fd1 0%, #6a3e93 100%);
+    background: linear-gradient(90deg, #218838 0%, #1e7e34 100%); /* Darker green gradient on hover */
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
 }
 
 .register-container button:active {

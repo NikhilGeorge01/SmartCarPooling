@@ -2,6 +2,7 @@ import "./Register.css";
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import Webcam from "react-webcam";
+import { Modal, Button } from "react-bootstrap";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -15,7 +16,11 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [show, setShow] = useState(false);
   const webcamRef = useRef(null);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const capturePhoto = () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -77,89 +82,109 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <h2>Register</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {confirmationMessage && (
-        <p style={{ color: "green" }}>{confirmationMessage}</p>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Gender:</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label>Date of Birth:</label>
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Aadhar/Identity:</label>
-          <input
-            type="text"
-            value={aadhar}
-            onChange={(e) => setAadhar(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Phone Number:</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Photo:</label>
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            width={320}
-            height={240}
-          />
-          <button type="button" onClick={capturePhoto}>
-            Capture Photo
-          </button>
-          {photo && <img src={photo} alt="Captured" />}
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
-      </form>
-    </div>
+    <>
+      <Button variant="primary" onClick={handleShow} className="register-button">
+        Register
+      </Button>
+
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Register</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {error && <p className="text-danger">{error}</p>}
+          {confirmationMessage && (
+            <p className="text-success">{confirmationMessage}</p>
+          )}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Name:</label>
+              <input
+                type="text"
+                className="form-control"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Email:</label>
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Password:</label>
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Gender:</label>
+              <select
+                className="form-control"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Date of Birth:</label>
+              <input
+                type="date"
+                className="form-control"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Aadhar/Identity:</label>
+              <input
+                type="text"
+                className="form-control"
+                value={aadhar}
+                onChange={(e) => setAadhar(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone Number:</label>
+              <input
+                type="text"
+                className="form-control"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Photo:</label>
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width={320}
+                height={240}
+              />
+              <Button variant="secondary" onClick={capturePhoto} block>
+                Capture Photo
+              </Button>
+              {photo && <img src={photo} alt="Captured" className="img-fluid mt-2" />}
+            </div>
+            <Button variant="primary" type="submit" disabled={loading} block>
+              {loading ? "Registering..." : "Register"}
+            </Button>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 
