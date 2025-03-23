@@ -2,7 +2,7 @@ const Ride = require("../models/Ride");
 const User = require("../models/User");
 
 exports.offerRide = async (req, res) => {
-  const { vehicleName, vehicleNumber, seats } = req.body;
+  const { vehicleName, vehicleNumber, seats, startPoint, endPoint } = req.body;
   const userId = req.user.id;
 
   try {
@@ -11,6 +11,8 @@ exports.offerRide = async (req, res) => {
       vehicleName,
       vehicleNumber,
       seats,
+      startPoint,
+      endPoint,
     });
 
     res.status(201).json(ride);
@@ -22,10 +24,13 @@ exports.offerRide = async (req, res) => {
 
 exports.getRides = async (req, res) => {
   try {
-    const rides = await Ride.find().populate("user", "name trust_score");
-    res.json(rides);
+    const rides = await Ride.find().populate("user", "name trust_score"); // Populate user details
+    if (!rides || rides.length === 0) {
+      return res.status(404).json({ message: "No rides found" });
+    }
+    res.status(200).json(rides);
   } catch (error) {
     console.error("Error fetching rides:", error);
-    res.status(500).json({ message: "Error fetching rides", error });
+    res.status(500).json({ message: "Server error" });
   }
 };

@@ -6,6 +6,8 @@ const RideSchema = new mongoose.Schema({
   vehicleNumber: { type: String, required: true },
   seats: { type: Number, required: true },
   date: { type: Date, default: Date.now },
+  startPoint: { type: [Number], required: true }, // [latitude, longitude]
+  endPoint: { type: [Number], required: true }, // [latitude, longitude]
 });
 
 module.exports = mongoose.model("Ride", RideSchema);

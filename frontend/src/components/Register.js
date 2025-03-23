@@ -9,7 +9,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
-  const [twitterUsername, setTwitterUsername] = useState(""); // Ensure this state is defined
+  const [twitterUsername, setTwitterUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,17 +27,29 @@ const Register = () => {
     setError("");
     setLoading(true);
 
+    // Password validation regex: At least 1 uppercase, 1 number, and 1 special character
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     if (
       !name ||
       !email ||
       !password ||
       !gender ||
       !dob ||
-      !twitterUsername || // Ensure this field is checked
+      !twitterUsername ||
       !phone ||
       !photo
     ) {
       setError("All fields are required");
+      setLoading(false);
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character."
+      );
       setLoading(false);
       return;
     }
@@ -49,7 +61,7 @@ const Register = () => {
         password,
         gender,
         dob,
-        twitterUsername, // Ensure this field is sent
+        twitterUsername,
         phone,
         photo,
       })
@@ -63,7 +75,7 @@ const Register = () => {
         setPassword("");
         setGender("");
         setDob("");
-        setTwitterUsername(""); // Reset this field
+        setTwitterUsername("");
         setPhone("");
         setPhoto(null);
       })
