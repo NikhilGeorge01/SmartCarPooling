@@ -1,5 +1,5 @@
 import "./Login.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loginUser } from "../api/auth";
 
 const Login = ({ setToken }) => {
@@ -7,6 +7,15 @@ const Login = ({ setToken }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [visitCount, setVisitCount] = useState(0); // State to track visit count
+
+  // Increment visit count on component mount
+  useEffect(() => {
+    const count = localStorage.getItem("visitCount");
+    const newCount = count ? parseInt(count) + 1 : 1;
+    localStorage.setItem("visitCount", newCount);
+    setVisitCount(newCount);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,7 +44,8 @@ const Login = ({ setToken }) => {
   return (
     <div className="login-container">
       <h2>Login</h2>
-      {error && <p>{error}</p>}
+      <p>Page Visits: {visitCount}</p> {/* Display visit count */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <div>
           <label>Email:</label>
