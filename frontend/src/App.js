@@ -13,6 +13,8 @@ import Profile from "./components/Profile"; // Import Profile component
 import VerifyEmail from "./components/VerifyEmail"; // Import VerifyEmail component
 import OfferRide from "./components/OfferRide"; // Import OfferRide component
 import ViewRides from "./components/ViewRides"; // Import ViewRides component
+import Users from "./components/Users";
+import Chat from "./components/Chat";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +53,9 @@ function App() {
                   <Link to="/view-rides">View Rides</Link>
                 </li>
                 <li>
+                  <Link to="/users">Users</Link>
+                </li>
+                <li>
                   <Logout setIsLoggedIn={setIsLoggedIn} />
                 </li>
               </>
@@ -60,6 +65,8 @@ function App() {
 
         {/* Routes */}
         <Routes>
+          <Route path="/users" element={<Users />} />
+          <Route path="/chat/:userId" element={<Chat />} />
           <Route
             path="/login"
             element={

@@ -84,16 +84,17 @@ const ViewRides = () => {
         subject: "Ride Request",
         body: `
           Hello ${ride.user.name},
-
+  
           ${
             userDetails.name
           } has requested to join your ride. Here are their details:
           - Trust Score: ${userDetails.trust_score || "Yet to be calculated"}
-          - Number of Rides: ${userDetails.numberOfRides || "0"}
-          - Average Rating: ${userDetails.avgRating || "0"}
-
-          Please respond to their request.
-
+          - Number of Rides: ${userDetails.rides || "0"}
+          - Average Rating: ${userDetails.avg_rating || "0"}
+  
+          Click the link below to start a chat with ${userDetails.name}:
+          http://localhost:3000/chat/${userDetails._id}
+  
           Thank you,
           Ride Sharing App
         `,

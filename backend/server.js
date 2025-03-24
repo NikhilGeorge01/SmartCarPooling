@@ -26,6 +26,8 @@ app.use("/api/rides", rideRoutes);
 
 app.use("/api/email", require("./routes/emailRoutes"));
 
+app.use("/api/chat", require("./routes/chatRoutes"));
+
 // Basic route for testing (This should be at the top)
 app.get("/", (req, res) => {
   console.log("Basic route accessed");

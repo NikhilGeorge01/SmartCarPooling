@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
   rides: { type: Number, default: 0 }, // New field
   avg_rating: { type: Number, default: 0 }, // New field
   trust_score: { type: Number, default: 0 }, // Added trust_score field
+  chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Track initiated chats
 });
 
 module.exports = mongoose.model("User", UserSchema);
