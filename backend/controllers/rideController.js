@@ -24,7 +24,7 @@ exports.offerRide = async (req, res) => {
 
 exports.getRides = async (req, res) => {
   try {
-    const rides = await Ride.find().populate("user", "name trust_score"); // Populate user details
+    const rides = await Ride.find().populate("user", "name trust_score email"); // Include the email field
     if (!rides || rides.length === 0) {
       return res.status(404).json({ message: "No rides found" });
     }
