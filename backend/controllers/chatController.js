@@ -4,7 +4,10 @@ const User = require("../models/User");
 // Get all users (for listing users to chat with)
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("name email");
+    // Fetch only verified users
+    const users = await User.find({ isVerified: true }).select(
+      "name email photo"
+    );
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);

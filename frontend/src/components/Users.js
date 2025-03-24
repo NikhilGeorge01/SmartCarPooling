@@ -24,7 +24,7 @@ const Users = () => {
         );
         setUserId(userResponse.data._id);
 
-        // Fetch all users
+        // Fetch all verified users
         const response = await axios.get(
           "http://localhost:5000/api/chat/users",
           {
@@ -59,6 +59,15 @@ const Users = () => {
           <li key={user._id}>
             <p>Name: {user.name}</p>
             <p>Email: {user.email}</p>
+            {user.photo ? (
+              <img
+                src={user.photo}
+                alt={`${user.name}'s photo`}
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+              />
+            ) : (
+              <p>No Photo</p>
+            )}
             <button onClick={() => navigate(`/chat/${user._id}`)}>Chat</button>
           </li>
         ))}
