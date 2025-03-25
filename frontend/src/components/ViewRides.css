@@ -1,0 +1,93 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #333;
+}
+
+.rides-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #667eea #f0f0f0;
+}
+
+.rides-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.rides-container h2 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-weight: 600;
+}
+
+.rides-list {
+    list-style: none;
+    padding: 0;
+}
+
+.ride-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.ride-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ride-card p {
+    margin: 5px 0;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.request-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.request-button:hover {
+    background: linear-gradient(90deg, #5a6fd1 0%, #6a3e93 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.request-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}

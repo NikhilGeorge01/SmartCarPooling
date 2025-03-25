@@ -27,7 +27,6 @@ const Register = () => {
     setError("");
     setLoading(true);
 
-    // Password validation regex: At least 1 uppercase, 1 number, and 1 special character
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -48,7 +47,7 @@ const Register = () => {
 
     if (!passwordRegex.test(password)) {
       setError(
-        "Password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character."
+        "Password must be at least 8 characters long and include an uppercase letter, a number, and a special character."
       );
       setLoading(false);
       return;
@@ -65,8 +64,7 @@ const Register = () => {
         phone,
         photo,
       })
-      .then((response) => {
-        console.log("Registered:", response);
+      .then(() => {
         setConfirmationMessage(
           "Registered successfully! Please check your email to verify your account."
         );
@@ -79,8 +77,7 @@ const Register = () => {
         setPhone("");
         setPhoto(null);
       })
-      .catch((error) => {
-        console.error("Registration error:", error);
+      .catch(() => {
         setError("Registration failed. Please try again.");
       })
       .finally(() => {
@@ -91,10 +88,8 @@ const Register = () => {
   return (
     <div className="register-container">
       <h2>Register</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {confirmationMessage && (
-        <p style={{ color: "green" }}>{confirmationMessage}</p>
-      )}
+      {error && <p className="error">{error}</p>}
+      {confirmationMessage && <p className="success">{confirmationMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
@@ -102,6 +97,7 @@ const Register = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -110,6 +106,7 @@ const Register = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -118,11 +115,12 @@ const Register = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <div>
           <label>Gender:</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+          <select value={gender} onChange={(e) => setGender(e.target.value)} required>
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -135,6 +133,7 @@ const Register = () => {
             type="date"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -143,6 +142,7 @@ const Register = () => {
             type="text"
             value={twitterUsername}
             onChange={(e) => setTwitterUsername(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -151,21 +151,16 @@ const Register = () => {
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            required
           />
         </div>
-        <div>
+        <div className="webcam-container">
           <label>Photo:</label>
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            width={320}
-            height={240}
-          />
+          <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
           <button type="button" onClick={capturePhoto}>
             Capture Photo
           </button>
-          {photo && <img src={photo} alt="Captured" />}
+          {photo && <img src={photo} alt="Captured" className="captured-img" />}
         </div>
         <button type="submit" disabled={loading}>
           {loading ? "Registering..." : "Register"}
