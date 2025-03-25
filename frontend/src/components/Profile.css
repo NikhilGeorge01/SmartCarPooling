@@ -8,70 +8,66 @@ body {
     margin: 0;
     color: #0ff;
     text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-    transition: all 0.3s ease-in-out;
 }
 
-.login-container {
+.profile-container {
     background-color: #111;
     padding: 35px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
     width: 400px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #0ff #333;
+    text-align: center;
 }
 
-.login-container:hover {
+.profile-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(0, 255, 255, 0.4);
 }
 
-.login-container h2 {
-    margin-bottom: 25px;
-    color: #0ff;
-    text-align: center;
+.profile-container h2 {
     font-size: 26px;
     font-weight: 700;
-    letter-spacing: 1px;
 }
 
-.login-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.profile-container p {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 10px 0;
 }
 
-.login-container label {
-    color: #0ff;
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 5px;
-    text-shadow: 0 0 10px #0ff;
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    border: 3px solid #0ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
-.login-container input {
+.profile-form {
+    margin-top: 20px;
+}
+
+.profile-form input {
     padding: 12px;
     border: 2px solid #0ff;
     border-radius: 6px;
     width: 100%;
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: all 0.3s ease;
     background: #222;
     color: #0ff;
+    font-size: 16px;
+    transition: all 0.3s ease;
     outline: none;
 }
 
-.login-container input:focus {
+.profile-form input:focus {
     border-color: #00f0f0;
     background: #333;
     box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
-.login-container button {
+.profile-form button {
     padding: 14px;
     background: linear-gradient(90deg, #00bfbf 0%, #008b8b 100%);
     color: #fff;
@@ -82,27 +78,38 @@ body {
     font-weight: 600;
     transition: all 0.3s ease;
     text-shadow: 0 0 10px #0ff;
+    margin-top: 15px;
+    width: 100%;
 }
 
-.login-container button:hover {
+.profile-form button:hover {
     background: linear-gradient(90deg, #009696 0%, #007575 100%);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
 }
 
-.login-container button:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
-.login-container button:disabled {
+.profile-form button:disabled {
     background: #444;
     cursor: not-allowed;
 }
 
-.login-container p {
+.trust-score {
+    margin-top: 15px;
+    color: #00ff00;
+    font-weight: 600;
+    font-size: 18px;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.error {
     margin-top: 15px;
     color: #ff4c4c;
-    text-align: center;
     font-weight: 500;
+    text-shadow: 0 0 10px #ff4c4c;
+}
+
+.loading {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0ff;
 }

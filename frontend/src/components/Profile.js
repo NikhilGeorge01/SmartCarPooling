@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -54,7 +55,6 @@ const Profile = () => {
         const trustScore = response.data.trust_score;
         setTrustScore(trustScore);
 
-        // Update user with the new trust score
         return axios.put(
           "http://localhost:5000/api/user/profile",
           { trust_score: trustScore },
@@ -75,34 +75,37 @@ const Profile = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   return (
-    <div>
+    <div className="profile-container">
       <h2>Profile</h2>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Gender: {user.gender}</p>
-      <p>Date of Birth: {new Date(user.dob).toLocaleDateString()}</p>
-      <p>Twitter Username: {user.twitterUsername}</p>
-      <p>Phone Number: {user.phone}</p>
-      {user.photo && <img src={user.photo} alt="Profile" />}
-      <form onSubmit={handleCibilSubmit}>
+      <p><strong>Name:</strong> {user.name}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Gender:</strong> {user.gender}</p>
+      <p><strong>Date of Birth:</strong> {new Date(user.dob).toLocaleDateString()}</p>
+      <p><strong>Twitter Username:</strong> {user.twitterUsername}</p>
+      <p><strong>Phone Number:</strong> {user.phone}</p>
+      {user.photo && <img src={user.photo} alt="Profile" className="profile-img" />}
+      
+      <form onSubmit={handleCibilSubmit} className="profile-form">
         <div>
           <label>CIBIL Score:</label>
           <input
             type="number"
             value={cibil}
             onChange={(e) => setCibil(e.target.value)}
+            required
           />
         </div>
         <button type="submit" disabled={loading}>
           {loading ? "Generating Trust Score..." : "Generate Trust Score"}
         </button>
       </form>
-      {trustScore && <p>Trust Score: {trustScore}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {trustScore && <p className="trust-score">Trust Score: {trustScore}</p>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./ViewRides.css";
 
 const ViewRides = () => {
   const [yourRides, setYourRides] = useState([]);
   const [publicRides, setPublicRides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [userId, setUserId] = useState(null); // Store logged-in user ID
-  const [userDetails, setUserDetails] = useState({}); // Store logged-in user's details
+  const [userId, setUserId] = useState(null);
+  const [userDetails, setUserDetails] = useState({});
 
   const getLocationName = async (lat, lng) => {
     try {
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
       );
-      if (response.data && response.data.display_name) {
-        return response.data.display_name;
-      }
-      return "Unknown Location";
+      return response.data?.display_name || "Unknown Location";
     } catch (err) {
       console.error("Error fetching location name:", err);
       return "Unknown Location";
@@ -27,20 +25,14 @@ const ViewRides = () => {
   const fetchRidesWithLocations = async () => {
     setLoading(true);
     try {
-      // Fetch the logged-in user's ID and details
       const userResponse = await axios.get(
         "http://localhost:5000/api/auth/me",
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      const loggedInUserId = userResponse.data._id;
-      setUserId(loggedInUserId);
+      setUserId(userResponse.data._id);
       setUserDetails(userResponse.data);
 
-      console.log("Fetching all rides...");
       const response = await axios.get("http://localhost:5000/api/rides");
-      console.log(`Fetched ${response.data.length} rides`);
 
       const ridesWithLocations = await Promise.all(
         response.data.map(async (ride) => {
@@ -56,20 +48,8 @@ const ViewRides = () => {
         })
       );
 
-      console.log("Filtering your rides and public rides...");
-      const userRides = ridesWithLocations.filter(
-        (ride) => ride.user._id === loggedInUserId
-      );
-      const availableRides = ridesWithLocations.filter(
-        (ride) => ride.user._id !== loggedInUserId
-      );
-
-      console.log(
-        `Your rides: ${userRides.length}, Public rides: ${availableRides.length}`
-      );
-
-      setYourRides(userRides);
-      setPublicRides(availableRides);
+      setYourRides(ridesWithLocations.filter((ride) => ride.user._id === userResponse.data._id));
+      setPublicRides(ridesWithLocations.filter((ride) => ride.user._id !== userResponse.data._id));
     } catch (err) {
       console.error("Error fetching rides:", err);
       setError("Error fetching rides");
@@ -79,28 +59,15 @@ const ViewRides = () => {
 
   const sendEmail = async (ride) => {
     try {
-      const emailData = {
-        to: ride.user.email, // Email of the ride offerer
+      await axios.post("http://localhost:5000/api/email/send", {
+        to: ride.user.email,
         subject: "Ride Request",
         body: `
           Hello ${ride.user.name},
-  
-          ${
-            userDetails.name
-          } has requested to join your ride. Here are their details:
-          - Trust Score: ${userDetails.trust_score || "Yet to be calculated"}
-          - Number of Rides: ${userDetails.rides || "0"}
-          - Average Rating: ${userDetails.avg_rating || "0"}
-  
-          Click the link below to start a chat with ${userDetails.name}:
-          http://localhost:3000/chat/${userDetails._id}
-  
-          Thank you,
-          Ride Sharing App
+          ${userDetails.name} has requested to join your ride.
+          Click here to chat: http://localhost:3000/chat/${userDetails._id}
         `,
-      };
-
-      await axios.post("http://localhost:5000/api/email/send", emailData);
+      });
       alert("Email sent successfully!");
     } catch (err) {
       console.error("Error sending email:", err);
@@ -113,46 +80,34 @@ const ViewRides = () => {
   }, []);
 
   return (
-    <div>
+    <div className="rides-container">
       <h2>Your Rides</h2>
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {yourRides.length === 0 && !loading && <p>No rides posted by you.</p>}
-      <ul>
+      {error && <p className="error-message">{error}</p>}
+      {!loading && yourRides.length === 0 && <p>No rides posted by you.</p>}
+      <ul className="rides-list">
         {yourRides.map((ride) => (
-          <li key={ride._id}>
-            <p>Vehicle Name: {ride.vehicleName}</p>
-            <p>Vehicle Number: {ride.vehicleNumber}</p>
-            <p>Number of Seats: {ride.seats}</p>
-            <p>Start Point: {ride.startLocation}</p>
-            <p>End Point: {ride.endLocation}</p>
+          <li key={ride._id} className="ride-card">
+            <p><strong>Vehicle:</strong> {ride.vehicleName} ({ride.vehicleNumber})</p>
+            <p><strong>Seats:</strong> {ride.seats}</p>
+            <p><strong>Start:</strong> {ride.startLocation}</p>
+            <p><strong>End:</strong> {ride.endLocation}</p>
           </li>
         ))}
       </ul>
 
       <h2>Available Public Rides</h2>
-      {publicRides.length === 0 && !loading && (
-        <p>No available public rides.</p>
-      )}
-      <ul>
+      {!loading && publicRides.length === 0 && <p>No available public rides.</p>}
+      <ul className="rides-list">
         {publicRides.map((ride) => (
-          <li key={ride._id}>
-            <p>Vehicle Name: {ride.vehicleName}</p>
-            <p>Vehicle Number: {ride.vehicleNumber}</p>
-            <p>Number of Seats: {ride.seats}</p>
-            <p>User Name: {ride.user?.name || "N/A"}</p>
-            <p>Trust Score: {ride.user?.trust_score || "N/A"}</p>
-            <p>Start Point: {ride.startLocation}</p>
-            <p>End Point: {ride.endLocation}</p>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                sendEmail(ride);
-              }}
-            >
-              Request Ride
-            </a>
+          <li key={ride._id} className="ride-card">
+            <p><strong>Vehicle:</strong> {ride.vehicleName} ({ride.vehicleNumber})</p>
+            <p><strong>Seats:</strong> {ride.seats}</p>
+            <p><strong>User:</strong> {ride.user?.name || "N/A"}</p>
+            <p><strong>Trust Score:</strong> {ride.user?.trust_score || "N/A"}</p>
+            <p><strong>Start:</strong> {ride.startLocation}</p>
+            <p><strong>End:</strong> {ride.endLocation}</p>
+            <button className="request-button" onClick={() => sendEmail(ride)}>Request Ride</button>
           </li>
         ))}
       </ul>
