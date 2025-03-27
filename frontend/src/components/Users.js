@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "./Users.css";
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); // Users in the canChatWith field
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,17 +14,17 @@ const Users = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const userResponse = await axios.get("http://localhost:5000/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUserId(userResponse.data._id);
 
-        const response = await axios.get("http://localhost:5000/api/chat/users", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        // Fetch logged-in user's details, including the populated canChatWith field
+        const userResponse = await axios.get(
+          "http://localhost:5000/api/auth/me",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-        const filteredUsers = response.data.filter((user) => user._id !== userResponse.data._id);
-        setUsers(filteredUsers);
+        // Set the users from the canChatWith field
+        setUsers(userResponse.data.canChatWith || []);
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Error fetching users");
@@ -38,20 +37,31 @@ const Users = () => {
 
   return (
     <div className="users-container">
-      <h2>Users</h2>
+      <h2>Users You Can Chat With</h2>
       {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
       <ul className="users-list">
         {users.map((user) => (
           <li key={user._id} className="user-item">
             <div className="user-info">
-              <img src={user.photo || "/default-avatar.png"} alt={user.name} className="user-photo" />
+              <img
+                src={user.photo || "/default-avatar.png"}
+                alt={user.name}
+                className="user-photo"
+              />
               <div>
                 <p className="user-name">{user.name}</p>
                 <p className="user-email">{user.email}</p>
+                <p className="user-gender">Gender: {user.gender}</p>
+                <p className="user-dob">
+                  DOB: {new Date(user.dob).toLocaleDateString()}
+                </p>
               </div>
             </div>
-            <button className="chat-button" onClick={() => navigate(`/chat/${user._id}`)}>
+            <button
+              className="chat-button"
+              onClick={() => navigate(`/chat/${user._id}`)}
+            >
               Chat
             </button>
           </li>

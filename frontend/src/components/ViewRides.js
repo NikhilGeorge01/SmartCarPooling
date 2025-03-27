@@ -27,7 +27,9 @@ const ViewRides = () => {
     try {
       const userResponse = await axios.get(
         "http://localhost:5000/api/auth/me",
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
       setUserId(userResponse.data._id);
       setUserDetails(userResponse.data);
@@ -48,8 +50,16 @@ const ViewRides = () => {
         })
       );
 
-      setYourRides(ridesWithLocations.filter((ride) => ride.user._id === userResponse.data._id));
-      setPublicRides(ridesWithLocations.filter((ride) => ride.user._id !== userResponse.data._id));
+      setYourRides(
+        ridesWithLocations.filter(
+          (ride) => ride.user._id === userResponse.data._id
+        )
+      );
+      setPublicRides(
+        ridesWithLocations.filter(
+          (ride) => ride.user._id !== userResponse.data._id
+        )
+      );
     } catch (err) {
       console.error("Error fetching rides:", err);
       setError("Error fetching rides");
@@ -59,15 +69,32 @@ const ViewRides = () => {
 
   const sendEmail = async (ride) => {
     try {
-      await axios.post("http://localhost:5000/api/email/send", {
+      const token = localStorage.getItem("token"); // Get the token from localStorage
+
+      const emailData = {
         to: ride.user.email,
         subject: "Ride Request",
         body: `
           Hello ${ride.user.name},
-          ${userDetails.name} has requested to join your ride.
-          Click here to chat: http://localhost:3000/chat/${userDetails._id}
+  
+          ${
+            userDetails.name
+          } has requested to join your ride. Here are their details:
+          - Trust Score: ${userDetails.trust_score || "N/A"}
+          - Number of Rides: ${userDetails.rides || "0"}
+          - Average Rating: ${userDetails.avg_rating || "0"}
+  
+          Click the link below to start a chat with ${userDetails.name}:
+          http://localhost:5000/api/chat/add-to-can-chat-with?email=${
+            userDetails.email
+          }&token=${token}
+  
+          Thank you,
+          Ride Sharing App
         `,
-      });
+      };
+
+      await axios.post("http://localhost:5000/api/email/send", emailData);
       alert("Email sent successfully!");
     } catch (err) {
       console.error("Error sending email:", err);
@@ -88,26 +115,52 @@ const ViewRides = () => {
       <ul className="rides-list">
         {yourRides.map((ride) => (
           <li key={ride._id} className="ride-card">
-            <p><strong>Vehicle:</strong> {ride.vehicleName} ({ride.vehicleNumber})</p>
-            <p><strong>Seats:</strong> {ride.seats}</p>
-            <p><strong>Start:</strong> {ride.startLocation}</p>
-            <p><strong>End:</strong> {ride.endLocation}</p>
+            <p>
+              <strong>Vehicle:</strong> {ride.vehicleName} ({ride.vehicleNumber}
+              )
+            </p>
+            <p>
+              <strong>Seats:</strong> {ride.seats}
+            </p>
+            <p>
+              <strong>Start:</strong> {ride.startLocation}
+            </p>
+            <p>
+              <strong>End:</strong> {ride.endLocation}
+            </p>
           </li>
         ))}
       </ul>
 
       <h2>Available Public Rides</h2>
-      {!loading && publicRides.length === 0 && <p>No available public rides.</p>}
+      {!loading && publicRides.length === 0 && (
+        <p>No available public rides.</p>
+      )}
       <ul className="rides-list">
         {publicRides.map((ride) => (
           <li key={ride._id} className="ride-card">
-            <p><strong>Vehicle:</strong> {ride.vehicleName} ({ride.vehicleNumber})</p>
-            <p><strong>Seats:</strong> {ride.seats}</p>
-            <p><strong>User:</strong> {ride.user?.name || "N/A"}</p>
-            <p><strong>Trust Score:</strong> {ride.user?.trust_score || "N/A"}</p>
-            <p><strong>Start:</strong> {ride.startLocation}</p>
-            <p><strong>End:</strong> {ride.endLocation}</p>
-            <button className="request-button" onClick={() => sendEmail(ride)}>Request Ride</button>
+            <p>
+              <strong>Vehicle:</strong> {ride.vehicleName} ({ride.vehicleNumber}
+              )
+            </p>
+            <p>
+              <strong>Seats:</strong> {ride.seats}
+            </p>
+            <p>
+              <strong>User:</strong> {ride.user?.name || "N/A"}
+            </p>
+            <p>
+              <strong>Trust Score:</strong> {ride.user?.trust_score || "N/A"}
+            </p>
+            <p>
+              <strong>Start:</strong> {ride.startLocation}
+            </p>
+            <p>
+              <strong>End:</strong> {ride.endLocation}
+            </p>
+            <button className="request-button" onClick={() => sendEmail(ride)}>
+              Request Ride
+            </button>
           </li>
         ))}
       </ul>

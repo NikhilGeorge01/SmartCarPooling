@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  addToCanChatWith,
   getAllUsers,
   getChatMessages,
   sendMessage,
@@ -7,6 +8,9 @@ const {
 const verifyToken = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+// Route to update "canChatWith" field
+router.get("/add-to-can-chat-with", verifyToken, addToCanChatWith);
 
 // Get all users
 router.get("/users", verifyToken, getAllUsers);
