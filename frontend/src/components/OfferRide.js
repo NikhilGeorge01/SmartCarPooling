@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import "./OfferRide.css"; // Make sure to create and apply the corresponding CSS file
+import "./OfferRide.css";
 
 const fetchSuggestions = async (query) => {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
@@ -27,6 +27,7 @@ const OfferRide = () => {
   const [endPoint, setEndPoint] = useState("");
   const [startCoordinates, setStartCoordinates] = useState(null);
   const [endCoordinates, setEndCoordinates] = useState(null);
+  const [dateOfTravel, setDateOfTravel] = useState(""); // New state for date of travel
   const [startSuggestions, setStartSuggestions] = useState([]);
   const [endSuggestions, setEndSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -87,6 +88,7 @@ const OfferRide = () => {
           seats: parseInt(seats),
           startPoint: startCoordinates,
           endPoint: endCoordinates,
+          dateOfTravel, // Include date of travel in the request
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -101,6 +103,7 @@ const OfferRide = () => {
       setEndPoint("");
       setStartCoordinates(null);
       setEndCoordinates(null);
+      setDateOfTravel(""); // Reset date of travel
       setStartSuggestions([]);
       setEndSuggestions([]);
     } catch (error) {
@@ -188,6 +191,15 @@ const OfferRide = () => {
               </li>
             ))}
           </ul>
+        </div>
+        <div>
+          <label>Date of Travel:</label>
+          <input
+            type="date"
+            value={dateOfTravel}
+            onChange={(e) => setDateOfTravel(e.target.value)}
+            required
+          />
         </div>
         <button type="submit" disabled={loading}>
           {loading ? "Offering Ride..." : "Offer Ride"}

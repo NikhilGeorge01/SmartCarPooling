@@ -34,7 +34,9 @@ const ViewRides = () => {
       setUserId(userResponse.data._id);
       setUserDetails(userResponse.data);
 
-      const response = await axios.get("http://localhost:5000/api/rides");
+      const response = await axios.get("http://localhost:5000/api/rides", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
 
       const ridesWithLocations = await Promise.all(
         response.data.map(async (ride) => {
@@ -57,7 +59,7 @@ const ViewRides = () => {
       );
       setPublicRides(
         ridesWithLocations.filter(
-          (ride) => ride.user._id !== userResponse.data._id
+          (ride) => ride.user._id !== userResponse.data._id && !ride.completed
         )
       );
     } catch (err) {
@@ -67,28 +69,62 @@ const ViewRides = () => {
     setLoading(false);
   };
 
+  const startRide = async (rideId) => {
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/rides/${rideId}/start`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      alert("Ride started successfully!");
+      fetchRidesWithLocations(); // Refresh the rides
+    } catch (err) {
+      console.error("Error starting ride:", err);
+      alert("Failed to start ride.");
+    }
+  };
+
+  const finishRide = async (rideId) => {
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/rides/${rideId}/finish`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      alert("Ride finished successfully!");
+      fetchRidesWithLocations(); // Refresh the rides
+    } catch (err) {
+      console.error("Error finishing ride:", err);
+      alert("Failed to finish ride.");
+    }
+  };
+
   const sendEmail = async (ride) => {
     try {
-      const token = localStorage.getItem("token"); // Get the token from localStorage
+      const token = localStorage.getItem("token");
 
       const emailData = {
         to: ride.user.email,
         subject: "Ride Request",
         body: `
           Hello ${ride.user.name},
-  
+
           ${
             userDetails.name
           } has requested to join your ride. Here are their details:
           - Trust Score: ${userDetails.trust_score || "N/A"}
           - Number of Rides: ${userDetails.rides || "0"}
           - Average Rating: ${userDetails.avg_rating || "0"}
-  
+
           Click the link below to start a chat with ${userDetails.name}:
           http://localhost:5000/api/chat/add-to-can-chat-with?email=${
             userDetails.email
           }&token=${token}
-  
+
           Thank you,
           Ride Sharing App
         `,
@@ -128,6 +164,34 @@ const ViewRides = () => {
             <p>
               <strong>End:</strong> {ride.endLocation}
             </p>
+            <p>
+              <strong>Date of Travel:</strong>{" "}
+              {new Date(ride.dateOfTravel).toLocaleDateString()}
+            </p>
+            <p>
+              <strong>Status:</strong>{" "}
+              {ride.completed
+                ? "Completed"
+                : ride.inProgress
+                ? "In Progress"
+                : "Not Started"}
+            </p>
+            {!ride.inProgress && !ride.completed && (
+              <button
+                className="start-button"
+                onClick={() => startRide(ride._id)}
+              >
+                Start Ride
+              </button>
+            )}
+            {ride.inProgress && !ride.completed && (
+              <button
+                className="finish-button"
+                onClick={() => finishRide(ride._id)}
+              >
+                Finish Ride
+              </button>
+            )}
           </li>
         ))}
       </ul>
@@ -157,6 +221,12 @@ const ViewRides = () => {
             </p>
             <p>
               <strong>End:</strong> {ride.endLocation}
+            </p>
+            <p>
+              <strong>Date of Travel:</strong>{" "}
+              {ride.dateOfTravel
+                ? new Date(ride.dateOfTravel).toLocaleDateString()
+                : "N/A"}
             </p>
             <button className="request-button" onClick={() => sendEmail(ride)}>
               Request Ride
