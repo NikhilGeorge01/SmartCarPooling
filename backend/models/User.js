@@ -21,6 +21,9 @@ const UserSchema = new mongoose.Schema({
   canChatWith: [
     { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
   ], // Ensure default is an empty array
+  rideStore: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Ride", default: [] }, // New field to store ride IDs
+  ],
 });
 
 module.exports = mongoose.model("User", UserSchema);

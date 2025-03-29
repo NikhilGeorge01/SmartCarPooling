@@ -120,10 +120,12 @@ const ViewRides = () => {
           - Number of Rides: ${userDetails.rides || "0"}
           - Average Rating: ${userDetails.avg_rating || "0"}
   
-          Click the link below to start a chat with ${userDetails.name}:
+          Click the link below to start a chat with ${
+            userDetails.name
+          } and store the ride:
           http://localhost:5000/api/chat/add-to-can-chat-with?senderId=${userId}&receiverId=${
           ride.user._id
-        }&token=${token}
+        }&rideId=${ride._id}&token=${token}
   
           Thank you,
           Ride Sharing App
