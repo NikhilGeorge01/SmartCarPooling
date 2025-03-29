@@ -108,23 +108,23 @@ const ViewRides = () => {
       const token = localStorage.getItem("token");
 
       const emailData = {
-        to: ride.user.email,
+        to: ride.user.email, // Email of the ride owner (receiver)
         subject: "Ride Request",
         body: `
           Hello ${ride.user.name},
-
+  
           ${
             userDetails.name
           } has requested to join your ride. Here are their details:
           - Trust Score: ${userDetails.trust_score || "N/A"}
           - Number of Rides: ${userDetails.rides || "0"}
           - Average Rating: ${userDetails.avg_rating || "0"}
-
+  
           Click the link below to start a chat with ${userDetails.name}:
-          http://localhost:5000/api/chat/add-to-can-chat-with?email=${
-            userDetails.email
-          }&token=${token}
-
+          http://localhost:5000/api/chat/add-to-can-chat-with?senderId=${userId}&receiverId=${
+          ride.user._id
+        }&token=${token}
+  
           Thank you,
           Ride Sharing App
         `,

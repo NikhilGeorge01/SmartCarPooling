@@ -50,31 +50,32 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.addToCanChatWith = async (req, res) => {
-  const { email } = req.query; // Get the email from the query parameters
-  const loggedInUserId = req.user.id; // Get the logged-in user's ID from the token
+  const { senderId, receiverId } = req.query; // Get senderId and receiverId from the query parameters
 
   try {
-    // Find the logged-in user (user2 who clicked the link)
-    const loggedInUser = await User.findById(loggedInUserId);
+    // Find the sender (user1 who requested the ride)
+    const sender = await User.findById(senderId);
 
-    // Find the target user (user1 whose email is in the hyperlink)
-    const targetUser = await User.findOne({ email });
+    // Find the receiver (user2 who offered the ride and clicked the link)
+    const receiver = await User.findById(receiverId);
 
-    if (!loggedInUser || !targetUser) {
+    if (!sender || !receiver) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Add the target user (user1) to the logged-in user's (user2) "canChatWith" list if not already present
-    if (!loggedInUser.canChatWith.includes(targetUser._id)) {
-      loggedInUser.canChatWith.push(targetUser._id);
-      await loggedInUser.save();
+    // Add the receiver (user2) to the "canChatWith" list of the sender (user1)
+    if (!sender.canChatWith.includes(receiver._id)) {
+      sender.canChatWith.push(receiver._id);
     }
 
-    // Add the logged-in user (user2) to the target user's (user1) "canChatWith" list if not already present
-    if (!targetUser.canChatWith.includes(loggedInUserId)) {
-      targetUser.canChatWith.push(loggedInUserId);
-      await targetUser.save();
+    // Add the sender (user1) to the "canChatWith" list of the receiver (user2)
+    if (!receiver.canChatWith.includes(sender._id)) {
+      receiver.canChatWith.push(sender._id);
     }
+
+    // Save both users
+    await sender.save();
+    await receiver.save();
 
     res.status(200).json({ message: "Chat access updated successfully" });
   } catch (error) {
