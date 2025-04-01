@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-import "./VerifyEmail.css";
+import "./VerifyEmail.css"; // Import the CSS file
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();

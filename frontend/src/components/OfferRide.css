@@ -28,6 +28,26 @@ body {
     text-align: center;
     font-size: 26px;
     font-weight: 700;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    transition: all 0.3s ease;
+}
+
+/* Neon hover animation */
+.offer-ride-container h2:hover {
+    animation: neon 1.5s ease-in-out infinite;
+}
+
+@keyframes neon {
+    0% {
+        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+    }
+    50% {
+        text-shadow: 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #00ffcc, 0 0 50px #00ffcc;
+    }
+    100% {
+        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+    }
 }
 
 .offer-ride-container input {
@@ -57,6 +77,7 @@ body {
     font-size: 18px;
     font-weight: 600;
     transition: all 0.3s ease;
+    text-shadow: 0 0 10px #0ff;
 }
 
 .offer-ride-container button:hover {
@@ -65,12 +86,21 @@ body {
     box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
 }
 
+.offer-ride-container button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
 .error {
     color: red;
     text-align: center;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .success {
     color: green;
     text-align: center;
+    font-size: 16px;
+    font-weight: 600;
 }

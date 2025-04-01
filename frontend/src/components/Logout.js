@@ -14,7 +14,7 @@ const Logout = ({ setIsLoggedIn }) => {
     // Redirect the user to the login page
     navigate("/login");
 
-    // Provide user feedback
+    // Pro
     alert("Logged out successfully!");
   };
 

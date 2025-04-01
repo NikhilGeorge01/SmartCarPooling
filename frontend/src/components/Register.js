@@ -1,7 +1,7 @@
-import "./Register.css";
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import Webcam from "react-webcam";
+import "./Register.css";  // Import the CSS file
 
 const Register = () => {
   const [name, setName] = useState("");

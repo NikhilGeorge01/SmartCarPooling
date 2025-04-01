@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./ViewRides.css";
+import "./ViewRides.css"; // Import the CSS file
 
 const ViewRides = () => {
   const [yourRides, setYourRides] = useState([]);
