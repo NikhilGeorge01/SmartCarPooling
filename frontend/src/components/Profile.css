@@ -17,7 +17,6 @@ body {
     box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
     width: 400px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
 }
 
 .profile-container:hover {
@@ -26,48 +25,42 @@ body {
 }
 
 .profile-container h2 {
+    text-align: center;
     font-size: 26px;
     font-weight: 700;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
 }
 
 .profile-container p {
-    font-size: 16px;
-    font-weight: 500;
     margin: 10px 0;
 }
 
-.profile-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-top: 10px;
-    border: 3px solid #0ff;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+.profile-container label {
+    color: #0ff;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
-.profile-form {
-    margin-top: 20px;
-}
-
-.profile-form input {
+.profile-container input {
     padding: 12px;
     border: 2px solid #0ff;
     border-radius: 6px;
     width: 100%;
     background: #222;
     color: #0ff;
-    font-size: 16px;
     transition: all 0.3s ease;
     outline: none;
 }
 
-.profile-form input:focus {
+.profile-container input:focus {
     border-color: #00f0f0;
     background: #333;
     box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
-.profile-form button {
+.profile-container button {
     padding: 14px;
     background: linear-gradient(90deg, #00bfbf 0%, #008b8b 100%);
     color: #fff;
@@ -78,38 +71,44 @@ body {
     font-weight: 600;
     transition: all 0.3s ease;
     text-shadow: 0 0 10px #0ff;
-    margin-top: 15px;
-    width: 100%;
 }
 
-.profile-form button:hover {
+.profile-container button:hover {
     background: linear-gradient(90deg, #009696 0%, #007575 100%);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
 }
 
-.profile-form button:disabled {
-    background: #444;
-    cursor: not-allowed;
+.profile-container button:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
-.trust-score {
-    margin-top: 15px;
-    color: #00ff00;
+.profile-container .trust-score {
+    color: #0ff;
+    text-align: center;
     font-weight: 600;
-    font-size: 18px;
-    text-shadow: 0 0 10px #00ff00;
+    margin-top: 20px;
 }
 
 .error {
-    margin-top: 15px;
-    color: #ff4c4c;
-    font-weight: 500;
-    text-shadow: 0 0 10px #ff4c4c;
+    color: red;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .loading {
-    font-size: 18px;
-    font-weight: bold;
-    color: #0ff;
+    color: #fff;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 20px;
+    border: 2px solid #0ff;
 }

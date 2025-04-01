@@ -1,130 +1,130 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    color: #333;
-}
-
+/* Register Page Styles */
 .register-container {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 450px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #667eea #f0f0f0;
+  background-color: rgba(0, 128, 0, 0.05); /* Softer green background */
+  color: #333; /* Neutral text color */
+  padding: 50px; /* Increased padding for a spacious look */
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 128, 0, 0.2); /* Subtle shadow */
+  width: 100%;
+  max-width: 600px; /* Increased width for a larger box */
+  margin: 100px auto;
+  animation: fadeIn 1s ease-in-out;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 700px; /* Increased height to accommodate larger content */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #4caf50 rgba(0, 128, 0, 0.05); /* Custom scrollbar colors */
 }
 
-.register-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+/* Scrollbar Styling */
+.register-container::-webkit-scrollbar {
+  width: 8px;
 }
 
-.register-container h2 {
-    margin-bottom: 25px;
-    color: #2c3e50;
-    text-align: center;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 1px;
+.register-container::-webkit-scrollbar-track {
+  background: rgba(0, 128, 0, 0.05); /* Match the background */
+  border-radius: 10px;
 }
 
-.register-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.register-container::-webkit-scrollbar-thumb {
+  background: #4caf50; /* Softer green scrollbar */
+  border-radius: 10px;
 }
 
-.register-container label {
-    color: #34495e;
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 5px;
+.register-container::-webkit-scrollbar-thumb:hover {
+  background: #81c784; /* Lighter green on hover */
 }
 
-.register-container input,
-.register-container select {
-    padding: 12px;
-    border: 2px solid #e0e7ff;
-    border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    background: #f9f9f9;
-    outline: none;
+/* Animated Heading */
+h2 {
+  text-align: center;
+  color: #4caf50; /* Softer green for heading */
+  margin-bottom: 30px; /* Increased spacing below heading */
+  font-size: 36px; /* Increased font size for heading */
+  animation: fadeIn 1.5s ease-in-out;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.2); /* Subtle glow effect */
 }
 
-.register-container input:focus,
-.register-container select:focus {
-    border-color: #667eea;
-    background: #ffffff;
-    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+/* Input Fields */
+.input-field {
+  margin: 25px 0; /* Increased spacing between input fields */
 }
 
-.register-container button {
-    padding: 14px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+.input-field input {
+  width: 100%;
+  padding: 18px; /* Increased padding for larger input fields */
+  background-color: #f9f9f9; /* Light background for inputs */
+  color: #333; /* Neutral text color */
+  border: 1px solid #4caf50; /* Softer green border */
+  border-radius: 10px; /* Slightly rounded corners */
+  font-size: 20px; /* Increased font size for better readability */
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.2); /* Subtle glow effect */
 }
 
-.register-container button:hover {
-    background: linear-gradient(90deg, #5a6fd1 0%, #6a3e93 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+.input-field input:focus {
+  border-color: #81c784; /* Softer green on focus */
+  box-shadow: 0 0 10px rgba(129, 199, 132, 0.3); /* Subtle glowing effect */
 }
 
-.register-container button:active {
-    transform: translateY(0);
-    box-shadow: none;
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 18px; /* Increased padding for a larger button */
+  background-color: #4caf50; /* Softer green */
+  color: white;
+  border: none;
+  border-radius: 10px; /* Slightly rounded corners */
+  cursor: pointer;
+  font-size: 20px; /* Increased font size for better readability */
+  margin-top: 30px; /* Increased spacing above the button */
+  transition: all 0.3s ease;
 }
 
-.register-container button:disabled {
-    background: #a0a0a0;
-    cursor: not-allowed;
+.submit-button:hover {
+  background-color: #81c784; /* Lighter green on hover */
+  transform: translateY(-2px); /* Hover lift effect */
+  box-shadow: 0 0 10px rgba(129, 199, 132, 0.3); /* Subtle glow on hover */
 }
 
-.register-container p {
-    margin-top: 15px;
-    text-align: center;
-    font-weight: 500;
+.submit-button:active {
+  transform: translateY(2px); /* Click effect */
 }
 
-.register-container .error {
-    color: #e74c3c;
+/* Error Message */
+.error-message {
+  color: #e57373; /* Softer red for errors */
+  text-align: center;
+  margin-bottom: 20px; /* Increased spacing below error message */
+  font-size: 18px; /* Slightly larger font size for better visibility */
+  animation: shake 0.5s ease-in-out; /* Shake animation for errors */
 }
 
-.register-container .success {
-    color: #27ae60;
+/* Animation for fading in elements */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.webcam-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.webcam-container button {
-    margin-top: 10px;
-    width: 100%;
-}
-
-.register-container img {
-    margin-top: 15px;
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* Shake animation for error messages */
+@keyframes shake {
+  0% {
+    transform: translateX(-5px);
+  }
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

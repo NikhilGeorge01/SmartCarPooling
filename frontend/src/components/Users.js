@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Users.css";
+import "./Users.css"; // Import the CSS file
 
 const Users = () => {
   const [users, setUsers] = useState([]); // Users in the canChatWith field

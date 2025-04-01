@@ -1,112 +1,88 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    color: #333;
-}
-
+/* Users Page Styles */
 .users-container {
-    background-color: #fff;
+    background-color: #181818;
+    color: #f0f0f0;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 500px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #667eea #f0f0f0;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    width: 100%;
+    max-width: 800px;
+    margin: 50px auto;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  h2 {
     text-align: center;
-}
-
-.users-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-}
-
-.users-container h2 {
+    color: #00ff99;
     margin-bottom: 20px;
-    color: #2c3e50;
-    font-size: 26px;
-    font-weight: 700;
-}
-
-.users-list {
+    font-size: 32px;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  .users-list {
     list-style: none;
     padding: 0;
-    margin: 0;
-}
-
-.user-item {
-    background: #f9f9f9;
+  }
+  
+  .user-item {
+    background-color: #333;
+    margin: 10px 0;
     padding: 15px;
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.user-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-}
-
-.user-info {
+    align-items: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .user-info {
     display: flex;
     align-items: center;
-    gap: 15px;
-}
-
-.user-photo {
+  }
+  
+  .user-photo {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #667eea;
-}
-
-.user-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-}
-
-.user-email {
+    margin-right: 15px;
+  }
+  
+  .user-name {
+    font-size: 20px;
+    color: #00ff99;
+  }
+  
+  .user-email,
+  .user-gender,
+  .user-dob {
     font-size: 14px;
-    color: #666;
-}
-
-.chat-button {
-    padding: 10px 15px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    color: #f0f0f0;
+  }
+  
+  .chat-button {
+    background-color: #00ff99;
     color: #fff;
+    padding: 8px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
     transition: all 0.3s ease;
-}
-
-.chat-button:hover {
-    background: linear-gradient(90deg, #5a6fd1 0%, #6a3e93 100%);
+  }
+  
+  .chat-button:hover {
+    background-color: #00b3b3;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-.chat-button:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
-.error {
-    color: #e74c3c;
-    font-weight: 500;
-}
+  }
+  
+  .chat-button:active {
+    transform: translateY(2px);
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  

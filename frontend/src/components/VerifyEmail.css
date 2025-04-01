@@ -1,47 +1,42 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    color: #333;
-}
-
+/* Verify Email Page Styles */
 .verify-container {
-    background-color: #fff;
+    background-color: #181818;
+    color: #f0f0f0;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 450px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  h2 {
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.verify-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-}
-
-.verify-container h2 {
+    color: #00ff99;
     margin-bottom: 20px;
-    color: #2c3e50;
-    font-size: 26px;
-    font-weight: 700;
-}
-
-.verify-container p {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.success-message {
-    color: #2ecc71;
-    font-weight: 600;
-}
-
-.error-message {
-    color: #e74c3c;
-    font-weight: 600;
-}
+    font-size: 32px;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  .success-message {
+    color: #00ff99;
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import "./Chat.css"; // Import the CSS file for the chat page
 
 const Chat = () => {
   const { userId } = useParams(); // The ID of the user you're chatting with
@@ -47,24 +48,36 @@ const Chat = () => {
   };
 
   return (
-    <div>
+    <div className="chat-container">
       <h2>Chat</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
+      {error && <p className="error-message">{error}</p>}
+      <div className="messages-container">
         {messages.map((msg, index) => (
-          <p key={index}>
-            <strong>{msg.sender === userId ? "Them" : "You"}:</strong>{" "}
-            {msg.message}
-          </p>
+          <div
+            key={index}
+            className={`message-card ${
+              msg.sender === userId ? "received" : "sent"
+            }`}
+          >
+            <p>
+              <strong>{msg.sender === userId ? "Them" : "You"}:</strong>{" "}
+              {msg.message}
+            </p>
+          </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Type a message"
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className="input-container">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Type a message"
+          className="message-input"
+        />
+        <button onClick={sendMessage} className="send-button">
+          Send
+        </button>
+      </div>
     </div>
   );
 };
