@@ -50,7 +50,7 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.addToCanChatWith = async (req, res) => {
-  const { senderId, receiverId } = req.query; // Get senderId and receiverId from the query parameters
+  const { senderId, receiverId, rideId } = req.query; // Get senderId, receiverId, and rideId from the query parameters
 
   try {
     // Find the sender (user1 who requested the ride)
@@ -73,13 +73,29 @@ exports.addToCanChatWith = async (req, res) => {
       receiver.canChatWith.push(sender._id);
     }
 
+    // Add the rideId to the "rideStore" of both users
+    if (!sender.rideStore) sender.rideStore = [];
+    if (!receiver.rideStore) receiver.rideStore = [];
+
+    if (!sender.rideStore.includes(rideId)) {
+      sender.rideStore.push(rideId);
+    }
+
+    if (!receiver.rideStore.includes(rideId)) {
+      receiver.rideStore.push(rideId);
+    }
+
     // Save both users
     await sender.save();
     await receiver.save();
 
-    res.status(200).json({ message: "Chat access updated successfully" });
+    res
+      .status(200)
+      .json({ message: "Chat access and ride stored successfully" });
   } catch (error) {
-    console.error("Error updating chat access:", error);
-    res.status(500).json({ message: "Error updating chat access" });
+    console.error("Error updating chat access and ride store:", error);
+    res
+      .status(500)
+      .json({ message: "Error updating chat access and ride store" });
   }
 };

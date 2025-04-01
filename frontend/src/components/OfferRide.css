@@ -1,106 +1,112 @@
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #1a1a1a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    color: #0ff;
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  font-family: "Poppins", sans-serif;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
 }
 
 .offer-ride-container {
-    background-color: #111;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
-    width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #111;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+  width: 400px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .offer-ride-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 255, 255, 0.4);
 }
 
 .offer-ride-container h2 {
-    text-align: center;
-    font-size: 26px;
-    font-weight: 700;
-    color: #0ff;
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-    transition: all 0.3s ease;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  transition: all 0.3s ease;
 }
 
 /* Neon hover animation */
 .offer-ride-container h2:hover {
-    animation: neon 1.5s ease-in-out infinite;
+  animation: neon 1.5s ease-in-out infinite;
 }
 
 @keyframes neon {
-    0% {
-        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
-    }
-    50% {
-        text-shadow: 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #00ffcc, 0 0 50px #00ffcc;
-    }
-    100% {
-        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
-    }
+  0% {
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+  }
+  50% {
+    text-shadow: 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #00ffcc, 0 0 50px #00ffcc;
+  }
+  100% {
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+  }
+}
+
+/* Add scrollable form */
+.offer-ride-container form {
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .offer-ride-container input {
-    padding: 12px;
-    border: 2px solid #0ff;
-    border-radius: 6px;
-    width: 100%;
-    background: #222;
-    color: #0ff;
-    transition: all 0.3s ease;
-    outline: none;
+  padding: 12px;
+  border: 2px solid #0ff;
+  border-radius: 6px;
+  width: 100%;
+  background: #222;
+  color: #0ff;
+  transition: all 0.3s ease;
+  outline: none;
 }
 
 .offer-ride-container input:focus {
-    border-color: #00f0f0;
-    background: #333;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  border-color: #00f0f0;
+  background: #333;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .offer-ride-container button {
-    padding: 14px;
-    background: linear-gradient(90deg, #00bfbf 0%, #008b8b 100%);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    text-shadow: 0 0 10px #0ff;
+  padding: 14px;
+  background: linear-gradient(90deg, #00bfbf 0%, #008b8b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px #0ff;
 }
 
 .offer-ride-container button:hover {
-    background: linear-gradient(90deg, #009696 0%, #007575 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
+  background: linear-gradient(90deg, #009696 0%, #007575 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
 }
 
 .offer-ride-container button:active {
-    transform: translateY(0);
-    box-shadow: none;
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .error {
-    color: red;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
+  color: red;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .success {
-    color: green;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
+  color: green;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
 }

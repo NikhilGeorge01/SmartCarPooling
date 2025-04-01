@@ -4,6 +4,7 @@ const {
   getRides,
   startRide,
   finishRide,
+  getRideStorage, // Import the getRideStorage function
 } = require("../controllers/rideController");
 const verifyToken = require("../middleware/authMiddleware");
 
@@ -14,6 +15,9 @@ router.post("/offer", verifyToken, offerRide);
 
 // Get Rides Route (GET /api/rides)
 router.get("/", getRides);
+
+// Get Ride Storage Route (GET /api/rides/storage)
+router.get("/storage", verifyToken, getRideStorage);
 
 // Start Ride Route (PATCH /api/rides/:rideId/start)
 router.patch("/:rideId/start", verifyToken, startRide);
