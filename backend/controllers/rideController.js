@@ -1,6 +1,7 @@
 const Ride = require("../models/Ride");
 const User = require("../models/User");
 
+// Offer a ride
 exports.offerRide = async (req, res) => {
   const {
     vehicleName,
@@ -13,6 +14,7 @@ exports.offerRide = async (req, res) => {
   const userId = req.user.id;
 
   try {
+    // Create the ride
     const ride = await Ride.create({
       user: userId,
       vehicleName,
@@ -23,6 +25,15 @@ exports.offerRide = async (req, res) => {
       dateOfTravel, // Save the date of travel
     });
 
+    // Add the ride ID to the user's rideStore
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.rideStore.push(ride._id);
+    await user.save();
+
     res.status(201).json(ride);
   } catch (error) {
     console.error("Error offering ride:", error);
@@ -30,6 +41,7 @@ exports.offerRide = async (req, res) => {
   }
 };
 
+// Get all rides
 exports.getRides = async (req, res) => {
   try {
     const rides = await Ride.find().populate("user", "name trust_score email"); // Include the email field
@@ -42,6 +54,8 @@ exports.getRides = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// Start a ride
 exports.startRide = async (req, res) => {
   const { rideId } = req.params;
 
@@ -66,6 +80,7 @@ exports.startRide = async (req, res) => {
   }
 };
 
+// Finish a ride
 exports.finishRide = async (req, res) => {
   const { rideId } = req.params;
 
@@ -90,6 +105,8 @@ exports.finishRide = async (req, res) => {
     res.status(500).json({ message: "Error finishing ride", error });
   }
 };
+
+// Get ride storage for a user
 exports.getRideStorage = async (req, res) => {
   const userId = req.user.id;
 
@@ -107,5 +124,26 @@ exports.getRideStorage = async (req, res) => {
   } catch (error) {
     console.error("Error fetching ride storage:", error);
     res.status(500).json({ message: "Error fetching ride storage" });
+  }
+};
+
+// Get ride details by ID
+exports.getRideDetails = async (req, res) => {
+  const { rideId } = req.params;
+
+  try {
+    // Find the ride by ID and populate the user and passengers
+    const ride = await Ride.findById(rideId)
+      .populate("user", "name email") // Populate ride owner details
+      .populate("passengers", "name email"); // Populate passenger details
+
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+
+    res.status(200).json(ride);
+  } catch (error) {
+    console.error("Error fetching ride details:", error);
+    res.status(500).json({ message: "Error fetching ride details" });
   }
 };

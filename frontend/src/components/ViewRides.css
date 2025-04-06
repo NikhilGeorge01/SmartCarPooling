@@ -1,80 +1,89 @@
 /* View Rides Page Styles */
 .rides-container {
-    background-color: #181818;
-    color: #f0f0f0;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-    width: 100%;
-    max-width: 900px;
-    margin: 50px auto;
-    animation: fadeIn 1s ease-in-out;
+  background-color: #181818;
+  color: #f0f0f0;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  width: 100%;
+  max-width: 900px;
+  margin: 50px auto;
+  animation: fadeIn 1s ease-in-out;
+}
+
+h2 {
+  text-align: center;
+  color: #00ff99;
+  margin-bottom: 20px;
+  font-size: 32px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.rides-list {
+  list-style: none;
+  padding: 0;
+}
+
+.ride-card {
+  background-color: #333;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.ride-card p {
+  margin: 8px 0;
+}
+
+.start-button,
+.finish-button,
+.request-button {
+  background-color: #00ff99;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-button:hover,
+.finish-button:hover,
+.request-button:hover {
+  background-color: #00b3b3;
+  transform: translateY(-2px);
+}
+
+.start-button:active,
+.finish-button:active,
+.request-button:active {
+  transform: translateY(2px);
+}
+
+.requested-button {
+  background-color: #666; /* Grey color for requested button */
+  color: #ccc; /* Light grey text */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: not-allowed; /* Show not-allowed cursor */
+  transition: all 0.3s ease;
+}
+
+.error-message {
+  color: red;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
-  
-  h2 {
-    text-align: center;
-    color: #00ff99;
-    margin-bottom: 20px;
-    font-size: 32px;
-    animation: fadeIn 1.5s ease-in-out;
+  100% {
+    opacity: 1;
   }
-  
-  .rides-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .ride-card {
-    background-color: #333;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-    animation: fadeIn 1s ease-in-out;
-  }
-  
-  .ride-card p {
-    margin: 8px 0;
-  }
-  
-  .start-button,
-  .finish-button,
-  .request-button {
-    background-color: #00ff99;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .start-button:hover,
-  .finish-button:hover,
-  .request-button:hover {
-    background-color: #00b3b3;
-    transform: translateY(-2px);
-  }
-  
-  .start-button:active,
-  .finish-button:active,
-  .request-button:active {
-    transform: translateY(2px);
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 16px;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
+}

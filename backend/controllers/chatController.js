@@ -1,5 +1,6 @@
 const Chat = require("../models/Chat");
 const User = require("../models/User");
+const Ride = require("../models/Ride");
 
 // Get all users (for listing users to chat with)
 exports.getAllUsers = async (req, res) => {
@@ -48,54 +49,69 @@ exports.sendMessage = async (req, res) => {
     res.status(500).json({ message: "Error sending message" });
   }
 };
-
 exports.addToCanChatWith = async (req, res) => {
-  const { senderId, receiverId, rideId } = req.query; // Get senderId, receiverId, and rideId from the query parameters
+  const { senderId, receiverId, rideId } = req.query;
+
+  console.log("Sender ID:", senderId);
+  console.log("Receiver ID:", receiverId);
+  console.log("Ride ID:", rideId);
 
   try {
     // Find the sender (user1 who requested the ride)
     const sender = await User.findById(senderId);
+    console.log("Sender:", sender);
 
     // Find the receiver (user2 who offered the ride and clicked the link)
     const receiver = await User.findById(receiverId);
+    console.log("Receiver:", receiver);
 
     if (!sender || !receiver) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Add the receiver (user2) to the "canChatWith" list of the sender (user1)
-    if (!sender.canChatWith.includes(receiver._id)) {
-      sender.canChatWith.push(receiver._id);
+    // Find the ride
+    const ride = await Ride.findById(rideId);
+    console.log("Ride:", ride);
+
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
     }
 
-    // Add the sender (user1) to the "canChatWith" list of the receiver (user2)
-    if (!receiver.canChatWith.includes(sender._id)) {
-      receiver.canChatWith.push(sender._id);
+    // Check if the sender is already a passenger in the ride
+    if (ride.passengers.includes(sender._id)) {
+      return res.status(400).json({
+        message: "Passenger already exists in the ride.",
+      });
     }
 
-    // Add the rideId to the "rideStore" of both users
-    if (!sender.rideStore) sender.rideStore = [];
-    if (!receiver.rideStore) receiver.rideStore = [];
+    // Add the sender to the ride's passengers array
+    ride.passengers.push(sender._id);
 
-    if (!sender.rideStore.includes(rideId)) {
-      sender.rideStore.push(rideId);
+    // Check if the ride already exists in the sender's rideStore
+    const existingRequest = sender.rideStore.find(
+      (entry) => entry.toString() === rideId.toString()
+    );
+
+    if (existingRequest) {
+      return res.status(400).json({
+        message: "Ride already exists in the user's ride storage.",
+      });
     }
 
-    if (!receiver.rideStore.includes(rideId)) {
-      receiver.rideStore.push(rideId);
-    }
+    // Add the ride to the sender's rideStore
+    sender.rideStore.push(ride._id);
 
-    // Save both users
+    // Save both the ride and the sender
+    await ride.save();
     await sender.save();
-    await receiver.save();
 
-    res
-      .status(200)
-      .json({ message: "Chat access and ride stored successfully" });
+    res.status(200).json({
+      message: "Passenger added to the ride successfully.",
+    });
   } catch (error) {
-    console.error("Error updating chat access and ride store:", error);
-    res
-      .status(500)
-      .json({ message: "Error updating chat access and ride store" });
+    console.error("Error updating ride request:", error);
+    res.status(500).json({
+      message: "Error updating ride request.",
+    });
   }
 };

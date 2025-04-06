@@ -8,9 +8,16 @@ const RideSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   startPoint: { type: [Number], required: true }, // [latitude, longitude]
   endPoint: { type: [Number], required: true }, // [latitude, longitude]
-  dateOfTravel: { type: Date, required: true }, // Ensure this is a Date type
-  inProgress: { type: Boolean, default: false }, // New field to track if the ride is in progress
-  completed: { type: Boolean, default: false }, // New field to track if the ride is completed
+  dateOfTravel: { type: Date, required: true },
+  inProgress: { type: Boolean, default: false },
+  completed: { type: Boolean, default: false },
+  passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Array of passenger IDs
 });
+
+RideSchema.methods.addPassenger = function (userId) {
+  if (!this.passengers.includes(userId)) {
+    this.passengers.push(userId);
+  }
+};
 
 module.exports = mongoose.model("Ride", RideSchema);

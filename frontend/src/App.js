@@ -16,6 +16,7 @@ import ViewRides from "./components/ViewRides";
 import Users from "./components/Users";
 import Chat from "./components/Chat";
 import RideStatus from "./components/RideStatus";
+import RateRide from "./components/RateRide"; // Import the RateRide component
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -146,6 +147,7 @@ function App() {
               path="/ride-status"
               element={isLoggedIn ? <RideStatus /> : <Navigate to="/login" />}
             />
+            <Route path="/rate-ride/:rideId" element={<RateRide />} />
             <Route
               path="/view-rides"
               element={isLoggedIn ? <ViewRides /> : <Navigate to="/login" />}

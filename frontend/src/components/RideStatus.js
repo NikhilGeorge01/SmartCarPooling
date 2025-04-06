@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import axios from "axios";
 import "./RideStatus.css";
 
@@ -7,6 +8,7 @@ const RideStatus = () => {
   const [incompleteRides, setIncompleteRides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const fetchRideStatus = async () => {
     setLoading(true);
@@ -49,6 +51,11 @@ const RideStatus = () => {
   if (completedRides.length === 0 && incompleteRides.length === 0) {
     return <p className="no-rides-message">No rides in your storage.</p>;
   }
+
+  const handleRateClick = (rideId) => {
+    // Redirect to the rating page with the ride ID
+    navigate(`/rate-ride/${rideId}`);
+  };
 
   return (
     <div className="ride-status-container">
@@ -119,6 +126,12 @@ const RideStatus = () => {
                 <p>
                   <strong>Status:</strong> Completed
                 </p>
+                <button
+                  className="rate-button"
+                  onClick={() => handleRateClick(ride._id)}
+                >
+                  Rate
+                </button>
               </li>
             ))}
           </ul>

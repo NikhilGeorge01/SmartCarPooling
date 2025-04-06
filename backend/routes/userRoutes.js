@@ -1,8 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const verifyToken = require("../middleware/authMiddleware");
-const User = require("../models/User");
-const { updateProfile } = require("../controllers/userController"); // Correctly import updateProfile
+const { updateProfile, rateUser } = require("../controllers/userController"); // Import controllers
 
 const router = express.Router();
 
@@ -18,6 +17,9 @@ router.get("/profile", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// ✅ POST /api/users/:userId/rate - Rate a user (Protected Route)
+router.post("/:userId/rate", verifyToken, rateUser);
 
 // ✅ PUT /api/user/profile - Update user profile (Protected Route)
 router.put("/profile", verifyToken, updateProfile);

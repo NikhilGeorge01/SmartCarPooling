@@ -9,6 +9,9 @@ const ViewRides = () => {
   const [error, setError] = useState("");
   const [userId, setUserId] = useState(null);
   const [userDetails, setUserDetails] = useState({});
+  const [requestedRides, setRequestedRides] = useState(
+    JSON.parse(localStorage.getItem("requestedRides")) || {} // Load from localStorage
+  );
 
   const getLocationName = async (lat, lng) => {
     try {
@@ -112,33 +115,71 @@ const ViewRides = () => {
         subject: "Ride Request",
         body: `
           Hello ${ride.user.name},
-  
+
           ${
             userDetails.name
           } has requested to join your ride. Here are their details:
           - Trust Score: ${userDetails.trust_score || "N/A"}
           - Number of Rides: ${userDetails.rides || "0"}
           - Average Rating: ${userDetails.avg_rating || "0"}
-  
+
           Click the link below to start a chat with ${
             userDetails.name
           } and store the ride:
           http://localhost:5000/api/chat/add-to-can-chat-with?senderId=${userId}&receiverId=${
           ride.user._id
         }&rideId=${ride._id}&token=${token}
-  
+
           Thank you,
           Ride Sharing App
         `,
       };
 
       await axios.post("http://localhost:5000/api/email/send", emailData);
+
+      // Mark the ride as requested and store the timestamp
+      const updatedRequestedRides = {
+        ...requestedRides,
+        [ride._id]: Date.now(),
+      };
+      setRequestedRides(updatedRequestedRides);
+      localStorage.setItem(
+        "requestedRides",
+        JSON.stringify(updatedRequestedRides)
+      ); // Save to localStorage
+
       alert("Email sent successfully!");
     } catch (err) {
       console.error("Error sending email:", err);
-      alert("Failed to send email.");
+      if (err.response && err.response.data.message) {
+        alert(err.response.data.message);
+      } else {
+        alert("Failed to send email.");
+      }
     }
   };
+
+  // Check cooldown for requested rides
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRequestedRides((prev) => {
+        const updated = { ...prev };
+        const now = Date.now();
+        const cooldownPeriod = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
+        Object.keys(updated).forEach((rideId) => {
+          if (now - updated[rideId] >= cooldownPeriod) {
+            delete updated[rideId]; // Remove the ride from requestedRides after cooldown
+          }
+        });
+
+        localStorage.setItem("requestedRides", JSON.stringify(updated)); // Update localStorage
+        return updated;
+      });
+    }, 1000 * 60); // Check every minute
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     fetchRidesWithLocations();
@@ -158,7 +199,7 @@ const ViewRides = () => {
               )
             </p>
             <p>
-              <strong>Seats:</strong> {ride.seats}
+              <strong>Seats:</strong> {ride.seats - ride.passengers.length}
             </p>
             <p>
               <strong>Start:</strong> {ride.startLocation}
@@ -210,7 +251,7 @@ const ViewRides = () => {
               )
             </p>
             <p>
-              <strong>Seats:</strong> {ride.seats}
+              <strong>Seats:</strong> {ride.seats - ride.passengers.length}
             </p>
             <p>
               <strong>User:</strong> {ride.user?.name || "N/A"}
@@ -230,9 +271,22 @@ const ViewRides = () => {
                 ? new Date(ride.dateOfTravel).toLocaleDateString()
                 : "N/A"}
             </p>
-            <button className="request-button" onClick={() => sendEmail(ride)}>
-              Request Ride
-            </button>
+            {ride.passengers.includes(userId) ? (
+              <button className="accepted-button" disabled>
+                Accepted
+              </button>
+            ) : requestedRides[ride._id] ? (
+              <button className="requested-button" disabled>
+                Requested
+              </button>
+            ) : (
+              <button
+                className="request-button"
+                onClick={() => sendEmail(ride)}
+              >
+                Request Ride
+              </button>
+            )}
           </li>
         ))}
       </ul>

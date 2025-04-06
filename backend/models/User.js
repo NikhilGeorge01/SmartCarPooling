@@ -9,7 +9,13 @@ const UserSchema = new mongoose.Schema({
   twitterUsername: { type: String, required: true }, // Added Twitter Username field
   phone: { type: String, required: true }, // Added Phone Number field
   photo: { type: String }, // Added Photo field
-  rating: { type: Number, default: 5 },
+  rating: { type: Number, default: 5 }, // Average rating
+  ratingList: [
+    {
+      rater: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // User who gave the rating
+      value: { type: Number, required: true, min: 1, max: 5 }, // Rating value (1-5)
+    },
+  ], // List of individual ratings
   preferences: { type: Object, default: {} },
   profilePic: { type: String }, // Added profilePic field
   isVerified: { type: Boolean, default: false }, // Added isVerified field
@@ -24,6 +30,20 @@ const UserSchema = new mongoose.Schema({
   rideStore: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Ride", default: [] }, // New field to store ride IDs
   ],
+});
+
+// Pre-save middleware to calculate the average rating
+UserSchema.pre("save", function (next) {
+  if (this.ratingList.length > 0) {
+    const total = this.ratingList.reduce(
+      (sum, rating) => sum + rating.value,
+      0
+    );
+    this.rating = total / this.ratingList.length; // Calculate average rating
+  } else {
+    this.rating = 5; // Default rating if no ratings exist
+  }
+  next();
 });
 
 module.exports = mongoose.model("User", UserSchema);
