@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RateRide.css";
 
 const RateRide = () => {
   const { rideId } = useParams(); // Get the ride ID from the URL
+  const navigate = useNavigate(); // For redirection
   const [rideDetails, setRideDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [ratedUsers, setRatedUsers] = useState({}); // Track users who have been rated
+  const [ratings, setRatings] = useState({}); // Store ratings for all users
+  const [loggedInUserId, setLoggedInUserId] = useState(null); // Store the logged-in user's ID
 
   const fetchRideDetails = async () => {
     setLoading(true);
@@ -24,6 +26,15 @@ const RateRide = () => {
       );
 
       setRideDetails(response.data);
+
+      // Fetch the logged-in user's profile to get their ID
+      const profileResponse = await axios.get(
+        `http://localhost:5000/api/users/profile`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setLoggedInUserId(profileResponse.data._id);
     } catch (err) {
       console.error("Error fetching ride details:", err);
       setError("Failed to fetch ride details. Please ensure the ride exists.");
@@ -36,31 +47,35 @@ const RateRide = () => {
     fetchRideDetails();
   }, [rideId]);
 
-  const handleRate = async (userId, role, ratingValue) => {
-    if (ratingValue < 0 || ratingValue > 5) {
-      alert("Rating must be between 0 and 5.");
-      return;
-    }
+  const handleRatingChange = (userId, value) => {
+    setRatings((prev) => ({
+      ...prev,
+      [userId]: value,
+    }));
+  };
 
+  const handleSubmitRatings = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      // Send the rating to the backend
-      await axios.post(
-        `http://localhost:5000/api/users/${userId}/rate`,
-        { value: ratingValue },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      // Submit all ratings
+      const ratingPromises = Object.entries(ratings).map(([userId, value]) =>
+        axios.post(
+          `http://localhost:5000/api/users/${userId}/rate`,
+          { value, rideId }, // Include rideId in the request body
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
       );
 
-      // Mark the user as rated
-      setRatedUsers((prev) => ({ ...prev, [userId]: true }));
+      await Promise.all(ratingPromises);
 
-      alert(`Successfully rated ${role} with ${ratingValue} stars.`);
+      alert("Ratings submitted successfully!");
+      navigate("/ride-status"); // Redirect to RideStatus page
     } catch (err) {
-      console.error("Error submitting rating:", err);
-      alert("Failed to submit rating. Please try again.");
+      console.error("Error submitting ratings:", err);
+      alert("Failed to submit ratings. Please try again.");
     }
   };
 
@@ -82,44 +97,30 @@ const RateRide = () => {
 
       {/* Ride Owner Section */}
       <h3>Ride Owner</h3>
-      <div className="ride-owner">
-        <p>
-          <strong>Name:</strong> {rideDetails.user.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {rideDetails.user.email}
-        </p>
-        {!ratedUsers[rideDetails.user._id] ? (
-          <div>
-            <input
-              type="number"
-              min="0"
-              max="5"
-              step="0.1"
-              placeholder="Rate (0-5)"
-              id={`rating-owner-${rideDetails.user._id}`}
-            />
-            <button
-              className="rate-button"
-              onClick={() =>
-                handleRate(
-                  rideDetails.user._id,
-                  "Owner",
-                  parseFloat(
-                    document.getElementById(
-                      `rating-owner-${rideDetails.user._id}`
-                    ).value
-                  )
-                )
-              }
-            >
-              Rate Owner
-            </button>
-          </div>
-        ) : (
-          <p>Already Rated</p>
-        )}
-      </div>
+      {rideDetails.user._id !== loggedInUserId && (
+        <div className="ride-owner">
+          <p>
+            <strong>Name:</strong> {rideDetails.user.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {rideDetails.user.email}
+          </p>
+          <input
+            type="number"
+            min="0"
+            max="5"
+            step="0.1"
+            placeholder="Rate (0-5)"
+            value={ratings[rideDetails.user._id] || ""}
+            onChange={(e) =>
+              handleRatingChange(
+                rideDetails.user._id,
+                parseFloat(e.target.value)
+              )
+            }
+          />
+        </div>
+      )}
 
       {/* Passengers Section */}
       <h3>Passengers</h3>
@@ -127,48 +128,39 @@ const RateRide = () => {
         <p>No passengers for this ride.</p>
       ) : (
         <ul className="passenger-list">
-          {rideDetails.passengers.map((passenger) => (
-            <li key={passenger._id} className="passenger-card">
-              <p>
-                <strong>Name:</strong> {passenger.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {passenger.email}
-              </p>
-              {!ratedUsers[passenger._id] ? (
-                <div>
-                  <input
-                    type="number"
-                    min="0"
-                    max="5"
-                    step="0.1"
-                    placeholder="Rate (0-5)"
-                    id={`rating-passenger-${passenger._id}`}
-                  />
-                  <button
-                    className="rate-button"
-                    onClick={() =>
-                      handleRate(
-                        passenger._id,
-                        "Passenger",
-                        parseFloat(
-                          document.getElementById(
-                            `rating-passenger-${passenger._id}`
-                          ).value
-                        )
-                      )
-                    }
-                  >
-                    Rate Passenger
-                  </button>
-                </div>
-              ) : (
-                <p>Already Rated</p>
-              )}
-            </li>
-          ))}
+          {rideDetails.passengers
+            .filter((passenger) => passenger._id !== loggedInUserId) // Exclude logged-in user
+            .map((passenger) => (
+              <li key={passenger._id} className="passenger-card">
+                <p>
+                  <strong>Name:</strong> {passenger.name}
+                </p>
+                <p>
+                  <strong>Email:</strong> {passenger.email}
+                </p>
+                <input
+                  type="number"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  placeholder="Rate (0-5)"
+                  value={ratings[passenger._id] || ""}
+                  onChange={(e) =>
+                    handleRatingChange(
+                      passenger._id,
+                      parseFloat(e.target.value)
+                    )
+                  }
+                />
+              </li>
+            ))}
         </ul>
       )}
+
+      {/* Submit Button */}
+      <button className="submit-ratings-button" onClick={handleSubmitRatings}>
+        Submit Ratings
+      </button>
     </div>
   );
 };

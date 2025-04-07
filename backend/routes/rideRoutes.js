@@ -5,7 +5,9 @@ const {
   startRide,
   finishRide,
   getRideStorage,
-  getRideDetails, // Import the getRideDetails function
+  getRideDetails,
+  updateLocation, // Add updateLocation
+  getCurrentLocation, // Add getCurrentLocation
 } = require("../controllers/rideController");
 const verifyToken = require("../middleware/authMiddleware");
 

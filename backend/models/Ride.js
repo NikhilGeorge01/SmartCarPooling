@@ -12,6 +12,7 @@ const RideSchema = new mongoose.Schema({
   inProgress: { type: Boolean, default: false },
   completed: { type: Boolean, default: false },
   passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Array of passenger IDs
+  currentLocation: { type: [Number], default: null }, // [latitude, longitude]
 });
 
 RideSchema.methods.addPassenger = function (userId) {

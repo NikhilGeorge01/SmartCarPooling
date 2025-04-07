@@ -49,6 +49,8 @@ exports.sendMessage = async (req, res) => {
     res.status(500).json({ message: "Error sending message" });
   }
 };
+
+// Add a user to the canChatWith field when a ride is accepted
 exports.addToCanChatWith = async (req, res) => {
   const { senderId, receiverId, rideId } = req.query;
 
@@ -101,12 +103,23 @@ exports.addToCanChatWith = async (req, res) => {
     // Add the ride to the sender's rideStore
     sender.rideStore.push(ride._id);
 
-    // Save both the ride and the sender
+    // Update the canChatWith field for both users
+    if (!sender.canChatWith.includes(receiver._id)) {
+      sender.canChatWith.push(receiver._id);
+    }
+
+    if (!receiver.canChatWith.includes(sender._id)) {
+      receiver.canChatWith.push(sender._id);
+    }
+
+    // Save the updated ride, sender, and receiver
     await ride.save();
     await sender.save();
+    await receiver.save();
 
     res.status(200).json({
-      message: "Passenger added to the ride successfully.",
+      message:
+        "Passenger added to the ride successfully, and chat access granted.",
     });
   } catch (error) {
     console.error("Error updating ride request:", error);

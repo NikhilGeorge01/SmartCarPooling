@@ -8,6 +8,7 @@ const verifyToken = (req, res, next) => {
   }
 
   if (!token) {
+    console.error("Access denied. No token provided.");
     return res
       .status(401)
       .json({ message: "Access denied. No token provided." });
@@ -16,8 +17,10 @@ const verifyToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    console.log("Token verified successfully for user ID:", decoded.id);
     next();
   } catch (error) {
+    console.error("Invalid token:", error.message);
     res.status(400).json({ message: "Invalid token." });
   }
 };
