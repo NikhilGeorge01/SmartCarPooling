@@ -1,18 +1,20 @@
 /* Register Page Styles */
 .register-container {
-  background-color: rgba(0, 128, 0, 0.05); /* Softer green background */
-  color: #333; /* Neutral text color */
-  padding: 50px; /* Increased padding for a spacious look */
+  background-color: rgba(0, 128, 0, 0.05);
+  color: #ffffff;
+  padding: 50px;
   border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 128, 0, 0.2); /* Subtle shadow */
+  box-shadow: 0 0 20px #00ff88;
   width: 100%;
-  max-width: 600px; /* Increased width for a larger box */
+  max-width: 600px;
   margin: 100px auto;
   animation: fadeIn 1s ease-in-out;
-  overflow-y: auto; /* Enable vertical scrolling */
-  max-height: 700px; /* Increased height to accommodate larger content */
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: #4caf50 rgba(0, 128, 0, 0.05); /* Custom scrollbar colors */
+  overflow-y: auto;
+  max-height: 700px;
+  scrollbar-width: thin;
+  scrollbar-color: #00ff88 #000;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.85);
 }
 
 /* Scrollbar Styling */
@@ -21,83 +23,132 @@
 }
 
 .register-container::-webkit-scrollbar-track {
-  background: rgba(0, 128, 0, 0.05); /* Match the background */
+  background: #111;
   border-radius: 10px;
 }
 
 .register-container::-webkit-scrollbar-thumb {
-  background: #4caf50; /* Softer green scrollbar */
+  background: #00ff88;
   border-radius: 10px;
 }
 
 .register-container::-webkit-scrollbar-thumb:hover {
-  background: #81c784; /* Lighter green on hover */
+  background: #33ff99;
 }
 
 /* Animated Heading */
 h2 {
   text-align: center;
-  color: #4caf50; /* Softer green for heading */
-  margin-bottom: 30px; /* Increased spacing below heading */
-  font-size: 36px; /* Increased font size for heading */
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 36px;
   animation: fadeIn 1.5s ease-in-out;
-  text-shadow: 0 0 10px rgba(76, 175, 80, 0.2); /* Subtle glow effect */
+  text-shadow: 0 0 10px #00ff88;
 }
 
 /* Input Fields */
 .input-field {
-  margin: 25px 0; /* Increased spacing between input fields */
+  margin: 25px 0;
 }
 
-.input-field input {
+.input-field input,
+.input-field select {
   width: 100%;
-  padding: 18px; /* Increased padding for larger input fields */
-  background-color: #f9f9f9; /* Light background for inputs */
-  color: #333; /* Neutral text color */
-  border: 1px solid #4caf50; /* Softer green border */
-  border-radius: 10px; /* Slightly rounded corners */
-  font-size: 20px; /* Increased font size for better readability */
+  padding: 18px;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #00ff88;
+  border-radius: 10px;
+  font-size: 20px;
   outline: none;
   transition: all 0.3s ease;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.2); /* Subtle glow effect */
+  box-shadow: 0 0 5px #00ff88;
 }
 
-.input-field input:focus {
-  border-color: #81c784; /* Softer green on focus */
-  box-shadow: 0 0 10px rgba(129, 199, 132, 0.3); /* Subtle glowing effect */
+.input-field input:focus,
+.input-field select:focus {
+  border-color: #33ff99;
+  box-shadow: 0 0 10px #33ff99;
 }
 
 /* Submit Button */
 .submit-button {
   width: 100%;
-  padding: 18px; /* Increased padding for a larger button */
-  background-color: #4caf50; /* Softer green */
-  color: white;
+  padding: 18px;
+  background-color: #00ff88;
+  color: #000;
   border: none;
-  border-radius: 10px; /* Slightly rounded corners */
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 20px; /* Increased font size for better readability */
-  margin-top: 30px; /* Increased spacing above the button */
+  font-size: 20px;
+  margin-top: 30px;
   transition: all 0.3s ease;
 }
 
 .submit-button:hover {
-  background-color: #81c784; /* Lighter green on hover */
-  transform: translateY(-2px); /* Hover lift effect */
-  box-shadow: 0 0 10px rgba(129, 199, 132, 0.3); /* Subtle glow on hover */
+  background-color: #33ff99;
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px #33ff99;
 }
 
 .submit-button:active {
-  transform: translateY(2px); /* Click effect */
+  transform: translateY(2px);
 }
 
 /* Error Message */
 .error-message {
-  color: #e57373; /* Softer red for errors */
+  color: #ff6f6f;
   text-align: center;
-  margin-bottom: 20px; /* Increased spacing below error message */
-  font-size: 18px; /* Slightly larger font size for better visibility */
-  animation: shake 0.5s ease-in-out; /* Shake animation for errors */
+  margin-bottom: 20px;
+  font-size: 18px;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Success Message */
+.success-message {
+  color: #00ff88;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Webcam Styles */
+.webcam-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.webcam {
+  border: 2px solid #00ff88;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.capture-button {
+  background-color: transparent;
+  color: #00ff88;
+  border: 2px solid #00ff88;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.capture-button:hover {
+  background-color: #00ff88;
+  color: #000;
+  box-shadow: 0 0 10px #00ff88;
+}
+
+.captured-img {
+  margin-top: 15px;
+  max-width: 100%;
+  border: 2px solid #00ff88;
+  border-radius: 10px;
 }
 
 /* Animation for fading in elements */

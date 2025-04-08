@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-import "./VerifyEmail.css"; // Import the CSS file
+import "./VerifyEmail.css";
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -14,11 +14,11 @@ const VerifyEmail = () => {
     if (token) {
       axios
         .get(`http://localhost:5000/api/auth/verify-email?token=${token}`)
-        .then((response) => {
+        .then(() => {
           setMessage("Email verified successfully!");
           setMessageType("success");
         })
-        .catch((error) => {
+        .catch(() => {
           setMessage("Email verification failed. The token may be invalid or expired.");
           setMessageType("error");
         });
@@ -30,8 +30,14 @@ const VerifyEmail = () => {
 
   return (
     <div className="verify-container">
-      <h2>Email Verification</h2>
-      <p className={messageType === "success" ? "success-message" : "error-message"}>
+      <h2 className="neon-heading">Email Verification</h2>
+      <p
+        className={
+          messageType === "success"
+            ? "success-message neon-text"
+            : "error-message neon-text"
+        }
+      >
         {message}
       </p>
     </div>

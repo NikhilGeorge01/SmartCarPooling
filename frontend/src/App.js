@@ -16,7 +16,10 @@ import ViewRides from "./components/ViewRides";
 import Users from "./components/Users";
 import Chat from "./components/Chat";
 import RideStatus from "./components/RideStatus";
-import RateRide from "./components/RateRide"; // Import the RateRide component
+import RateRide from "./components/RateRide";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,84 +33,67 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div className="app-container">
         {/* Navigation Bar */}
-        <nav className="bg-gray-900 text-green-400 shadow-lg shadow-green-500/50 py-4 fixed w-full z-10 top-0">
-          <div className="container mx-auto flex justify-between items-center px-6">
-            <h1 className="text-xl font-bold">Carpooling</h1>
-            <ul className="flex space-x-6">
-              {!isLoggedIn ? (
-                <>
-                  <li>
-                    <Link
-                      to="/login"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/register"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      Register
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link
-                      to="/profile"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/offer-ride"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      Offer Ride
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/view-rides"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      View Rides
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/ride-status"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      Ride Status
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/users"
-                      className="hover:text-green-300 transition duration-300"
-                    >
-                      Users
-                    </Link>
-                  </li>
-                  <li>
-                    <Logout setIsLoggedIn={setIsLoggedIn} />
-                  </li>
-                </>
-              )}
-            </ul>
+        <nav className="navbar navbar-expand-lg custom-navbar fixed-top px-4">
+          <div className="container-fluid">
+            <Link className="navbar-brand heading-animated" to="/">
+              SmartCarpooling
+            </Link>
+            <div className="collapse navbar-collapse justify-content-end">
+              <ul className="navbar-nav">
+                {!isLoggedIn ? (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/login">
+                        Login
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/register">
+                        Register
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/profile">
+                        Profile
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/offer-ride">
+                        Offer Ride
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/view-rides">
+                        View Rides
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/ride-status">
+                        Ride Status
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link nav-text" to="/users">
+                        Users
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Logout setIsLoggedIn={setIsLoggedIn} />
+                    </li>
+                  </>
+                )}
+              </ul>
+            </div>
           </div>
         </nav>
 
         {/* Page Content */}
-        <div className="pt-20 px-4">
+        <div className="main-content pt-5">
           <Routes>
             <Route path="/users" element={<Users />} />
             <Route path="/chat/:userId" element={<Chat />} />
@@ -157,7 +143,11 @@ function App() {
               path="/"
               element={
                 isLoggedIn ? (
-                  <h2>Welcome to the Home Page</h2>
+                  <div className="home-page d-flex flex-column align-items-center justify-content-center text-center">
+                    <h1 className="display-3 heading-animated mt-5">Welcome to SmartCarpooling</h1>
+                    <p className="lead main-desc">Smart Carpooling for a Greener Future</p>
+                    <Link to="/offer-ride" className="btn cool-btn mt-3">Offer a Ride</Link>
+                  </div>
                 ) : (
                   <Navigate to="/login" />
                 )

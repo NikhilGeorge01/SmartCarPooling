@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import Webcam from "react-webcam";
-import "./Register.css";  // Import the CSS file
+import "./Register.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -87,39 +87,20 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
-      {error && <p className="error">{error}</p>}
-      {confirmationMessage && <p className="success">{confirmationMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+      <h2 className="neon-text animate__animated animate__fadeInDown">Register</h2>
+      {error && <p className="error-message">{error}</p>}
+      {confirmationMessage && <p className="success-message">{confirmationMessage}</p>}
+      <form onSubmit={handleSubmit} className="register-form scrollable-form">
+        <div className="input-field">
+          <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        <div className="input-field">
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className="input-field">
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <div>
-          <label>Gender:</label>
+        <div className="input-field">
           <select value={gender} onChange={(e) => setGender(e.target.value)} required>
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -127,42 +108,25 @@ const Register = () => {
             <option value="other">Other</option>
           </select>
         </div>
-        <div>
-          <label>Date of Birth:</label>
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            required
-          />
+        <div className="input-field">
+          <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} required />
         </div>
-        <div>
-          <label>Twitter Username:</label>
-          <input
-            type="text"
-            value={twitterUsername}
-            onChange={(e) => setTwitterUsername(e.target.value)}
-            required
-          />
+        <div className="input-field">
+          <input type="text" placeholder="Twitter Username" value={twitterUsername} onChange={(e) => setTwitterUsername(e.target.value)} required />
         </div>
-        <div>
-          <label>Phone Number:</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
+        <div className="input-field">
+          <input type="text" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} required />
         </div>
-        <div className="webcam-container">
-          <label>Photo:</label>
-          <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-          <button type="button" onClick={capturePhoto}>
+
+        <div className="webcam-section">
+          <Webcam className="webcam" audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+          <button type="button" className="capture-button" onClick={capturePhoto}>
             Capture Photo
           </button>
           {photo && <img src={photo} alt="Captured" className="captured-img" />}
         </div>
-        <button type="submit" disabled={loading}>
+
+        <button type="submit" className="submit-button" disabled={loading}>
           {loading ? "Registering..." : "Register"}
         </button>
       </form>

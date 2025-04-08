@@ -1,91 +1,140 @@
 /* Chat Page Styles */
 .chat-container {
-    background-color: #181818;
-    color: #f0f0f0;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-    width: 100%;
-    max-width: 700px;
-    margin: 50px auto;
-    animation: fadeIn 1s ease-in-out;
+  background-color: #000;
+  color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+  width: 100%;
+  max-width: 700px;
+  margin: 50px auto;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.neon-heading {
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99, 0 0 15px #00ff99;
+  margin-bottom: 20px;
+  font-size: 32px;
+  animation: glowPulse 2s infinite alternate;
+}
+
+.messages-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: #00ff99;
+  border-radius: 4px;
+}
+
+.message-card {
+  background-color: #222;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+  animation: slideIn 0.3s ease forwards;
+}
+
+.sent {
+  text-align: right;
+  background-color: #0f0f0f;
+  border-left: 4px solid #00ff99;
+}
+
+.received {
+  text-align: left;
+  background-color: #1a1a1a;
+  border-right: 4px solid #00ff99;
+}
+
+.message-card strong {
+  color: #00ff99;
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px;
+  background-color: #111;
+  color: #fff;
+  border: 2px solid #00ff99;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.message-input:focus {
+  box-shadow: 0 0 8px #00ff99;
+  outline: none;
+}
+
+.send-button {
+  padding: 10px 20px;
+  background-color: #00ff99;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #00ff99;
+}
+
+.send-button:hover {
+  background-color: #00cc7a;
+  transform: scale(1.05);
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
-  
-  h2 {
-    text-align: center;
-    color: #00ff99;
-    margin-bottom: 20px;
-    font-size: 32px;
-    animation: fadeIn 1.5s ease-in-out;
+  100% {
+    opacity: 1;
   }
-  
-  .messages {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
   }
-  
-  .messages p {
-    background-color: #333;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+  100% {
+    text-shadow: 0 0 20px #00ff99, 0 0 40px #00ff99;
   }
-  
-  .messages p strong {
-    color: #00ff99;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
   }
-  
-  input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    background-color: #333;
-    color: #fff;
-    border: 2px solid #00ff99;
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
-    transition: all 0.3s ease;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  input[type="text"]:focus {
-    border-color: #00b3b3;
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-  }
-  
-  button {
-    width: 15%;
-    padding: 12px;
-    background-color: #00ff99;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #00b3b3;
-    transform: translateY(-2px);
-  }
-  
-  button:active {
-    transform: translateY(2px);
-  }
-  
-  .error-message {
-    color: red;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
+}

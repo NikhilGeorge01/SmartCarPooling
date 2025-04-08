@@ -1,6 +1,3 @@
-/* Tailwind CSS Directives */
-
-
 /* Global Reset */
 * {
   margin: 0;
@@ -12,8 +9,8 @@
 /* Body Styling */
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #333;
+  background-color: #000; /* Dark black background */
+  color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: flex;
@@ -21,53 +18,64 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 20px;
+  background-image: url('your-background-image.jpg'); /* optional background image */
+  background-size: cover;
+  background-position: center;
 }
 
 /* Global Container */
 .container {
   max-width: 1200px;
   width: 100%;
-  background: #fff;
+  background-color: #111; /* dark block background */
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  color: #2c3e50;
+  color: #fff;
   font-weight: 700;
+  text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
+  transition: 0.3s ease;
 }
 
+h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+  transform: scale(1.05);
+}
+
+/* Paragraphs */
 p {
-  color: #34495e;
+  color: #d0ffd0;
   font-weight: 500;
   line-height: 1.6;
 }
 
 /* Buttons */
 button {
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background-color: #00ff99;
+  color: #000;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 10px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 0 10px #00ff99;
 }
 
 button:hover {
-  background: linear-gradient(90deg, #5a6fd1 0%, #6a3e93 100%);
+  background-color: #00cc7a;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 0 20px #00ff99;
 }
 
 button:active {
@@ -79,29 +87,32 @@ button:active {
 input, textarea {
   width: 100%;
   padding: 10px;
-  border: 2px solid #ddd;
-  border-radius: 6px;
+  border: 2px solid #00ff99;
+  border-radius: 10px;
   font-size: 16px;
+  background-color: #1a1a1a;
+  color: #fff;
   margin-top: 5px;
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
 input:focus, textarea:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+  border-color: #00ffcc;
+  box-shadow: 0 0 10px #00ff99;
   outline: none;
 }
 
 /* Links */
 a {
-  color: #667eea;
+  color: #00ff99;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #764ba2;
+  color: #00cc7a;
+  text-shadow: 0 0 10px #00ff99;
   text-decoration: underline;
 }
 
@@ -111,15 +122,15 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  background: #111;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #667eea;
+  background: #00ff99;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5a6fd1;
+  background: #00cc7a;
 }

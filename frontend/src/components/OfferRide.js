@@ -9,16 +9,16 @@ import {
 } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import "leaflet/dist/leaflet.css";
-import "leaflet-geosearch/dist/geosearch.css"; // Import GeoSearch styles
+import "leaflet-geosearch/dist/geosearch.css";
 import "./OfferRide.css";
 import L from "leaflet";
+import { Spinner } from "react-bootstrap";
 
 // Fix Leaflet marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
@@ -35,7 +35,6 @@ const OfferRide = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Component to handle map clicks
   const LocationMarker = ({ setCoordinates, setPoint }) => {
     useMapEvents({
       click(e) {
@@ -47,38 +46,28 @@ const OfferRide = () => {
     return null;
   };
 
-  // Component to add a search bar to the map
   const SearchBar = ({ setCoordinates, setPoint }) => {
     const map = useMap();
 
     React.useEffect(() => {
       const provider = new OpenStreetMapProvider();
-
       const searchControl = new GeoSearchControl({
         provider,
         style: "bar",
         showMarker: true,
-        showPopup: false,
-        marker: {
-          icon: new L.Icon.Default(),
-          draggable: false,
-        },
+        marker: { icon: new L.Icon.Default() },
         maxMarkers: 1,
-        retainZoomLevel: false,
-        animateZoom: true,
         autoClose: true,
         searchLabel: "Enter address",
         keepResult: true,
       });
 
       map.addControl(searchControl);
-
-      // Adjust map view and update coordinates when a location is selected
       map.on("geosearch/showlocation", (event) => {
         const { x, y, label } = event.location;
         setCoordinates([y, x]);
         setPoint(label);
-        map.setView([y, x], 13); // Adjust map view to the searched location
+        map.setView([y, x], 13);
       });
 
       return () => map.removeControl(searchControl);
@@ -140,99 +129,48 @@ const OfferRide = () => {
 
   return (
     <div className="offer-ride-container">
-      <h2>Offer a Ride</h2>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-      <form onSubmit={handleSubmit}>
+      <h2 className="neon-heading">Offer a Ride</h2>
+      {error && <p className="error-text">{error}</p>}
+      {success && <p className="success-text">{success}</p>}
+      <form onSubmit={handleSubmit} className="neon-form">
         <div>
           <label>Vehicle Name:</label>
-          <input
-            type="text"
-            value={vehicleName}
-            onChange={(e) => setVehicleName(e.target.value)}
-            required
-          />
+          <input type="text" value={vehicleName} onChange={(e) => setVehicleName(e.target.value)} required />
         </div>
         <div>
           <label>Vehicle Number:</label>
-          <input
-            type="text"
-            value={vehicleNumber}
-            onChange={(e) => setVehicleNumber(e.target.value)}
-            required
-          />
+          <input type="text" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} required />
         </div>
         <div>
           <label>Number of Seats:</label>
-          <input
-            type="number"
-            value={seats}
-            onChange={(e) => setSeats(e.target.value)}
-            required
-          />
+          <input type="number" value={seats} onChange={(e) => setSeats(e.target.value)} required />
         </div>
         <div>
           <label>Start Location:</label>
-          <p>
-            {startPoint ||
-              "Search or click on the map to select a start location"}
-          </p>
-          <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
-            style={{ height: "300px", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <SearchBar
-              setCoordinates={setStartCoordinates}
-              setPoint={setStartPoint}
-            />
-            <LocationMarker
-              setCoordinates={setStartCoordinates}
-              setPoint={setStartPoint}
-            />
-            {startCoordinates && <Marker position={startCoordinates}></Marker>}
+          <p className="helper-text">{startPoint || "Search or click on the map to select a start location"}</p>
+          <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "300px", width: "100%", marginBottom: "1rem" }}>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <SearchBar setCoordinates={setStartCoordinates} setPoint={setStartPoint} />
+            <LocationMarker setCoordinates={setStartCoordinates} setPoint={setStartPoint} />
+            {startCoordinates && <Marker position={startCoordinates} />}
           </MapContainer>
         </div>
         <div>
           <label>End Location:</label>
-          <p>
-            {endPoint || "Search or click on the map to select an end location"}
-          </p>
-          <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
-            style={{ height: "300px", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <SearchBar
-              setCoordinates={setEndCoordinates}
-              setPoint={setEndPoint}
-            />
-            <LocationMarker
-              setCoordinates={setEndCoordinates}
-              setPoint={setEndPoint}
-            />
-            {endCoordinates && <Marker position={endCoordinates}></Marker>}
+          <p className="helper-text">{endPoint || "Search or click on the map to select an end location"}</p>
+          <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "300px", width: "100%", marginBottom: "1rem" }}>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <SearchBar setCoordinates={setEndCoordinates} setPoint={setEndPoint} />
+            <LocationMarker setCoordinates={setEndCoordinates} setPoint={setEndPoint} />
+            {endCoordinates && <Marker position={endCoordinates} />}
           </MapContainer>
         </div>
         <div>
           <label>Date of Travel:</label>
-          <input
-            type="date"
-            value={dateOfTravel}
-            onChange={(e) => setDateOfTravel(e.target.value)}
-            required
-          />
+          <input type="date" value={dateOfTravel} onChange={(e) => setDateOfTravel(e.target.value)} required />
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Offering Ride..." : "Offer Ride"}
+        <button type="submit" className="neon-button" disabled={loading}>
+          {loading ? <Spinner animation="border" variant="light" size="sm" /> : "Offer Ride"}
         </button>
       </form>
     </div>
