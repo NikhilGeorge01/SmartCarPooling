@@ -1,4 +1,3 @@
-// filepath: [Profile.js](http://_vscodecontentref_/2)
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profile.css";
@@ -15,28 +14,18 @@ const Profile = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("No token found");
         setError("User not authenticated");
         setLoading(false);
         return;
       }
 
       try {
-        console.log("Fetching profile...");
-        const response = await axios.get(
-          "http://localhost:5000/api/users/profile", // Corrected endpoint
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log("Profile fetched successfully:", response.data);
+        const response = await axios.get("http://localhost:5000/api/users/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setUser(response.data);
       } catch (error) {
-        console.error("Error fetching profile:", error);
-        setError(
-          error.response?.data?.message ||
-            "Failed to load profile. Please try again."
-        );
+        setError(error.response?.data?.message || "Failed to load profile");
       } finally {
         setLoading(false);
       }
@@ -76,7 +65,7 @@ const Profile = () => {
         setTrustScore(trustScore);
 
         return axios.put(
-          "http://localhost:5000/api/users/profile", // Corrected endpoint
+          "http://localhost:5000/api/users/profile",
           { trust_score: trustScore },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -88,72 +77,58 @@ const Profile = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error generating trust score:", error);
         setError("Error generating trust score");
         setLoading(false);
       });
   };
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <div className="profile-message">Loading...</div>;
   }
 
   if (error) {
-    return <div className="error">{error}</div>;
+    return <div className="profile-message error-message">{error}</div>;
   }
 
   if (!user) {
-    return <div className="loading">Loading profile...</div>;
+    return <div className="profile-message">Loading profile...</div>;
   }
 
   return (
     <div className="profile-container">
-      <h2>Profile</h2>
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
-      <p>
-        <strong>Gender:</strong> {user.gender}
-      </p>
-      <p>
-        <strong>Date of Birth:</strong>{" "}
-        {new Date(user.dob).toLocaleDateString()}
-      </p>
-      <p>
-        <strong>Twitter Username:</strong> {user.twitterUsername}
-      </p>
-      <p>
-        <strong>Phone Number:</strong> {user.phone}
-      </p>
-      {user.photo && (
-        <img
-          src={user.photo}
-          alt="Profile"
-          className="profile-img"
-          loading="lazy"
-        />
-      )}
+      <h2 className="profile-heading">Profile</h2>
+      <div className="profile-info">
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Gender:</strong> {user.gender}</p>
+        <p><strong>Date of Birth:</strong> {new Date(user.dob).toLocaleDateString()}</p>
+        <p><strong>Twitter Username:</strong> {user.twitterUsername}</p>
+        <p><strong>Phone Number:</strong> {user.phone}</p>
+        {user.photo && (
+          <img
+            src={user.photo}
+            alt="Profile"
+            className="profile-img"
+            loading="lazy"
+          />
+        )}
+      </div>
 
       <form onSubmit={handleCibilSubmit} className="profile-form">
-        <div>
-          <label>CIBIL Score:</label>
-          <input
-            type="number"
-            value={cibil}
-            onChange={(e) => setCibil(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Generating Trust Score..." : "Generate Trust Score"}
+        <label className="profile-label">CIBIL Score:</label>
+        <input
+          type="number"
+          className="profile-input"
+          value={cibil}
+          onChange={(e) => setCibil(e.target.value)}
+          required
+        />
+        <button type="submit" className="profile-button" disabled={loading}>
+          {loading ? "Generating..." : "Generate Trust Score"}
         </button>
       </form>
 
       {trustScore && <p className="trust-score">Trust Score: {trustScore}</p>}
-      {error && <p className="error">{error}</p>}
     </div>
   );
 };

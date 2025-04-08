@@ -4,30 +4,27 @@ import axios from "axios";
 import "./RateRide.css";
 
 const RateRide = () => {
-  const { rideId } = useParams(); // Get the ride ID from the URL
-  const navigate = useNavigate(); // For redirection
+  const { rideId } = useParams();
+  const navigate = useNavigate();
   const [rideDetails, setRideDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [ratings, setRatings] = useState({}); // Store ratings for all users
-  const [loggedInUserId, setLoggedInUserId] = useState(null); // Store the logged-in user's ID
+  const [ratings, setRatings] = useState({});
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
 
   const fetchRideDetails = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
 
-      // Fetch ride details
       const response = await axios.get(
         `http://localhost:5000/api/rides/${rideId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       setRideDetails(response.data);
 
-      // Fetch the logged-in user's profile to get their ID
       const profileResponse = await axios.get(
         `http://localhost:5000/api/users/profile`,
         {
@@ -43,7 +40,7 @@ const RateRide = () => {
   };
 
   useEffect(() => {
-    console.log("Ride ID:", rideId); // Debug log for rideId
+    console.log("Ride ID:", rideId);
     fetchRideDetails();
   }, [rideId]);
 
@@ -58,11 +55,10 @@ const RateRide = () => {
     try {
       const token = localStorage.getItem("token");
 
-      // Submit all ratings
       const ratingPromises = Object.entries(ratings).map(([userId, value]) =>
         axios.post(
           `http://localhost:5000/api/users/${userId}/rate`,
-          { value, rideId }, // Include rideId in the request body
+          { value, rideId },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -70,41 +66,26 @@ const RateRide = () => {
       );
 
       await Promise.all(ratingPromises);
-
       alert("Ratings submitted successfully!");
-      navigate("/ride-status"); // Redirect to RideStatus page
+      navigate("/ride-status");
     } catch (err) {
       console.error("Error submitting ratings:", err);
       alert("Failed to submit ratings. Please try again.");
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p className="error-message">{error}</p>;
-  }
-
-  if (!rideDetails) {
-    return <p>No ride details available.</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error-message">{error}</p>;
+  if (!rideDetails) return <p>No ride details available.</p>;
 
   return (
     <div className="rate-ride-container">
       <h2>Rate Ride</h2>
-
-      {/* Ride Owner Section */}
       <h3>Ride Owner</h3>
       {rideDetails.user._id !== loggedInUserId && (
         <div className="ride-owner">
-          <p>
-            <strong>Name:</strong> {rideDetails.user.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {rideDetails.user.email}
-          </p>
+          <p><strong>Name:</strong> {rideDetails.user.name}</p>
+          <p><strong>Email:</strong> {rideDetails.user.email}</p>
           <input
             type="number"
             min="0"
@@ -122,34 +103,26 @@ const RateRide = () => {
         </div>
       )}
 
-      {/* Passengers Section */}
       <h3>Passengers</h3>
       {rideDetails.passengers.length === 0 ? (
         <p>No passengers for this ride.</p>
       ) : (
         <ul className="passenger-list">
           {rideDetails.passengers
-            .filter((passenger) => passenger._id !== loggedInUserId) // Exclude logged-in user
-            .map((passenger) => (
-              <li key={passenger._id} className="passenger-card">
-                <p>
-                  <strong>Name:</strong> {passenger.name}
-                </p>
-                <p>
-                  <strong>Email:</strong> {passenger.email}
-                </p>
+            .filter((p) => p._id !== loggedInUserId)
+            .map((p) => (
+              <li key={p._id} className="passenger-card">
+                <p><strong>Name:</strong> {p.name}</p>
+                <p><strong>Email:</strong> {p.email}</p>
                 <input
                   type="number"
                   min="0"
                   max="5"
                   step="0.1"
                   placeholder="Rate (0-5)"
-                  value={ratings[passenger._id] || ""}
+                  value={ratings[p._id] || ""}
                   onChange={(e) =>
-                    handleRatingChange(
-                      passenger._id,
-                      parseFloat(e.target.value)
-                    )
+                    handleRatingChange(p._id, parseFloat(e.target.value))
                   }
                 />
               </li>
@@ -157,7 +130,6 @@ const RateRide = () => {
         </ul>
       )}
 
-      {/* Submit Button */}
       <button className="submit-ratings-button" onClick={handleSubmitRatings}>
         Submit Ratings
       </button>

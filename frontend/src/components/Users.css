@@ -1,88 +1,119 @@
 /* Users Page Styles */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .users-container {
-    background-color: #181818;
-    color: #f0f0f0;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-    width: 100%;
-    max-width: 800px;
-    margin: 50px auto;
-    animation: fadeIn 1s ease-in-out;
-  }
-  
-  h2 {
-    text-align: center;
-    color: #00ff99;
-    margin-bottom: 20px;
-    font-size: 32px;
-    animation: fadeIn 1.5s ease-in-out;
-  }
-  
-  .users-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .user-item {
-    background-color: #333;
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: fadeIn 1s ease-in-out;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  
-  .user-name {
-    font-size: 20px;
-    color: #00ff99;
-  }
-  
-  .user-email,
-  .user-gender,
-  .user-dob {
-    font-size: 14px;
-    color: #f0f0f0;
-  }
-  
-  .chat-button {
-    background-color: #00ff99;
-    color: #fff;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .chat-button:hover {
-    background-color: #00b3b3;
-    transform: translateY(-2px);
-  }
-  
-  .chat-button:active {
-    transform: translateY(2px);
-  }
-  
-  .error {
-    color: red;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-  
+  background-color: #000;
+  padding: 40px;
+  max-width: 1000px;
+  margin: 50px auto;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  animation: fadeIn 1s ease-in-out;
+}
+
+h2 {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  text-shadow: 0 0 8px #00ff99, 0 0 16px #00ff99;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+h2:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 12px #00ff99, 0 0 24px #00ff99;
+}
+
+.users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-item {
+  background-color: #111;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.user-item:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00ff99;
+  box-shadow: 0 0 10px #00ff99;
+}
+
+.user-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 4px #00ff99;
+}
+
+.user-email,
+.user-gender,
+.user-dob {
+  font-size: 16px;
+  color: #ccc;
+  text-shadow: 0 0 2px #00ff99;
+}
+
+.chat-button {
+  background-color: #00ff99;
+  color: #000;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 0 8px #00ff99;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.chat-button:hover {
+  background-color: #00e68a;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px #00ff99;
+}
+
+.chat-button:active {
+  transform: translateY(2px);
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+  text-shadow: 0 0 2px red;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

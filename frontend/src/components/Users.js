@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Users.css"; // Import the CSS file
+import "./Users.css";
 
 const Users = () => {
-  const [users, setUsers] = useState([]); // Users in the canChatWith field
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,16 +14,9 @@ const Users = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-
-        // Fetch logged-in user's details, including the populated canChatWith field
-        const userResponse = await axios.get(
-          "http://localhost:5000/api/auth/me",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        // Set the users from the canChatWith field
+        const userResponse = await axios.get("http://localhost:5000/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setUsers(userResponse.data.canChatWith || []);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -53,9 +46,7 @@ const Users = () => {
                 <p className="user-name">{user.name}</p>
                 <p className="user-email">{user.email}</p>
                 <p className="user-gender">Gender: {user.gender}</p>
-                <p className="user-dob">
-                  DOB: {new Date(user.dob).toLocaleDateString()}
-                </p>
+                <p className="user-dob">DOB: {new Date(user.dob).toLocaleDateString()}</p>
               </div>
             </div>
             <button

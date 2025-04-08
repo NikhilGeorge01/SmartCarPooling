@@ -1,71 +1,78 @@
-/* Login Page */
+body {
+  background-color: #000 !important;
+}
+
 .login-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 30px;
-  background-color: rgba(0, 128, 0, 0.1);
-  border-radius: 15px;
-  box-shadow: 0 0 15px #00ff00;
-  text-align: center;
-}
-
-/* Animated Heading */
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.8); }
-}
-
-.animated-heading {
-  font-size: 2rem;
-  font-weight: bold;
-  text-shadow: 0 0 20px #00ff00;
-  animation: fadeInOut 3s infinite alternate;
-}
-
-/* Neon Text Effect */
-.text-glow {
-  color: #fff;
-  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-}
-
-/* Form Inputs */
-.neon-input {
-  background-color: black;
+  min-height: 100vh;
+  background-image: url('../images/greenpool-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: white;
+}
+
+.login-card {
+  background-color: rgba(0, 0, 0, 0.85);
   border: 2px solid #00ff00;
+  box-shadow: 0 0 20px #00ff00;
+  width: 100%;
+  max-width: 400px;
+}
+
+.heading-animated {
+  color: white;
+  text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00;
+  animation: pulse 2s infinite;
+  font-weight: bold;
+}
+
+.custom-input {
+  background-color: transparent;
+  border: 2px solid #00ff00;
+  color: white;
+  text-shadow: 0 0 3px #00ff00;
+}
+
+.custom-input::placeholder {
+  color: #88ff88;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.custom-input:focus {
+  background-color: transparent;
   box-shadow: 0 0 10px #00ff00;
+  color: white;
+}
+
+.cool-btn {
+  background-color: #00aa00;
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  text-shadow: 0 0 4px #00ff00;
+  box-shadow: 0 0 15px #00ff00;
   transition: 0.3s ease-in-out;
 }
 
-.neon-input:focus {
-  background-color: black;
-  border-color: #32cd32;
-  box-shadow: 0 0 15px #32cd32;
-  outline: none;
+.cool-btn:hover {
+  background-color: #00cc00;
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #00ff00;
 }
 
-/* Green Button */
-.btn-green {
-  background-color: #00ff00;
-  border: none;
-  color: black;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
+.error-message {
+  color: #ff4d4d;
+  text-shadow: 0 0 5px red;
 }
 
-.btn-green:hover {
-  background-color: #32cd32;
-  box-shadow: 0 0 15px #32cd32;
-}
-
-/* Hover Effect for Links */
-.text-green-hover {
-  color: #00ff00;
-  transition: color 0.3s ease-in-out;
-}
-
-.text-green-hover:hover {
-  color: #32cd32;
-  text-shadow: 0 0 10px #32cd32;
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 8px #00ff00;
+  }
+  50% {
+    text-shadow: 0 0 16px #00ff00;
+  }
+  100% {
+    text-shadow: 0 0 8px #00ff00;
+  }
 }

@@ -1,11 +1,12 @@
 import React from "react";
-import ReactDOM from "react-dom/client"; // use 'react-dom/client' for React 18
+import ReactDOM from "react-dom/client";
 import App from "./App";
 
-// Global styling wrapper: Apply common theme settings
-
-// Create a root container and inject the App component
+// Wrap in React.StrictMode for highlighting potential problems
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-// Render the App component inside the root element with a smooth modern theme
-root.render(<App />);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

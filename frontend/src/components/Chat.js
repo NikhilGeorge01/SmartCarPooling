@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import "./Chat.css"; // Import the CSS file for the chat page
+import "./Chat.css";
 
 const Chat = () => {
-  const { userId } = useParams(); // The ID of the user you're chatting with
+  const { userId } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [error, setError] = useState("");
@@ -12,21 +12,18 @@ const Chat = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/chat/${userId}`,
+        const response = await axios.get(`http://localhost:5000/api/chat/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
-        );
+          });
         setMessages(response.data);
       } catch (err) {
         console.error("Error fetching messages:", err);
         setError("Error fetching messages");
       }
     };
-
     fetchMessages();
   }, [userId]);
 
@@ -36,7 +33,9 @@ const Chat = () => {
         "http://localhost:5000/api/chat",
         { receiver: userId, message: newMessage },
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       setMessages([...messages, response.data]);
@@ -49,19 +48,16 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <h2>Chat</h2>
+      <h2 className="neon-heading">Chat</h2>
       {error && <p className="error-message">{error}</p>}
       <div className="messages-container">
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`message-card ${
-              msg.sender === userId ? "received" : "sent"
-            }`}
+            className={`message-card ${msg.sender === userId ? "received" : "sent"}`}
           >
             <p>
-              <strong>{msg.sender === userId ? "Them" : "You"}:</strong>{" "}
-              {msg.message}
+              <strong>{msg.sender === userId ? "Them" : "You"}:</strong> {msg.message}
             </p>
           </div>
         ))}
