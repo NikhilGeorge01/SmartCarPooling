@@ -177,3 +177,46 @@ exports.addToRated = async (req, res) => {
     res.status(500).json({ message: "Error adding user to rated list" });
   }
 };
+// Update driver's current location
+exports.updateLocation = async (req, res) => {
+  const { rideId } = req.params;
+  const { latitude, longitude } = req.body;
+
+  try {
+    const ride = await Ride.findById(rideId);
+
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+
+    if (!ride.inProgress) {
+      return res.status(400).json({ message: "Ride is not in progress." });
+    }
+
+    ride.currentLocation = [latitude, longitude];
+    await ride.save();
+
+    res.status(200).json({ message: "Location updated successfully", ride });
+  } catch (error) {
+    console.error("Error updating location:", error);
+    res.status(500).json({ message: "Error updating location" });
+  }
+};
+
+// Get driver's current location
+exports.getCurrentLocation = async (req, res) => {
+  const { rideId } = req.params;
+
+  try {
+    const ride = await Ride.findById(rideId);
+
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+
+    res.status(200).json({ currentLocation: ride.currentLocation });
+  } catch (error) {
+    console.error("Error fetching current location:", error);
+    res.status(500).json({ message: "Error fetching current location" });
+  }
+};

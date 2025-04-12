@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "./RideStatus.css";
 
 const RideStatus = () => {
@@ -9,6 +10,8 @@ const RideStatus = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [trackingRideId, setTrackingRideId] = useState(null);
   const navigate = useNavigate();
 
   const fetchRideStatus = async () => {
@@ -47,9 +50,23 @@ const RideStatus = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchRideStatus();
-  }, []);
+  const handleTrackClick = async (rideId) => {
+    setTrackingRideId(rideId);
+
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/rides/${rideId}/location`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setCurrentLocation(response.data.currentLocation);
+    } catch (err) {
+      console.error("Error fetching current location:", err);
+      setError("Failed to fetch current location.");
+    }
+  };
 
   const handleRateClick = (rideId) => {
     // Redirect to the RateRide page with the ride ID
@@ -64,6 +81,10 @@ const RideStatus = () => {
       )
     );
   };
+
+  useEffect(() => {
+    fetchRideStatus();
+  }, []);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -111,11 +132,34 @@ const RideStatus = () => {
                   <strong>Status:</strong>{" "}
                   {ride.inProgress ? "In Progress" : "Not Started"}
                 </p>
+                {ride.inProgress && (
+                  <button
+                    className="track-button"
+                    onClick={() => handleTrackClick(ride._id)}
+                  >
+                    Track
+                  </button>
+                )}
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      {/* Map for Tracking */}
+      {currentLocation && trackingRideId && (
+        <div className="tracking-map">
+          <h3>Tracking Ride</h3>
+          <MapContainer
+            center={currentLocation}
+            zoom={13}
+            style={{ height: "300px", width: "100%" }}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <Marker position={currentLocation} />
+          </MapContainer>
+        </div>
+      )}
 
       {/* Completed Rides Section */}
       <div className="completed-rides">
