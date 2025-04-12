@@ -92,21 +92,36 @@ exports.verifyEmail = async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token
-    const user = await User.findById(decoded.id);
+    console.log("Decoded token:", decoded);
 
+    const user = await User.findById(decoded.id);
     if (!user) {
+      console.error("User not found for ID:", decoded.id);
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (user.verified) {
+    if (user.isVerified) {
+      console.log("User already verified:", user.email);
       return res.status(200).json({ message: "Email already verified" });
     }
 
-    user.verified = true; // Mark the user as verified
-    await user.save();
+    user.isVerified = true; // Update the correct field
 
+    // Save the user and handle potential errors
+    try {
+      await user.save();
+      console.log("User verification status updated in the database.");
+    } catch (saveError) {
+      console.error("Error saving user verification status:", saveError);
+      return res
+        .status(500)
+        .json({ message: "Error updating verification status" });
+    }
+
+    console.log("User verified successfully:", user.email);
     return res.status(200).json({ message: "Email verification successful" });
   } catch (err) {
+    console.error("Error verifying email:", err);
     return res.status(400).json({ message: "Invalid or expired token" });
   }
 };
