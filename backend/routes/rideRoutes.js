@@ -35,4 +35,10 @@ router.patch("/:rideId/finish", verifyToken, finishRide);
 // Add User to Rated Field (PATCH /api/rides/:rideId/rated)
 router.patch("/:rideId/rated", verifyToken, addToRated);
 
+// Update Driver's Location Route (PATCH /api/rides/:rideId/location)
+router.patch("/:rideId/location", verifyToken, updateLocation);
+
+// Get Driver's Current Location Route (GET /api/rides/:rideId/location)
+router.get("/:rideId/location", verifyToken, getCurrentLocation);
+
 module.exports = router;
