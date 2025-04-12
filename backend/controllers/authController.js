@@ -38,10 +38,8 @@ exports.register = async (req, res) => {
   // Hash the password
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Generate verification token
-  const verificationToken = crypto.randomBytes(32).toString("hex");
-
   try {
+    // Create the user
     const user = await User.create({
       name,
       email,
@@ -51,13 +49,21 @@ exports.register = async (req, res) => {
       twitterUsername,
       phone,
       photo,
-      verificationToken,
       isVerified: false, // Default to not verified
       rides: 0, // Initialize to 0
       avg_rating: 0, // Initialize to 0
     });
 
     console.log("User created:", user);
+
+    // Generate verification token
+    const verificationToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h", // Token expires in 1 hour
+      }
+    );
 
     // Send verification email
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
@@ -85,19 +91,23 @@ exports.verifyEmail = async (req, res) => {
   const { token } = req.query;
 
   try {
-    const user = await User.findOne({ verificationToken: token });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token
+    const user = await User.findById(decoded.id);
+
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    user.isVerified = true;
-    user.verificationToken = undefined; // Clear the token
+    if (user.verified) {
+      return res.status(200).json({ message: "Email already verified" });
+    }
+
+    user.verified = true; // Mark the user as verified
     await user.save();
 
-    res.status(200).json({ message: "Email verified successfully" });
-  } catch (error) {
-    console.error("Error verifying email:", error);
-    res.status(500).json({ message: "Error verifying email", error });
+    return res.status(200).json({ message: "Email verification successful" });
+  } catch (err) {
+    return res.status(400).json({ message: "Invalid or expired token" });
   }
 };
 
