@@ -78,7 +78,7 @@ const OfferRide = () => {
   };
 
   const checkRouteExists = async (startCoordinates, endCoordinates) => {
-    const apiKey = "5b3ce3597851110001cf624835cdfc4d32684c98813c45a5491a19d6"; // Replace with your ORS API key
+    const apiKey = process.env.REACT_APP_ORS_API_KEY; // Access  APIthe key from .env
     const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${startCoordinates[1]},${startCoordinates[0]}&end=${endCoordinates[1]},${endCoordinates[0]}`;
 
     try {
