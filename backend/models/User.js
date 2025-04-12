@@ -32,15 +32,19 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Pre-save middleware to calculate the average rating
+// Pre-save middleware to calculate the average rating
 UserSchema.pre("save", function (next) {
-  if (this.ratingList.length > 0) {
-    const total = this.ratingList.reduce(
-      (sum, rating) => sum + rating.value,
-      0
-    );
-    this.rating = total / this.ratingList.length; // Calculate average rating
-  } else {
-    this.rating = 5; // Default rating if no ratings exist
+  // Check if the ratingList field is modified
+  if (this.isModified("ratingList")) {
+    if (this.ratingList.length > 0) {
+      const total = this.ratingList.reduce(
+        (sum, rating) => sum + rating.value,
+        0
+      );
+      this.rating = total / this.ratingList.length; // Calculate average rating
+    } else {
+      this.rating = 5; // Default rating if no ratings exist
+    }
   }
   next();
 });
