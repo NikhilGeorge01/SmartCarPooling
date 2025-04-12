@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
+// Configure nodemailer transporter
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -12,6 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Register a new user
 exports.register = async (req, res) => {
   const { name, email, password, gender, dob, twitterUsername, phone, photo } =
     req.body;
@@ -46,10 +48,11 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       gender,
       dob,
-      twitterUsername, // Ensure this field is handled
+      twitterUsername,
       phone,
       photo,
       verificationToken,
+      isVerified: false, // Default to not verified
       rides: 0, // Initialize to 0
       avg_rating: 0, // Initialize to 0
     });
@@ -71,11 +74,13 @@ exports.register = async (req, res) => {
         "User registered successfully. Please check your email to verify your account.",
     });
   } catch (error) {
-    console.error("Error registering user:", error); // Log the error
+    console.error("Error registering user:", error);
     res.status(500).json({ message: "Error registering user", error });
   }
 };
 
+// Verify email
+// Verify email
 exports.verifyEmail = async (req, res) => {
   const { token } = req.query;
 
@@ -86,38 +91,52 @@ exports.verifyEmail = async (req, res) => {
     }
 
     user.isVerified = true;
-    user.verificationToken = undefined;
+    user.verificationToken = undefined; // Clear the token
     await user.save();
 
-    res.json({ message: "Email verified successfully" });
+    res.status(200).json({ message: "Email verified successfully" });
   } catch (error) {
+    console.error("Error verifying email:", error);
     res.status(500).json({ message: "Error verifying email", error });
   }
 };
 
-// Login User
+// Login user
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(404).json({ message: "User not found" });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-  // Check if the user is verified
-  if (!user.isVerified)
-    return res
-      .status(403)
-      .json({ message: "Please verify your email to login" });
+    // Check if the user is verified
+    if (!user.isVerified) {
+      return res
+        .status(403)
+        .json({ message: "Please verify your email to login" });
+    }
 
-  // Compare password
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-  // Generate JWT token
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
-  res.json({ token });
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.json({ token });
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    res.status(500).json({ message: "Error logging in user", error });
+  }
 };
+
+// Get current user details
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)

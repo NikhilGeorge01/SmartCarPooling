@@ -8,6 +8,7 @@ const {
   getRideDetails,
   updateLocation, // Add updateLocation
   getCurrentLocation, // Add getCurrentLocation
+  addToRated, // Add addToRated
 } = require("../controllers/rideController");
 const verifyToken = require("../middleware/authMiddleware");
 
@@ -30,5 +31,8 @@ router.patch("/:rideId/start", verifyToken, startRide);
 
 // Finish Ride Route (PATCH /api/rides/:rideId/finish)
 router.patch("/:rideId/finish", verifyToken, finishRide);
+
+// Add User to Rated Field (PATCH /api/rides/:rideId/rated)
+router.patch("/:rideId/rated", verifyToken, addToRated);
 
 module.exports = router;

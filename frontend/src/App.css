@@ -1,135 +1,56 @@
-body {
-  background-color: #f4f4f4;
-  font-family: "Arial", sans-serif;
-  color: #333;
+/* Global Styles */
+body,
+html {
+  background-color: #000; /* Dark background */
+  color: #fff; /* Light text for contrast */
   margin: 0;
   padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.app-container {
+  background-color: #000; /* Dark background for the app */
+  min-height: 100vh;
+}
+
+/* Navbar Styles */
 .navbar {
-  background-color: #4caf50 !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #001a00; /* Dark green background */
+  border-bottom: 2px solid #00ff00; /* Neon green border */
+  z-index: 1000;
 }
 
 .navbar-brand,
 .nav-link {
-  color: #fff !important;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-}
-
-.nav-link:hover {
-  color: #d4edda !important;
-}
-
-.landing-wrapper {
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-}
-
-.login-container {
-  width: 400px;
-  padding: 40px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.login-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.input-field input {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input-field input:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-  outline: none;
-}
-
-.main-heading {
-  font-size: 2rem;
-  text-align: center;
-  color: #4caf50;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-.submit-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.submit-button:hover {
-  background: #81c784;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(129, 199, 132, 0.3);
-}
-
-.submit-button:active {
-  transform: translateY(2px);
-}body, html {
-  background-color: #000;
-  color: white;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.app-container {
-  background-color: #000;
-  min-height: 100vh;
-}
-
-.custom-navbar {
-  background-color: #001a00;
-  border-bottom: 2px solid #00ff00;
-  z-index: 1000;
-}
-
-.navbar-brand, .nav-text {
-  color: white !important;
-  text-shadow: 0 0 6px #00ff00, 0 0 12px #00ff00;
+  color: #fff !important; /* White text */
+  text-shadow: 0 0 6px #00ff00, 0 0 12px #00ff00; /* Neon green glow */
   font-weight: bold;
   transition: 0.3s;
 }
 
-.nav-text:hover {
-  color: #00cc00 !important;
+.nav-link:hover {
+  color: #00cc00 !important; /* Brighter green on hover */
   text-decoration: underline;
 }
 
-.heading-animated {
-  animation: pulse 2s infinite;
-  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-}
-
-h1, h2, h3 {
+/* Headings */
+h1,
+h2,
+h3 {
   transition: 0.4s ease;
-  text-shadow: 0 0 8px #00ff00;
+  text-shadow: 0 0 8px #00ff00; /* Neon green glow */
 }
 
-h1:hover, h2:hover, h3:hover {
+h1:hover,
+h2:hover,
+h3:hover {
   transform: scale(1.05);
-  color: #00cc00;
+  color: #00cc00; /* Brighter green on hover */
 }
 
+/* Buttons */
 .cool-btn {
-  background-color: #00aa00;
+  background-color: #00aa00; /* Neon green */
   border: none;
   color: white;
   padding: 12px 24px;
@@ -141,13 +62,81 @@ h1:hover, h2:hover, h3:hover {
 }
 
 .cool-btn:hover {
-  background-color: #00cc00;
+  background-color: #00cc00; /* Brighter green on hover */
   transform: scale(1.1);
 }
 
+/* Login Container */
+.login-container {
+  width: 400px;
+  padding: 40px;
+  background: #111; /* Dark background for the login box */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px #00ff00; /* Neon green glow */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin: auto;
+}
+
+.login-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px #00ff00; /* Brighter glow on hover */
+}
+
+/* Input Fields */
+.input-field input {
+  background-color: #1a1a1a; /* Dark input background */
+  border: 2px solid #00ff00; /* Neon green border */
+  color: white;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 16px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field input:focus {
+  border-color: #00cc00; /* Brighter green on focus */
+  box-shadow: 0 0 5px #00ff00;
+  outline: none;
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background: #00aa00; /* Neon green */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px #00ff00;
+  box-shadow: 0 0 15px #00ff00;
+}
+
+.submit-button:hover {
+  background: #00cc00; /* Brighter green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px #00ff00;
+}
+
+.submit-button:active {
+  transform: translateY(2px);
+}
+
+/* Landing Page */
+.landing-wrapper {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  background-color: #000; /* Dark background */
+  color: white;
+}
+
+/* Home Page */
 .home-page {
   height: 100vh;
-  background-image: url('./images/background.png');
+  background-image: url("./images/background.png"); /* Optional background image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -157,7 +146,7 @@ h1:hover, h2:hover, h3:hover {
 
 .main-desc {
   font-size: 1.3rem;
-  text-shadow: 0 0 5px #00ff00;
+  text-shadow: 0 0 5px #00ff00; /* Neon green glow */
 }
 
 .main-content {
@@ -165,3 +154,20 @@ h1:hover, h2:hover, h3:hover {
   min-height: calc(100vh - 80px);
 }
 
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111; /* Dark scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00ff00; /* Neon green scrollbar */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00cc00; /* Brighter green on hover */
+}

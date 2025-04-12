@@ -65,6 +65,15 @@ const RateRide = () => {
         )
       );
 
+      // Add the current user to the ride's rated field
+      await axios.patch(
+        `http://localhost:5000/api/rides/${rideId}/rated`,
+        { userId: loggedInUserId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
       await Promise.all(ratingPromises);
       alert("Ratings submitted successfully!");
       navigate("/ride-status");
@@ -84,8 +93,12 @@ const RateRide = () => {
       <h3>Ride Owner</h3>
       {rideDetails.user._id !== loggedInUserId && (
         <div className="ride-owner">
-          <p><strong>Name:</strong> {rideDetails.user.name}</p>
-          <p><strong>Email:</strong> {rideDetails.user.email}</p>
+          <p>
+            <strong>Name:</strong> {rideDetails.user.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {rideDetails.user.email}
+          </p>
           <input
             type="number"
             min="0"
@@ -112,8 +125,12 @@ const RateRide = () => {
             .filter((p) => p._id !== loggedInUserId)
             .map((p) => (
               <li key={p._id} className="passenger-card">
-                <p><strong>Name:</strong> {p.name}</p>
-                <p><strong>Email:</strong> {p.email}</p>
+                <p>
+                  <strong>Name:</strong> {p.name}
+                </p>
+                <p>
+                  <strong>Email:</strong> {p.email}
+                </p>
                 <input
                   type="number"
                   min="0"

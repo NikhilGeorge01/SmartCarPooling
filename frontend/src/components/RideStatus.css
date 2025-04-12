@@ -1,107 +1,3 @@
-/* Rate Ride Page Styles */
-.rate-ride-container {
-  background-color: #000;
-  color: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-  max-width: 800px;
-  margin: 50px auto;
-  animation: fadeIn 1s ease-in-out;
-}
-
-.rate-ride-container h2,
-.rate-ride-container h3 {
-  color: #ffffff;
-  text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
-  text-align: center;
-  margin-bottom: 20px;
-  animation: glowPulse 2s infinite alternate;
-}
-
-.ride-owner,
-.passenger-card {
-  background-color: #111;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-  transition: transform 0.3s ease;
-}
-
-.ride-owner:hover,
-.passenger-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
-}
-
-input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: #1a1a1a;
-  border: 2px solid #00ff99;
-  color: #fff;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-input[type="number"]:focus {
-  outline: none;
-  border-color: #00b3b3;
-  box-shadow: 0 0 10px #00ff99;
-}
-
-.submit-ratings-button {
-  width: 100%;
-  padding: 15px;
-  background-color: #00ff99;
-  color: #000;
-  border: none;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px #00ff99;
-}
-
-.submit-ratings-button:hover {
-  background-color: #00cc7a;
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px #00ff99;
-}
-
-.submit-ratings-button:active {
-  transform: translateY(1px);
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-  font-size: 16px;
-  margin-top: 20px;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes glowPulse {
-  0% {
-    text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
-  }
-  100% {
-    text-shadow: 0 0 20px #00ff99, 0 0 40px #00ff99;
-  }
-}
-
 /* Shared Ride Status Page Animation and Styling */
 .ride-status-container {
   background-color: #000;
@@ -153,10 +49,11 @@ input[type="number"]:focus {
   color: #00ff99;
 }
 
+/* General button styles */
 .rate-button {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #00ff99;
+  background-color: #00ff99; /* Default green background */
   color: #000;
   border: none;
   border-radius: 8px;
@@ -172,6 +69,15 @@ input[type="number"]:focus {
   box-shadow: 0 0 15px #00ff99;
 }
 
+/* Disabled button styles */
+.rate-button:disabled {
+  background-color: #888; /* Gray background for disabled buttons */
+  color: #ccc; /* Light gray text */
+  cursor: not-allowed;
+  box-shadow: none; /* Remove glow for disabled buttons */
+}
+
+/* Error message styling */
 .error-message {
   text-align: center;
   color: red;
@@ -179,8 +85,28 @@ input[type="number"]:focus {
   margin-top: 20px;
 }
 
+/* No rides message styling */
 .no-rides-message {
   text-align: center;
   font-size: 18px;
   color: #ffffff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
+  }
+  100% {
+    text-shadow: 0 0 20px #00ff99, 0 0 40px #00ff99;
+  }
 }

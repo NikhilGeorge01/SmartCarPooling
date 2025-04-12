@@ -120,7 +120,13 @@ exports.getRideStorage = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(user.rideStore);
+    // Ensure the `rated` field is included in the response
+    const rides = await Ride.find({ _id: { $in: user.rideStore } }).populate(
+      "rated",
+      "name email"
+    );
+
+    res.status(200).json(rides);
   } catch (error) {
     console.error("Error fetching ride storage:", error);
     res.status(500).json({ message: "Error fetching ride storage" });
@@ -145,5 +151,29 @@ exports.getRideDetails = async (req, res) => {
   } catch (error) {
     console.error("Error fetching ride details:", error);
     res.status(500).json({ message: "Error fetching ride details" });
+  }
+};
+
+// Add user to rated list
+exports.addToRated = async (req, res) => {
+  const { rideId } = req.params;
+  const { userId } = req.body;
+
+  try {
+    const ride = await Ride.findById(rideId);
+
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+
+    if (!ride.rated.includes(userId)) {
+      ride.rated.push(userId);
+      await ride.save();
+    }
+
+    res.status(200).json({ message: "User added to rated list", ride });
+  } catch (error) {
+    console.error("Error adding user to rated list:", error);
+    res.status(500).json({ message: "Error adding user to rated list" });
   }
 };

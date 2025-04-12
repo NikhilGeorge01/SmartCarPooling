@@ -1,22 +1,30 @@
 body {
-  background-color: #000 !important;
+  background-color: #000 !important; /* Dark background */
 }
 
 .login-container {
   min-height: 100vh;
-  background-image: url('../images/greenpool-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
+  background-color: #111; /* Dark background for the login box */
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 0 20px #00ff00; /* Neon green glow */
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-card {
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: #1a1a1a; /* Darker background for the card */
   border: 2px solid #00ff00;
   box-shadow: 0 0 20px #00ff00;
   width: 100%;
   max-width: 400px;
+  padding: 30px;
+  border-radius: 15px;
 }
 
 .heading-animated {
@@ -24,13 +32,18 @@ body {
   text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00;
   animation: pulse 2s infinite;
   font-weight: bold;
+  text-align: center;
 }
 
 .custom-input {
-  background-color: transparent;
+  background-color: #1a1a1a; /* Dark input background */
   border: 2px solid #00ff00;
   color: white;
   text-shadow: 0 0 3px #00ff00;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 .custom-input::placeholder {
@@ -39,9 +52,10 @@ body {
 }
 
 .custom-input:focus {
-  background-color: transparent;
+  background-color: #1a1a1a;
   box-shadow: 0 0 10px #00ff00;
   color: white;
+  outline: none;
 }
 
 .cool-btn {
@@ -52,6 +66,8 @@ body {
   text-shadow: 0 0 4px #00ff00;
   box-shadow: 0 0 15px #00ff00;
   transition: 0.3s ease-in-out;
+  padding: 12px 20px;
+  width: 100%;
 }
 
 .cool-btn:hover {
@@ -63,6 +79,8 @@ body {
 .error-message {
   color: #ff4d4d;
   text-shadow: 0 0 5px red;
+  text-align: center;
+  margin-top: 10px;
 }
 
 @keyframes pulse {

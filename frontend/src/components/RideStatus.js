@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RideStatus.css";
 
@@ -8,14 +8,25 @@ const RideStatus = () => {
   const [incompleteRides, setIncompleteRides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const navigate = useNavigate();
 
   const fetchRideStatus = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
 
-      // Fetch rides stored in the user's rideStore
+      // Fetch current user details using the getMe endpoint
+      const userResponse = await axios.get(
+        "http://localhost:5000/api/auth/me",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const userId = userResponse.data._id; // Fetch the user ID from the response
+      setLoggedInUserId(userId);
+
+      // Fetch all rides from the database
       const response = await axios.get(
         "http://localhost:5000/api/rides/storage",
         {
@@ -40,6 +51,20 @@ const RideStatus = () => {
     fetchRideStatus();
   }, []);
 
+  const handleRateClick = (rideId) => {
+    // Redirect to the RateRide page with the ride ID
+    navigate(`/rate-ride/${rideId}`);
+
+    // Update the completedRides array locally after rating
+    setCompletedRides((prevRides) =>
+      prevRides.map((ride) =>
+        ride._id === rideId
+          ? { ...ride, rated: [...ride.rated, loggedInUserId] }
+          : ride
+      )
+    );
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -51,11 +76,6 @@ const RideStatus = () => {
   if (completedRides.length === 0 && incompleteRides.length === 0) {
     return <p className="no-rides-message">No rides in your storage.</p>;
   }
-
-  const handleRateClick = (rideId) => {
-    // Redirect to the rating page with the ride ID
-    navigate(`/rate-ride/${rideId}`);
-  };
 
   return (
     <div className="ride-status-container">
@@ -126,11 +146,28 @@ const RideStatus = () => {
                 <p>
                   <strong>Status:</strong> Completed
                 </p>
+                <p>
+                  <strong>Rated By (Names):</strong>{" "}
+                  {ride.rated.length > 0 ? (
+                    <ul>
+                      {ride.rated.map((user) => (
+                        <li key={user._id}>{user.name}</li> // Display user names
+                      ))}
+                    </ul>
+                  ) : (
+                    "No ratings yet"
+                  )}
+                </p>
                 <button
                   className="rate-button"
-                  onClick={() => handleRateClick(ride._id)}
+                  onClick={() => handleRateClick(ride._id)} // Redirect to RateRide.js
+                  disabled={ride.rated.some(
+                    (user) => user._id === loggedInUserId
+                  )} // Disable if user has already rated
                 >
-                  Rate
+                  {ride.rated.some((user) => user._id === loggedInUserId)
+                    ? "Already Rated"
+                    : "Rate"}
                 </button>
               </li>
             ))}

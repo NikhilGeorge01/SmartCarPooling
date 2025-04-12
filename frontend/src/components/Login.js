@@ -22,14 +22,20 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
       localStorage.setItem("token", response.data.token);
-      navigate("/dashboard"); // Redirect to a protected page after successful login
+      window.location.href = "http://localhost:3000"; // Redirect to localhost:3000 after successful login
     } catch (err) {
-      setError("Invalid email or password.");
+      const errorMessage =
+        err.response?.data?.message ||
+        "An error occurred. Please try again later.";
+      setError(errorMessage);
     }
   };
 
@@ -37,7 +43,8 @@ const Login = () => {
     <div className="login-container d-flex align-items-center justify-content-center">
       <div className="login-card p-5 rounded">
         <h2 className="text-center heading-animated mb-4">Login</h2>
-        <p className="text-center mb-3">Page Visits: {visitCount}</p> {/* Display visit count */}
+        <p className="text-center mb-3">Page Visits: {visitCount}</p>{" "}
+        {/* Display visit count */}
         {error && <p className="error-message text-center">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="form-group mb-3">
