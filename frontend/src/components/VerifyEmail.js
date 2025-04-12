@@ -18,13 +18,15 @@ const VerifyEmail = () => {
       axios
         .get(`http://localhost:5000/api/auth/verify-email?token=${token}`)
         .then((response) => {
-          setMessage(response.data.message);
-          setMessageType("success"); // Set message type to success
-          setShowPopup(true); // Show the popup
-          setIsLoading(false); // Stop loading
-          setTimeout(() => {
-            navigate("/login"); // Redirect to login after showing the popup
-          }, 3000);
+          if (response.status === 200) {
+            setMessage(response.data.message);
+            setMessageType("success"); // Set message type to success
+            setShowPopup(true); // Show the popup
+            setIsLoading(false); // Stop loading
+            setTimeout(() => {
+              navigate("/login"); // Redirect to login after showing the popup
+            }, 3000);
+          }
         })
         .catch((err) => {
           const errorMessage =
@@ -34,18 +36,12 @@ const VerifyEmail = () => {
           setMessageType("error"); // Set message type to error
           setShowPopup(true); // Show the popup
           setIsLoading(false); // Stop loading
-          setTimeout(() => {
-            setShowPopup(false); // Hide the popup after 3 seconds
-          }, 3000);
         });
     } else {
       setMessage("No verification token provided.");
       setMessageType("error"); // Set message type to error
       setShowPopup(true); // Show the popup
       setIsLoading(false); // Stop loading
-      setTimeout(() => {
-        setShowPopup(false); // Hide the popup after 3 seconds
-      }, 3000);
     }
   }, [searchParams, navigate]);
 
