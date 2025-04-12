@@ -18,7 +18,8 @@ import { Spinner } from "react-bootstrap";
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
@@ -76,6 +77,23 @@ const OfferRide = () => {
     return null;
   };
 
+  const checkRouteExists = async (startCoordinates, endCoordinates) => {
+    const apiKey = "5b3ce3597851110001cf624835cdfc4d32684c98813c45a5491a19d6"; // Replace with your ORS API key
+    const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${startCoordinates[1]},${startCoordinates[0]}&end=${endCoordinates[1]},${endCoordinates[0]}`;
+
+    try {
+      const response = await axios.get(url);
+      if (response.data.routes && response.data.routes.length > 0) {
+        return true; // Route exists
+      } else {
+        return false; // No route found
+      }
+    } catch (error) {
+      console.error("Error checking route:", error);
+      return false; // Assume no route exists in case of an error
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -96,6 +114,18 @@ const OfferRide = () => {
         return;
       }
 
+      // Check if a route exists between the two locations
+      const routeExists = await checkRouteExists(
+        startCoordinates,
+        endCoordinates
+      );
+      if (!routeExists) {
+        setError("No possible route found between the selected locations.");
+        setLoading(false);
+        return;
+      }
+
+      // Push the ride into the database
       await axios.post(
         "http://localhost:5000/api/rides/offer",
         {
@@ -135,42 +165,91 @@ const OfferRide = () => {
       <form onSubmit={handleSubmit} className="neon-form">
         <div>
           <label>Vehicle Name:</label>
-          <input type="text" value={vehicleName} onChange={(e) => setVehicleName(e.target.value)} required />
+          <input
+            type="text"
+            value={vehicleName}
+            onChange={(e) => setVehicleName(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Vehicle Number:</label>
-          <input type="text" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} required />
+          <input
+            type="text"
+            value={vehicleNumber}
+            onChange={(e) => setVehicleNumber(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Number of Seats:</label>
-          <input type="number" value={seats} onChange={(e) => setSeats(e.target.value)} required />
+          <input
+            type="number"
+            value={seats}
+            onChange={(e) => setSeats(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Start Location:</label>
-          <p className="helper-text">{startPoint || "Search or click on the map to select a start location"}</p>
-          <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "300px", width: "100%", marginBottom: "1rem" }}>
+          <p className="helper-text">
+            {startPoint ||
+              "Search or click on the map to select a start location"}
+          </p>
+          <MapContainer
+            center={[51.505, -0.09]}
+            zoom={13}
+            style={{ height: "300px", width: "100%", marginBottom: "1rem" }}
+          >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <SearchBar setCoordinates={setStartCoordinates} setPoint={setStartPoint} />
-            <LocationMarker setCoordinates={setStartCoordinates} setPoint={setStartPoint} />
+            <SearchBar
+              setCoordinates={setStartCoordinates}
+              setPoint={setStartPoint}
+            />
+            <LocationMarker
+              setCoordinates={setStartCoordinates}
+              setPoint={setStartPoint}
+            />
             {startCoordinates && <Marker position={startCoordinates} />}
           </MapContainer>
         </div>
         <div>
           <label>End Location:</label>
-          <p className="helper-text">{endPoint || "Search or click on the map to select an end location"}</p>
-          <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "300px", width: "100%", marginBottom: "1rem" }}>
+          <p className="helper-text">
+            {endPoint || "Search or click on the map to select an end location"}
+          </p>
+          <MapContainer
+            center={[51.505, -0.09]}
+            zoom={13}
+            style={{ height: "300px", width: "100%", marginBottom: "1rem" }}
+          >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <SearchBar setCoordinates={setEndCoordinates} setPoint={setEndPoint} />
-            <LocationMarker setCoordinates={setEndCoordinates} setPoint={setEndPoint} />
+            <SearchBar
+              setCoordinates={setEndCoordinates}
+              setPoint={setEndPoint}
+            />
+            <LocationMarker
+              setCoordinates={setEndCoordinates}
+              setPoint={setEndPoint}
+            />
             {endCoordinates && <Marker position={endCoordinates} />}
           </MapContainer>
         </div>
         <div>
           <label>Date of Travel:</label>
-          <input type="date" value={dateOfTravel} onChange={(e) => setDateOfTravel(e.target.value)} required />
+          <input
+            type="date"
+            value={dateOfTravel}
+            onChange={(e) => setDateOfTravel(e.target.value)}
+            required
+          />
         </div>
         <button type="submit" className="neon-button" disabled={loading}>
-          {loading ? <Spinner animation="border" variant="light" size="sm" /> : "Offer Ride"}
+          {loading ? (
+            <Spinner animation="border" variant="light" size="sm" />
+          ) : (
+            "Offer Ride"
+          )}
         </button>
       </form>
     </div>
