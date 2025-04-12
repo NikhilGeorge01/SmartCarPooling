@@ -23,6 +23,20 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
+// Function to check if coordinates are in India using Nominatim
+const isPointInIndia = async (lat, lng) => {
+  try {
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+    const address = response.data.address;
+    return address && address.country === "India";
+  } catch (error) {
+    console.error("Error checking location with Nominatim:", error);
+    return false;
+  }
+};
+
 const OfferRide = () => {
   const [vehicleName, setVehicleName] = useState("");
   const [vehicleNumber, setVehicleNumber] = useState("");
@@ -38,10 +52,17 @@ const OfferRide = () => {
 
   const LocationMarker = ({ setCoordinates, setPoint }) => {
     useMapEvents({
-      click(e) {
+      click: async (e) => {
         const { lat, lng } = e.latlng;
-        setCoordinates([lat, lng]);
-        setPoint(`Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`);
+
+        // Check if the selected location is within India
+        const isInIndia = await isPointInIndia(lat, lng);
+        if (isInIndia) {
+          setCoordinates([lat, lng]);
+          setPoint(`Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`);
+        } else {
+          alert("Please select a location within India.");
+        }
       },
     });
     return null;
@@ -64,34 +85,24 @@ const OfferRide = () => {
       });
 
       map.addControl(searchControl);
-      map.on("geosearch/showlocation", (event) => {
+      map.on("geosearch/showlocation", async (event) => {
         const { x, y, label } = event.location;
-        setCoordinates([y, x]);
-        setPoint(label);
-        map.setView([y, x], 13);
+
+        // Check if the searched location is within India
+        const isInIndia = await isPointInIndia(y, x);
+        if (isInIndia) {
+          setCoordinates([y, x]);
+          setPoint(label);
+          map.setView([y, x], 13);
+        } else {
+          alert("Please search for a location within India.");
+        }
       });
 
       return () => map.removeControl(searchControl);
     }, [map, setCoordinates, setPoint]);
 
     return null;
-  };
-
-  const checkRouteExists = async (startCoordinates, endCoordinates) => {
-    const apiKey = process.env.REACT_APP_ORS_API_KEY; // Access  APIthe key from .env
-    const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${startCoordinates[1]},${startCoordinates[0]}&end=${endCoordinates[1]},${endCoordinates[0]}`;
-
-    try {
-      const response = await axios.get(url);
-      if (response.data.routes && response.data.routes.length > 0) {
-        return true; // Route exists
-      } else {
-        return false; // No route found
-      }
-    } catch (error) {
-      console.error("Error checking route:", error);
-      return false; // Assume no route exists in case of an error
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -114,13 +125,18 @@ const OfferRide = () => {
         return;
       }
 
-      // Check if a route exists between the two locations
-      const routeExists = await checkRouteExists(
-        startCoordinates,
-        endCoordinates
+      // Check if both start and end locations are in India
+      const isStartInIndia = await isPointInIndia(
+        startCoordinates[0],
+        startCoordinates[1]
       );
-      if (!routeExists) {
-        setError("No possible route found between the selected locations.");
+      const isEndInIndia = await isPointInIndia(
+        endCoordinates[0],
+        endCoordinates[1]
+      );
+
+      if (!isStartInIndia || !isEndInIndia) {
+        setError("Both start and end locations must be within India.");
         setLoading(false);
         return;
       }
@@ -197,8 +213,8 @@ const OfferRide = () => {
               "Search or click on the map to select a start location"}
           </p>
           <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
+            center={[20.5937, 78.9629]} // Default center: India
+            zoom={5} // Zoom level for India
             style={{ height: "300px", width: "100%", marginBottom: "1rem" }}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -219,8 +235,8 @@ const OfferRide = () => {
             {endPoint || "Search or click on the map to select an end location"}
           </p>
           <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
+            center={[20.5937, 78.9629]} // Default center: India
+            zoom={5} // Zoom level for India
             style={{ height: "300px", width: "100%", marginBottom: "1rem" }}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

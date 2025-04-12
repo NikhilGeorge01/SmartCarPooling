@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false }, // Added isVerified field
   verificationToken: { type: String }, // Added verificationToken field
   rides: { type: Number, default: 0 }, // New field
-  avg_rating: { type: Number, default: 0 }, // New field
   trust_score: { type: Number, default: 0 }, // Added trust_score field
   chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Track initiated chats
   canChatWith: [

@@ -52,9 +52,9 @@ exports.rateUser = async (req, res) => {
     `Rater ID: ${raterId}, User ID: ${userId}, Rating Value: ${value}`
   );
 
-  if (value < 0 || value > 5) {
+  if (value < 1 || value > 5) {
     console.error("Invalid rating value:", value);
-    return res.status(400).json({ message: "Rating must be between 0 and 5." });
+    return res.status(400).json({ message: "Rating must be between 1 and 5." });
   }
 
   try {
@@ -66,10 +66,20 @@ exports.rateUser = async (req, res) => {
 
     console.log("User found:", user.name);
 
-    // Add the rating to the user's ratingList
-    user.ratingList.push({ rater: raterId, value });
+    // Check if the rater has already rated the user
+    const existingRatingIndex = user.ratingList.findIndex(
+      (rating) => rating.rater.toString() === raterId
+    );
 
-    // Save the user (this will trigger the pre-save middleware to update the average rating)
+    if (existingRatingIndex !== -1) {
+      // Update the existing rating
+      user.ratingList[existingRatingIndex].value = value;
+    } else {
+      // Add a new rating
+      user.ratingList.push({ rater: raterId, value });
+    }
+
+    // Save the user to trigger the `pre-save` middleware
     await user.save();
 
     console.log("Rating saved successfully for user:", user.name);

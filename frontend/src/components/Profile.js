@@ -20,9 +20,12 @@ const Profile = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:5000/api/users/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          "http://localhost:5000/api/users/profile",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setUser(response.data);
       } catch (error) {
         setError(error.response?.data?.message || "Failed to load profile");
@@ -98,12 +101,29 @@ const Profile = () => {
     <div className="profile-container">
       <h2 className="profile-heading">Profile</h2>
       <div className="profile-info">
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Gender:</strong> {user.gender}</p>
-        <p><strong>Date of Birth:</strong> {new Date(user.dob).toLocaleDateString()}</p>
-        <p><strong>Twitter Username:</strong> {user.twitterUsername}</p>
-        <p><strong>Phone Number:</strong> {user.phone}</p>
+        <p>
+          <strong>Name:</strong> {user.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {user.email}
+        </p>
+        <p>
+          <strong>Gender:</strong> {user.gender}
+        </p>
+        <p>
+          <strong>Date of Birth:</strong>{" "}
+          {new Date(user.dob).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Twitter Username:</strong> {user.twitterUsername}
+        </p>
+        <p>
+          <strong>Phone Number:</strong> {user.phone}
+        </p>
+        <p>
+          <strong>Rating:</strong> {user.rating.toFixed(2)} / 5
+        </p>{" "}
+        {/* Display the rating */}
         {user.photo && (
           <img
             src={user.photo}
