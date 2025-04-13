@@ -19,7 +19,7 @@ exports.getProfile = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-  const { trust_score } = req.body;
+  const { trust_score } = req.body; // Receive trust_score from the request body
   const userId = req.user.id;
 
   try {
@@ -31,11 +31,11 @@ exports.updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.trust_score = trust_score;
+    user.trust_score = trust_score; // Update the trust_score field
     await user.save();
 
     console.log("Profile updated successfully for user:", user.name);
-    res.json(user);
+    res.json(user); // Return the updated user object
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ message: "Error updating profile", error });
