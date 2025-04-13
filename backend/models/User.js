@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   dob: { type: Date, required: true }, // Added DOB field
   twitterUsername: { type: String, required: true }, // Added Twitter Username field
+  cibil: { type: Number, required: true }, // Added CIBIL score field
   phone: { type: String, required: true }, // Added Phone Number field
   photo: { type: String }, // Added Photo field
   rating: { type: Number, default: 5 }, // Average rating

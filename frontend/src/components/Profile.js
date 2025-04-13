@@ -4,8 +4,7 @@ import "./Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
-  const [cibil, setCibil] = useState("");
-  const [trustScore, setTrustScore] = useState(null);
+  const [trustScore, setTrustScore] = useState(null); // Initialize trustScore state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -27,6 +26,7 @@ const Profile = () => {
           }
         );
         setUser(response.data);
+        setTrustScore(response.data.trust_score); // Set trustScore from profile data
       } catch (error) {
         setError(error.response?.data?.message || "Failed to load profile");
       } finally {
@@ -37,7 +37,7 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
-  const handleCibilSubmit = (e) => {
+  const handleGenerateTrustScore = (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -53,11 +53,11 @@ const Profile = () => {
       .post(
         "http://localhost:5001/predict_trust",
         {
-          rides: user.rides,
-          avg_rating: user.avg_rating,
-          complaints: 0,
-          cibil: parseInt(cibil),
-          twitter_username: user.twitterUsername,
+          rides: user.rideStore.length, // Send the count of rides in rideStore
+          rating: user.rating, // Use rating instead of avg_rating
+          complaints: 0, // Complaints (if applicable)
+          cibil: user.cibil, // Fetch CIBIL score from the database
+          twitter_username: user.twitterUsername, // Twitter username
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -67,6 +67,7 @@ const Profile = () => {
         const trustScore = response.data.trust_score;
         setTrustScore(trustScore);
 
+        // Update the trust score in the database
         return axios.put(
           "http://localhost:5000/api/users/profile",
           { trust_score: trustScore },
@@ -76,7 +77,7 @@ const Profile = () => {
         );
       })
       .then((response) => {
-        setUser(response.data);
+        setUser(response.data); // Update user data with the new trust score
         setLoading(false);
       })
       .catch((error) => {
@@ -122,8 +123,18 @@ const Profile = () => {
         </p>
         <p>
           <strong>Rating:</strong> {user.rating.toFixed(2)} / 5
-        </p>{" "}
-        {/* Display the rating */}
+        </p>
+        <p>
+          <strong>Rides:</strong> {user.rideStore.length}
+        </p>
+        <p>
+          <strong>CIBIL Score:</strong> {user.cibil} {/* Display CIBIL score */}
+        </p>
+        <p>
+          <strong>Trust Score:</strong>{" "}
+          {trustScore !== null ? trustScore : "Not generated yet"}{" "}
+          {/* Always display trust score */}
+        </p>
         {user.photo && (
           <img
             src={user.photo}
@@ -134,21 +145,11 @@ const Profile = () => {
         )}
       </div>
 
-      <form onSubmit={handleCibilSubmit} className="profile-form">
-        <label className="profile-label">CIBIL Score:</label>
-        <input
-          type="number"
-          className="profile-input"
-          value={cibil}
-          onChange={(e) => setCibil(e.target.value)}
-          required
-        />
+      <form onSubmit={handleGenerateTrustScore} className="profile-form">
         <button type="submit" className="profile-button" disabled={loading}>
           {loading ? "Generating..." : "Generate Trust Score"}
         </button>
       </form>
-
-      {trustScore && <p className="trust-score">Trust Score: {trustScore}</p>}
     </div>
   );
 };

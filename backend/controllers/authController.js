@@ -14,9 +14,19 @@ const transporter = nodemailer.createTransport({
 });
 
 // Register a new user
+// Register a new user
 exports.register = async (req, res) => {
-  const { name, email, password, gender, dob, twitterUsername, phone, photo } =
-    req.body;
+  const {
+    name,
+    email,
+    password,
+    gender,
+    dob,
+    twitterUsername,
+    phone,
+    photo,
+    cibil,
+  } = req.body; // Include cibil
 
   console.log("Register request received:", {
     name,
@@ -27,6 +37,7 @@ exports.register = async (req, res) => {
     twitterUsername,
     phone,
     photo,
+    cibil, // Log cibil
   });
 
   // Check if the user already exists
@@ -49,6 +60,7 @@ exports.register = async (req, res) => {
       twitterUsername,
       phone,
       photo,
+      cibil, // Save cibil in the database
       isVerified: false, // Default to not verified
       rides: 0, // Initialize to 0
       avg_rating: 0, // Initialize to 0
