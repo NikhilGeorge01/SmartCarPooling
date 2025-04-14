@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./Logout.css"; // Import the CSS file for styling
 
 const Logout = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
@@ -14,11 +15,15 @@ const Logout = ({ setIsLoggedIn }) => {
     // Redirect the user to the login page
     navigate("/login");
 
-    // Pro
+    // Show a logout success message
     alert("Logged out successfully!");
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return (
+    <button className="logout-button" onClick={handleLogout}>
+      Logout
+    </button>
+  );
 };
 
 export default Logout;

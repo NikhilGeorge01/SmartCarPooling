@@ -1,0 +1,24 @@
+.logout-button {
+    background-color: #4caf50; /* Softer green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); /* Subtle shadow */
+  }
+  
+  .logout-button:hover {
+    background-color: #81c784; /* Lighter green on hover */
+    box-shadow: 0 6px 15px rgba(129, 199, 132, 0.4); /* Slightly stronger shadow */
+    transform: translateY(-2px); /* Hover lift effect */
+  }
+  
+  .logout-button:active {
+    background-color: #388e3c; /* Darker green on click */
+    transform: translateY(2px); /* Click effect */
+    box-shadow: 0 2px 5px rgba(56, 142, 60, 0.3); /* Reduced shadow */
+  }
