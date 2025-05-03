@@ -1,112 +1,169 @@
 /* Shared Ride Status Page Animation and Styling */
 .ride-status-container {
-  background-color: #000;
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(10px);
   color: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  max-width: 900px;
-  margin: 50px auto;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-  animation: fadeIn 1s ease-in-out;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 1000px;
+  margin: 60px auto;
+  box-shadow: 0 8px 32px rgba(0, 255, 0, 0.15);
+  border: 1px solid rgba(0, 255, 0, 0.1);
 }
 
 .ride-status-container h2,
 .ride-status-container h3 {
   color: #ffffff;
-  text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
+  font-size: 2.5rem;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 20px;
-  animation: glowPulse 2s infinite alternate;
+  margin-bottom: 30px;
+  background: linear-gradient(to right, #00ff99, #00cc7a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 2s infinite alternate;
 }
 
 .rides-list {
   list-style: none;
   padding: 0;
+  display: grid;
+  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .ride-card {
-  background-color: #111;
-  border: 1px solid #00ff99;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-  transition: transform 0.3s ease;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(0, 255, 0, 0.15);
+  border-radius: 16px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ride-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00ff99, #00cc7a);
+  opacity: 0.7;
 }
 
 .ride-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 255, 0, 0.2);
+  border-color: rgba(0, 255, 0, 0.3);
 }
 
 .ride-card p {
-  margin: 6px 0;
-  font-size: 16px;
-  color: #ffffff;
+  margin: 12px 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .ride-card strong {
   color: #00ff99;
+  font-weight: 600;
+  min-width: 120px;
 }
 
 /* General button styles */
-.rate-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #00ff99; /* Default green background */
-  color: #000;
+.rate-button,
+.track-button {
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 20px;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px #00ff99;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.rate-button:hover {
-  background-color: #00cc7a;
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #00ff99;
+.rate-button {
+  background: linear-gradient(135deg, #00cc7a, #00ff99);
+  color: #000;
+}
+
+.track-button {
+  background: linear-gradient(135deg, #00ff99, #00cc7a);
+  color: #000;
+}
+
+.rate-button:hover,
+.track-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
+}
+
+.rate-button:active,
+.track-button:active {
+  transform: translateY(1px);
 }
 
 /* Disabled button styles */
-.rate-button:disabled {
-  background-color: #888; /* Gray background for disabled buttons */
-  color: #ccc; /* Light gray text */
+.rate-button:disabled,
+.track-button:disabled {
+  background: linear-gradient(135deg, #666, #888);
   cursor: not-allowed;
-  box-shadow: none; /* Remove glow for disabled buttons */
+  transform: none;
+  box-shadow: none;
 }
 
 /* Error message styling */
 .error-message {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
   text-align: center;
-  color: red;
-  font-size: 18px;
-  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  animation: shake 0.5s ease-in-out;
 }
 
 /* No rides message styling */
 .no-rides-message {
   text-align: center;
-  font-size: 18px;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  margin: 40px 0;
+  padding: 30px;
+  background: rgba(26, 26, 26, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Animations */
-@keyframes fadeIn {
+@keyframes glowText {
   0% {
-    opacity: 0;
+    text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
   }
   100% {
-    opacity: 1;
+    text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
   }
 }
 
-@keyframes glowPulse {
-  0% {
-    text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
-  }
+@keyframes shake {
+  0%,
   100% {
-    text-shadow: 0 0 20px #00ff99, 0 0 40px #00ff99;
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
   }
 }

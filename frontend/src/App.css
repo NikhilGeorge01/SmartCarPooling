@@ -8,6 +8,28 @@ html {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.app {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.app::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 255, 0, 0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
 .app-container {
   background-color: #000; /* Dark background for the app */
   min-height: 100vh;
@@ -15,22 +37,143 @@ html {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #001a00; /* Dark green background */
-  border-bottom: 2px solid #00ff00; /* Neon green border */
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  height: 70px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
-.navbar-brand,
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00ff99;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-brand:hover {
+  color: #00cc7a;
+  text-decoration: none;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-section {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
 .nav-link {
-  color: #fff !important; /* White text */
-  text-shadow: 0 0 6px #00ff00, 0 0 12px #00ff00; /* Neon green glow */
-  font-weight: bold;
-  transition: 0.3s;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link i {
+  font-size: 1rem;
 }
 
 .nav-link:hover {
-  color: #00cc00 !important; /* Brighter green on hover */
-  text-decoration: underline;
+  background: rgba(255, 255, 255, 0.1);
+  color: #00ff99;
+  text-decoration: none;
+}
+
+.logout-btn {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.logout-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff4444;
+}
+
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
+}
+
+.mobile-menu-btn span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Main Content Spacing */
+.main-content {
+  padding-top: 70px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    width: 80%;
+    max-width: 300px;
+    height: calc(100vh - 70px);
+    padding: 20px;
+    transition: right 0.3s ease;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  .nav-section {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+  }
 }
 
 /* Headings */
@@ -131,6 +274,7 @@ h3:hover {
   min-height: 100vh;
   background-color: #000; /* Dark background */
   color: white;
+  padding-top: 12px; /* Adjusted to account for tiny navbar */
 }
 
 /* Home Page */
@@ -140,7 +284,8 @@ h3:hover {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 50px;
+  padding: 20px;
+  padding-top: 12px; /* Adjusted to account for tiny navbar */
   color: white;
 }
 
@@ -150,8 +295,10 @@ h3:hover {
 }
 
 .main-content {
-  padding-top: 100px;
-  min-height: calc(100vh - 80px);
+  padding-top: 8px; /* Match new navbar height */
+  min-height: calc(100vh - 8px);
+  position: relative;
+  z-index: 2;
 }
 
 /* Scrollbar Styling */
@@ -170,4 +317,114 @@ h3:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #00cc00; /* Brighter green on hover */
+}
+
+.navbar .logout-button {
+  background-color: #000; /* Black background */
+  border: 2px solid #00ff00; /* Neon green border */
+  color: #00ff00; /* Neon green text */
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  text-shadow: 0 0 6px #00ff00; /* Neon green glow for text */
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.navbar .logout-button:hover {
+  background-color: #111; /* Slightly lighter black on hover */
+  color: #00cc00; /* Brighter neon green text on hover */
+  border-color: #00cc00; /* Brighter neon green border on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 0 10px #00ff00; /* Add glow effect on hover */
+}
+
+.navbar .logout-button:active {
+  background-color: #222; /* Darker black on click */
+  color: #00aa00; /* Slightly dimmer neon green text on click */
+  border-color: #00aa00; /* Match border color with text */
+  transform: scale(1); /* Reset scale on click */
+  box-shadow: 0 0 5px #00aa00; /* Dimmer glow on click */
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading-spinner::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 255, 153, 0.1);
+  border-top-color: #00ff99;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Error Boundary */
+.error-boundary {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 77, 77, 0.1);
+  border-radius: 16px;
+  margin: 40px auto;
+  max-width: 600px;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.error-boundary h2 {
+  color: #ff4d4d;
+  margin-bottom: 20px;
+}
+
+.error-boundary button {
+  background: linear-gradient(135deg, #ff3366, #ff6b6b);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.error-boundary button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 51, 102, 0.3);
+}
+
+@media (max-width: 768px) {
+  .nav-bar,
+  .nav-container {
+    height: 8px;
+  }
+
+  .nav-container {
+    padding: 0 4px;
+  }
+
+  .nav-links {
+    gap: 1px;
+  }
+
+  .nav-link {
+    padding: 0 1px;
+    font-size: 0.35rem;
+    height: 8px;
+    line-height: 8px;
+  }
+
+  .nav-logo {
+    font-size: 0.4rem;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

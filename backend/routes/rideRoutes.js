@@ -6,9 +6,10 @@ const {
   finishRide,
   getRideStorage,
   getRideDetails,
-  updateLocation, // Add updateLocation
-  getCurrentLocation, // Add getCurrentLocation
-  addToRated, // Add addToRated
+  updateLocation,
+  getCurrentLocation,
+  addToRated,
+  getBasicRideInfo,
 } = require("../controllers/rideController");
 const verifyToken = require("../middleware/authMiddleware");
 
@@ -40,5 +41,8 @@ router.patch("/:rideId/location", verifyToken, updateLocation);
 
 // Get Driver's Current Location Route (GET /api/rides/:rideId/location)
 router.get("/:rideId/location", verifyToken, getCurrentLocation);
+
+// Get basic ride information (minimal data for tracking)
+router.get("/:rideId/basic", verifyToken, getBasicRideInfo);
 
 module.exports = router;

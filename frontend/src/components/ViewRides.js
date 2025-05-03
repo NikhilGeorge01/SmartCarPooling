@@ -3,9 +3,10 @@ import axios from "axios";
 import "./ViewRides.css";
 import { Button } from "react-bootstrap";
 import { motion } from "framer-motion";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 
 const ViewRides = () => {
+  const navigate = useNavigate();
   const [yourRides, setYourRides] = useState([]);
   const [publicRides, setPublicRides] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,6 @@ const ViewRides = () => {
     JSON.parse(localStorage.getItem("requestedRides")) || {}
   );
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [trackingRideId, setTrackingRideId] = useState(null);
   const [locationInterval, setLocationInterval] = useState(null);
 
   const getLocationName = async (lat, lng) => {
@@ -173,22 +173,8 @@ const ViewRides = () => {
     }
   };
 
-  const handleTrackClick = async (rideId) => {
-    setTrackingRideId(rideId);
-
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/rides/${rideId}/location`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setCurrentLocation(response.data.currentLocation);
-    } catch (err) {
-      console.error("Error fetching current location:", err);
-      setError("Failed to fetch current location.");
-    }
+  const handleTrackClick = (rideId) => {
+    navigate(`/ride-tracking/${rideId}`);
   };
 
   useEffect(() => {
@@ -281,20 +267,6 @@ const ViewRides = () => {
           </motion.li>
         ))}
       </ul>
-
-      {currentLocation && trackingRideId && (
-        <div className="tracking-map">
-          <h3>Tracking Ride</h3>
-          <MapContainer
-            center={currentLocation}
-            zoom={13}
-            style={{ height: "300px", width: "100%" }}
-          >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={currentLocation} />
-          </MapContainer>
-        </div>
-      )}
 
       <h2 className="neon-heading">Available Public Rides</h2>
       {!loading && publicRides.length === 0 && (

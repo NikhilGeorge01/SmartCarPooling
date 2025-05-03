@@ -1,42 +1,184 @@
 /* Verify Email Page Styles */
-.verify-container {
-    background-color: #181818;
-    color: #f0f0f0;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-    width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
-    animation: fadeIn 1s ease-in-out;
+.verify-email-container {
+  min-height: 100vh;
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.verify-email-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 255, 0, 0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.verify-card {
+  background: rgba(26, 26, 26, 0.95);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 255, 0, 0.15);
+  padding: 40px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.verify-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #00ff99, #00cc7a);
+  opacity: 0.7;
+  border-radius: 20px 20px 0 0;
+}
+
+.verify-heading {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  background: linear-gradient(to right, #00ff99, #00cc7a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 2s infinite alternate;
+}
+
+.status-message {
+  font-size: 1.2rem;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 12px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.status-message.loading {
+  background: rgba(0, 255, 153, 0.1);
+  color: #00ff99;
+  border: 1px solid rgba(0, 255, 153, 0.2);
+}
+
+.status-message.success {
+  background: rgba(0, 255, 153, 0.1);
+  color: #00ff99;
+  border: 1px solid rgba(0, 255, 153, 0.2);
+}
+
+.status-message.error {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.verify-icon {
+  font-size: 4rem;
+  margin: 20px 0;
+  animation: scaleIn 0.5s ease-out;
+}
+
+.verify-icon.loading {
+  color: #00ff99;
+  animation: spin 2s linear infinite;
+}
+
+.verify-icon.success {
+  color: #00ff99;
+}
+
+.verify-icon.error {
+  color: #ff4d4d;
+}
+
+.redirect-message {
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.redirect-timer {
+  color: #00ff99;
+  font-weight: 600;
+  animation: pulse 1s infinite;
+}
+
+.manual-redirect {
+  color: #00ff99;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 15px;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.manual-redirect:hover {
+  color: #00cc7a;
+  text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+}
+
+@keyframes glowText {
+  0% {
+    text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
   }
-  
-  h2 {
-    text-align: center;
-    color: #00ff84;
-    margin-bottom: 20px;
-    font-size: 32px;
-    animation: fadeIn 1.5s ease-in-out;
+  100% {
+    text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
   }
-  
-  .success-message {
-    color: #00ff99;
-    font-size: 18px;
-    text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .error-message {
-    color: red;
-    font-size: 18px;
-    text-align: center;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
   }
-  
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
