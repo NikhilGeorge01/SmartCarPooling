@@ -13,6 +13,8 @@ const RideSchema = new mongoose.Schema({
   completed: { type: Boolean, default: false },
   passengers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Array of passenger IDs
   currentLocation: { type: [Number], default: null }, // [latitude, longitude]
+  locationAccuracy: { type: Number, default: null }, // accuracy in meters
+  locationLastUpdated: { type: Date, default: null }, // New field for last updated location
   rated: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }], // New field to track users who rated
 });
 

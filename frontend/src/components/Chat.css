@@ -1,113 +1,159 @@
 /* Chat Page Styles */
 .chat-container {
-  background-color: #000;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
   color: #ffffff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 255, 0, 0.15);
   width: 100%;
-  max-width: 700px;
+  max-width: 800px;
   margin: 50px auto;
-  animation: fadeIn 1s ease-in-out;
+  border: 1px solid rgba(0, 255, 0, 0.1);
+  animation: fadeIn 0.5s ease-out;
 }
 
 .neon-heading {
   text-align: center;
   color: #ffffff;
-  text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99, 0 0 15px #00ff99;
-  margin-bottom: 20px;
-  font-size: 32px;
-  animation: glowPulse 2s infinite alternate;
+  text-shadow: 0 0 10px rgba(0, 255, 153, 0.8);
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .messages-container {
-  max-height: 400px;
+  height: 500px;
   overflow-y: auto;
   margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(26, 26, 26, 0.6);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 255, 0, 0.1);
 }
 
 .messages-container::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .messages-container::-webkit-scrollbar-track {
-  background: #111;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
 }
 
 .messages-container::-webkit-scrollbar-thumb {
-  background: #00ff99;
-  border-radius: 4px;
+  background: rgba(0, 255, 153, 0.5);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 153, 0.7);
 }
 
 .message-card {
-  background-color: #222;
   padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-  animation: slideIn 0.3s ease forwards;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  max-width: 80%;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
 }
 
 .sent {
-  text-align: right;
-  background-color: #0f0f0f;
-  border-left: 4px solid #00ff99;
+  margin-left: auto;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 153, 0.15),
+    rgba(0, 255, 153, 0.05)
+  );
+  border: 1px solid rgba(0, 255, 153, 0.2);
 }
 
 .received {
-  text-align: left;
-  background-color: #1a1a1a;
-  border-right: 4px solid #00ff99;
+  margin-right: auto;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .message-card strong {
-  color: #00ff99;
+  color: rgba(0, 255, 153, 0.9);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.message-card p {
+  margin: 0;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .input-container {
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  background: rgba(26, 26, 26, 0.8);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(0, 255, 153, 0.1);
 }
 
 .message-input {
   flex: 1;
-  padding: 10px;
-  background-color: #111;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
   color: #fff;
-  border: 2px solid #00ff99;
-  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 153, 0.2);
+  border-radius: 10px;
   font-size: 16px;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .message-input:focus {
-  box-shadow: 0 0 8px #00ff99;
+  border-color: rgba(0, 255, 153, 0.4);
+  box-shadow: 0 0 15px rgba(0, 255, 153, 0.1);
   outline: none;
 }
 
 .send-button {
-  padding: 10px 20px;
-  background-color: #00ff99;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #00cc7a, #00ff99);
   color: #000;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px #00ff99;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .send-button:hover {
-  background-color: #00cc7a;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #00ff99, #00cc7a);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 153, 0.2);
+}
+
+.send-button:active {
+  transform: translateY(1px);
 }
 
 .error-message {
-  color: red;
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
   text-align: center;
-  font-size: 16px;
+  padding: 12px;
+  border-radius: 10px;
   margin-top: 20px;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  font-size: 0.9rem;
 }
 
 @keyframes fadeIn {

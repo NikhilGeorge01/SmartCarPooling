@@ -8,19 +8,163 @@
 
 /* Body Styling */
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #000; /* Dark black background */
-  color: #fff;
+  margin: 0;
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #000;
+  color: #ffffff;
   min-height: 100vh;
-  padding: 20px;
-  background-image: url('your-background-image.jpg'); /* optional background image */
-  background-size: cover;
-  background-position: center;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Code Styling */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* Global Animation Variables */
+:root {
+  --transition-speed: 0.3s;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --glow-color: #00ff99;
+  --glow-spread-color: rgba(0, 255, 153, 0.781);
+  --enhanced-glow-color: rgba(0, 255, 153, 0.5);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 153, 0.5);
+  border-radius: 3px;
+  transition: background var(--transition-speed) var(--transition-timing);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 153, 0.7);
+}
+
+/* Global Transitions */
+button,
+input,
+a {
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+/* Global Focus Styles */
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 255, 153, 0.5);
+}
+
+/* Text Selection */
+::selection {
+  background: rgba(0, 255, 153, 0.2);
+  color: #fff;
+}
+
+/* Placeholder Text */
+::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+}
+
+/* Page Transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-speed) var(--transition-timing),
+    transform var(--transition-speed) var(--transition-timing);
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity var(--transition-speed) var(--transition-timing),
+    transform var(--transition-speed) var(--transition-timing);
+}
+
+/* Common Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s var(--transition-timing);
+}
+
+.slide-up {
+  animation: slideUp 0.5s var(--transition-timing);
+}
+
+.scale-in {
+  animation: scaleIn 0.5s var(--transition-timing);
+}
+
+/* Common Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Global Container */
@@ -40,14 +184,24 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #fff;
   font-weight: 700;
   text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
   transition: 0.3s ease;
 }
 
-h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+h1:hover,
+h2:hover,
+h3:hover,
+h4:hover,
+h5:hover,
+h6:hover {
   transform: scale(1.05);
 }
 
@@ -84,7 +238,8 @@ button:active {
 }
 
 /* Input Fields */
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 10px;
   border: 2px solid #00ff99;
@@ -96,7 +251,8 @@ input, textarea {
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   border-color: #00ffcc;
   box-shadow: 0 0 10px #00ff99;
   outline: none;
@@ -133,4 +289,17 @@ a:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #00cc7a;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

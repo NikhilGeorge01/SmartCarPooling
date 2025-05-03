@@ -32,6 +32,31 @@ body {
   backdrop-filter: blur(8px);
 }
 
+/* Offer Ride Container */
+.offer-ride-container {
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 255, 0, 0.15);
+  width: 100%;
+  max-width: 1000px;
+  margin: 50px auto;
+  position: relative;
+  border: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.offer-ride-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #00ff99, #00cc7a);
+  opacity: 0.7;
+}
+
 /* Input Fields */
 input[type="text"],
 input[type="number"],
@@ -70,33 +95,56 @@ label {
   display: block;
 }
 
-/* Buttons */
-.neon-button {
-  background-color: #00ff88;
-  color: #000;
-  border: none;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 20px;
-  width: 100%;
-  padding: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px #00ff88;
+/* Neon Heading */
+.neon-heading {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(to right, #00ff99, #00cc7a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 2s infinite alternate;
 }
 
-.neon-button:hover {
-  background-color: #33ff99;
+/* Neon Form */
+.neon-form {
+  display: grid;
+  gap: 25px;
+}
+
+.neon-form > div {
+  position: relative;
+}
+
+/* Buttons */
+.neon-button {
+  background: linear-gradient(135deg, #00cc7a, #00ff99);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.neon-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00ff99, #00cc7a);
   transform: translateY(-2px);
-  box-shadow: 0 0 15px #33ff99;
+  box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
 }
 
 .neon-button:disabled {
-  background-color: #555;
-  color: #aaa;
+  background: linear-gradient(135deg, #666, #888);
   cursor: not-allowed;
-  box-shadow: none;
+  opacity: 0.7;
 }
 
 /* Helper Text */
@@ -115,14 +163,41 @@ label {
   box-shadow: 0 0 15px #00ff88;
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.map-container {
+  height: 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.1);
+  margin-bottom: 25px;
 }
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #1a1a1a !important;
+}
+
+.leaflet-control-geosearch {
+  width: 100%;
+  max-width: 400px !important;
+  margin-top: 20px !important;
+}
+
+.leaflet-control-geosearch form {
+  background: rgba(26, 26, 26, 0.95) !important;
+  border: 1px solid rgba(0, 255, 0, 0.2) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-geosearch input {
+  background: transparent !important;
+  color: #fff !important;
+  padding: 15px !important;
+  font-size: 16px !important;
+}
+
 /* Customize the suggestion dropdown for leaflet-geosearch */
 .leaflet-control-geosearch .results {
   background-color: #000; /* Black background for suggestions */
@@ -166,4 +241,22 @@ label {
 
 .leaflet-control-geosearch .results::-webkit-scrollbar-thumb:hover {
   background: #33ff99; /* Brighter green on hover */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glowText {
+  0% {
+    text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
+  }
 }

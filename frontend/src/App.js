@@ -17,6 +17,7 @@ import Users from "./components/Users";
 import Chat from "./components/Chat";
 import RideStatus from "./components/RideStatus";
 import RateRide from "./components/RateRide";
+import RideTracking from "./components/RideTracking";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -83,7 +84,16 @@ function App() {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Logout setIsLoggedIn={setIsLoggedIn} />
+                      <Link
+                        className="nav-link nav-text"
+                        to="/login"
+                        onClick={() => {
+                          localStorage.removeItem("token");
+                          setIsLoggedIn(false);
+                        }}
+                      >
+                        Logout
+                      </Link>
                     </li>
                   </>
                 )}
@@ -140,13 +150,23 @@ function App() {
             />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route
+              path="/ride-tracking/:rideId"
+              element={isLoggedIn ? <RideTracking /> : <Navigate to="/login" />}
+            />
+            <Route
               path="/"
               element={
                 isLoggedIn ? (
                   <div className="home-page d-flex flex-column align-items-center justify-content-center text-center">
-                    <h1 className="display-3 heading-animated mt-5">Welcome to SmartCarpooling</h1>
-                    <p className="lead main-desc">Smart Carpooling for a Greener Future</p>
-                    <Link to="/offer-ride" className="btn cool-btn mt-3">Offer a Ride</Link>
+                    <h1 className="display-3 heading-animated mt-5">
+                      Welcome to SmartCarpooling
+                    </h1>
+                    <p className="lead main-desc">
+                      Smart Carpooling for a Greener Future
+                    </p>
+                    <Link to="/offer-ride" className="btn cool-btn mt-3">
+                      Offer a Ride
+                    </Link>
                   </div>
                 ) : (
                   <Navigate to="/login" />

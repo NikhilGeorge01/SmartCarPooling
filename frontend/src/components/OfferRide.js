@@ -23,17 +23,97 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
-// Function to check if coordinates are in India using Nominatim
+// Cache for geocoding results
+const geocodeCache = new Map();
+
+// Rate limiting queue
+const queue = [];
+let lastRequestTime = 0;
+const MIN_REQUEST_INTERVAL = 1000; // 1 second between requests as per Nominatim policy
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Function to check if coordinates are in India using Nominatim with improvements
 const isPointInIndia = async (lat, lng) => {
+  // First check the bounding box for quick validation
+  const indiaBBox = {
+    north: 35.5,
+    south: 6.5,
+    west: 68.1,
+    east: 97.4,
+  };
+
+  const isInBBox =
+    lat >= indiaBBox.south &&
+    lat <= indiaBBox.north &&
+    lng >= indiaBBox.west &&
+    lng <= indiaBBox.east;
+
+  if (!isInBBox) {
+    return false;
+  }
+
+  // Check cache first
+  const cacheKey = `${lat},${lng}`;
+  if (geocodeCache.has(cacheKey)) {
+    return geocodeCache.get(cacheKey);
+  }
+
   try {
-    const response = await axios.get(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    // Implement rate limiting
+    const now = Date.now();
+    const timeToWait = Math.max(
+      0,
+      MIN_REQUEST_INTERVAL - (now - lastRequestTime)
     );
+    if (timeToWait > 0) {
+      await sleep(timeToWait);
+    }
+    lastRequestTime = Date.now();
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse`,
+      {
+        params: {
+          format: "json",
+          lat: lat,
+          lon: lng,
+          "accept-language": "en",
+          zoom: 12, // More detailed zoom level
+          addressdetails: 1,
+        },
+        headers: {
+          "User-Agent": "GreenPool_CarpoolApp/1.0", // Proper user agent as required by Nominatim
+        },
+        signal: controller.signal,
+      }
+    );
+
+    clearTimeout(timeoutId);
+
     const address = response.data.address;
-    return address && address.country === "India";
+    const isInIndia =
+      address &&
+      (address.country === "India" ||
+        address.country_code === "in" ||
+        address.country === "भारत" ||
+        (response.data.display_name &&
+          response.data.display_name.includes("India")));
+
+    // Cache the result
+    geocodeCache.set(cacheKey, isInIndia);
+
+    // Cleanup cache after 1 hour
+    setTimeout(() => geocodeCache.delete(cacheKey), 3600000);
+
+    return isInIndia;
   } catch (error) {
     console.error("Error checking location with Nominatim:", error);
-    return false;
+    // If there's an error, fall back to bounding box check
+    return isInBBox;
   }
 };
 
@@ -72,7 +152,28 @@ const OfferRide = () => {
     const map = useMap();
 
     React.useEffect(() => {
-      const provider = new OpenStreetMapProvider();
+      const provider = new OpenStreetMapProvider({
+        params: {
+          "accept-language": "en", // Preferred language
+          countrycodes: "in", // Limit to India
+        },
+        searchUrl: "https://nominatim.openstreetmap.org/search",
+        reverseUrl: "https://nominatim.openstreetmap.org/reverse",
+      });
+
+      // Wrap the provider's search method to handle errors
+      const originalSearch = provider.search.bind(provider);
+      provider.search = async function (...args) {
+        try {
+          const results = await originalSearch(...args);
+          return results;
+        } catch (error) {
+          console.error("Search failed:", error);
+          // Return empty results instead of throwing
+          return [];
+        }
+      };
+
       const searchControl = new GeoSearchControl({
         provider,
         style: "bar",
@@ -80,22 +181,33 @@ const OfferRide = () => {
         marker: { icon: new L.Icon.Default() },
         maxMarkers: 1,
         autoClose: true,
-        searchLabel: "Enter address",
+        searchLabel: "Search for a location in India",
         keepResult: true,
+        retainZoomLevel: false,
+        animateZoom: true,
+        showPopup: false,
+        position: "topleft",
+        autoComplete: true,
+        autoCompleteDelay: 250,
+        maxSuggestions: 5,
       });
 
       map.addControl(searchControl);
-      map.on("geosearch/showlocation", async (event) => {
-        const { x, y, label } = event.location;
 
-        // Check if the searched location is within India
-        const isInIndia = await isPointInIndia(y, x);
-        if (isInIndia) {
-          setCoordinates([y, x]);
-          setPoint(label);
-          map.setView([y, x], 13);
-        } else {
-          alert("Please search for a location within India.");
+      map.on("geosearch/showlocation", async (event) => {
+        try {
+          const { x, y, label } = event.location;
+          const isInIndia = await isPointInIndia(y, x);
+          if (isInIndia) {
+            setCoordinates([y, x]);
+            setPoint(label);
+            map.setView([y, x], 13);
+          } else {
+            alert("Please search for a location within India.");
+          }
+        } catch (error) {
+          console.error("Error handling location:", error);
+          alert("Failed to validate location. Please try again.");
         }
       });
 

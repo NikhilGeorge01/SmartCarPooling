@@ -5,3 +5,6 @@ langchain
 langchain-google-genai
 numpy
 flask-cors
+tweepy
+textblob
+python-dotenv

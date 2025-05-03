@@ -177,46 +177,82 @@ exports.addToRated = async (req, res) => {
     res.status(500).json({ message: "Error adding user to rated list" });
   }
 };
-// Update driver's current location
-exports.updateLocation = async (req, res) => {
-  const { rideId } = req.params;
-  const { latitude, longitude } = req.body;
 
+// Get current location for a ride
+exports.getCurrentLocation = async (req, res) => {
   try {
-    const ride = await Ride.findById(rideId);
-
+    const ride = await Ride.findById(req.params.rideId); // Changed from req.params.id
     if (!ride) {
       return res.status(404).json({ message: "Ride not found" });
     }
 
-    if (!ride.inProgress) {
-      return res.status(400).json({ message: "Ride is not in progress." });
+    res.json({
+      currentLocation: ride.currentLocation,
+      accuracy: ride.locationAccuracy,
+      lastUpdated: ride.locationLastUpdated,
+    });
+  } catch (error) {
+    console.error("Error fetching location:", error);
+    res.status(500).json({ message: "Error fetching location" });
+  }
+};
+
+// Update current location for a ride
+exports.updateLocation = async (req, res) => {
+  try {
+    const { latitude, longitude, accuracy } = req.body;
+    const rideId = req.params.rideId; // Changed from req.params.id
+
+    if (!latitude || !longitude) {
+      return res
+        .status(400)
+        .json({ message: "Latitude and longitude are required" });
+    }
+
+    const ride = await Ride.findById(rideId);
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+
+    if (ride.completed) {
+      return res
+        .status(400)
+        .json({ message: "Cannot update location for completed ride" });
     }
 
     ride.currentLocation = [latitude, longitude];
+    ride.locationAccuracy = accuracy || null;
+    ride.locationLastUpdated = new Date();
     await ride.save();
 
-    res.status(200).json({ message: "Location updated successfully", ride });
+    res.json({
+      message: "Location updated successfully",
+      currentLocation: ride.currentLocation,
+      accuracy: ride.locationAccuracy,
+      lastUpdated: ride.locationLastUpdated,
+    });
   } catch (error) {
     console.error("Error updating location:", error);
     res.status(500).json({ message: "Error updating location" });
   }
 };
 
-// Get driver's current location
-exports.getCurrentLocation = async (req, res) => {
-  const { rideId } = req.params;
-
+// Get basic ride information
+exports.getBasicRideInfo = async (req, res) => {
   try {
-    const ride = await Ride.findById(rideId);
+    const ride = await Ride.findById(req.params.id)
+      .select(
+        "vehicleName vehicleNumber completed currentLocation locationLastUpdated"
+      )
+      .lean();
 
     if (!ride) {
       return res.status(404).json({ message: "Ride not found" });
     }
 
-    res.status(200).json({ currentLocation: ride.currentLocation });
-  } catch (error) {
-    console.error("Error fetching current location:", error);
-    res.status(500).json({ message: "Error fetching current location" });
+    res.json(ride);
+  } catch (err) {
+    console.error("Error getting basic ride info:", err);
+    res.status(500).json({ message: "Error fetching ride information" });
   }
 };
