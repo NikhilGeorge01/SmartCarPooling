@@ -144,20 +144,63 @@ const ViewRides = () => {
   const sendEmail = async (ride) => {
     try {
       const token = localStorage.getItem("token");
+      const rating = userDetails.rating || 5;
+      const rides = userDetails.rideStore?.length || 0;
+      const trustScore = userDetails.trust_score || "Not generated yet";
+
+      const emailHTML = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
+          <h2 style="color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px;">New Ride Request</h2>
+          
+          <div style="background-color: #fff; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h3 style="color: #2c3e50; margin-bottom: 15px;">Request from ${
+              userDetails.name
+            }</h3>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="color: #3498db; margin-bottom: 10px;">Rider Profile</h4>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid #eee;">
+                  <td style="padding: 8px; color: #7f8c8d;">Trust Score:</td>
+                  <td style="padding: 8px; color: #2c3e50; font-weight: bold;">${trustScore}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                  <td style="padding: 8px; color: #7f8c8d;">Rating:</td>
+                  <td style="padding: 8px; color: #2c3e50; font-weight: bold;">${rating.toFixed(
+                    2
+                  )} / 5</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                  <td style="padding: 8px; color: #7f8c8d;">Total Rides:</td>
+                  <td style="padding: 8px; color: #2c3e50; font-weight: bold;">${rides}</td>
+                </tr>
+              </table>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+              <a href="http://localhost:5000/api/chat/add-to-can-chat-with?senderId=${userId}&receiverId=${
+        ride.user._id
+      }&rideId=${ride._id}&token=${token}" 
+                 style="background-color: #3498db; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Accept Request & Start Chat
+              </a>
+            </div>
+          </div>
+          
+          <p style="color: #7f8c8d; text-align: center; margin-top: 20px; font-size: 0.9em;">
+            This is an automated message from your carpooling application.
+          </p>
+        </div>
+      `;
+
       const emailData = {
         to: ride.user.email,
-        subject: "Ride Request",
-        body: `Hello ${ride.user.name},\n\n${
-          userDetails.name
-        } has requested to join your ride.\n\nTrust Score: ${
-          userDetails.trust_score || "N/A"
-        }\nRides: ${userDetails.rides || "0"}\nAverage Rating: ${
-          userDetails.avg_rating || "0"
-        }\n\nChat: http://localhost:5000/api/chat/add-to-can-chat-with?senderId=${userId}&receiverId=${
-          ride.user._id
-        }&rideId=${ride._id}&token=${token}`,
+        subject: `Ride Request from ${userDetails.name}`,
+        body: emailHTML,
       };
+
       await axios.post("http://localhost:5000/api/email/send", emailData);
+
       const updatedRequestedRides = {
         ...requestedRides,
         [ride._id]: Date.now(),
@@ -167,9 +210,9 @@ const ViewRides = () => {
         "requestedRides",
         JSON.stringify(updatedRequestedRides)
       );
-      alert("Email sent successfully!");
+      alert("Request sent successfully!");
     } catch (err) {
-      alert("Failed to send email.");
+      alert("Failed to send request.");
     }
   };
 

@@ -310,8 +310,11 @@ def predict_trust():
 
     # Generate Trust Score using AI
     try:
-        tweets_hash = hash(tuple(tweets)) if tweets else 0
-        trust_score = generate_trust_score(rides, avg_rating, complaints, cibil, social_media_factor, tweets_hash)
+        # Convert tweets list to a string for hashing
+        tweets_str = "_".join(tweets) if tweets else ""
+        tweets_hash = hash(tweets_str)
+        
+        trust_score = generate_trust_score(rides, avg_rating, complaints, cibil, social_media_factor, str(tweets_hash))
         return jsonify({
             "trust_score": trust_score,
             "social_media_factor": social_media_factor,
