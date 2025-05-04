@@ -53,35 +53,39 @@ const Profile = () => {
       .post(
         "http://localhost:5001/predict_trust",
         {
-          rides: user.rideStore.length, // Send the count of rides in rideStore
-          rating: user.rating, // Use rating instead of avg_rating
-          complaints: 0, // Complaints (if applicable)
-          cibil: user.cibil, // Fetch CIBIL score from the database
-          twitter_username: user.twitterUsername, // Twitter username
+          rides: user.rideStore?.length || 0,
+          avg_rating: user.rating || 5,
+          complaints: 0, // Default to 0 complaints
+          cibil: user.cibil || 650, // Default to 650 if not set
+          twitter_username: user.twitterUsername,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((response) => {
-        const trustScore = response.data.trust_score;
-        setTrustScore(trustScore);
+        const newTrustScore = response.data.trust_score;
 
         // Update the trust score in the database
-        return axios.put(
-          "http://localhost:5000/api/users/profile",
-          { trust_score: trustScore },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-      })
-      .then((response) => {
-        setUser(response.data); // Update user data with the new trust score
-        setLoading(false);
+        return axios
+          .put(
+            "http://localhost:5000/api/users/profile",
+            { trust_score: newTrustScore },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
+          .then((response) => {
+            setTrustScore(newTrustScore);
+            setUser(response.data); // Update the entire user object
+            setLoading(false);
+          });
       })
       .catch((error) => {
-        setError("Error generating trust score");
+        console.error("Error:", error);
+        setError(
+          error.response?.data?.message || "Error generating trust score"
+        );
         setLoading(false);
       });
   };

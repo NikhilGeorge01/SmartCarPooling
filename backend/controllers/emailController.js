@@ -17,7 +17,8 @@ exports.sendEmail = async (req, res) => {
       from: process.env.EMAIL_USER,
       to,
       subject,
-      text: body,
+      html: body, // Changed from text to html
+      text: body.replace(/<[^>]*>/g, ""), // Fallback plain text version with HTML tags removed
     };
 
     await transporter.sendMail(mailOptions);
